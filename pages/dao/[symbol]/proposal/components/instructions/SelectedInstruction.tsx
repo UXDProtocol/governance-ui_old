@@ -60,12 +60,16 @@ import UXDStakingActivateStakingOption from './UXDStaking/ActivateStakingOption'
 import UXDStakingRefillRewardVault from './UXDStaking/RefillRewardVault';
 import TransferTokens from './Native/TransferTokens';
 import MapleFinanceLenderDeposit from './MapleFinance/LenderDeposit';
+<<<<<<< HEAD
 import DeltafiPoolDeposit from './Deltafi/Deposit';
 import DeltafiCreateLiquidityProvider from './Deltafi/CreateLiquidityProvider';
 import DeltafiPoolWithdraw from './Deltafi/Withdraw';
 import DeltafiCreateFarmUser from './Deltafi/CreateFarmUserV2';
 import DeltafiDepositToFarm from './Deltafi/DepositToFarm';
 import DeltafiFarmWithdraw from './Deltafi/WithdrawFromFarm';
+=======
+import NativeBurnSplTokens from './Native/BurnSplTokens';
+>>>>>>> a7d61def (add burn instruction support)
 
 const SelectedInstruction = ({
   itxType,
@@ -415,6 +419,7 @@ const SelectedInstruction = ({
       return <SoceanVest index={index} governedAccount={governedAccount} />;
     case InstructionEnum.NativeTransferTokensForm:
       return <TransferTokens index={index} governedAccount={governedAccount} />;
+<<<<<<< HEAD
     case InstructionEnum.DeltafiCreateLiquidityProvider:
       return (
         <DeltafiCreateLiquidityProvider
@@ -444,6 +449,11 @@ const SelectedInstruction = ({
     case InstructionEnum.DeltafiFarmWithdraw:
       return (
         <DeltafiFarmWithdraw index={index} governedAccount={governedAccount} />
+=======
+    case InstructionEnum.NativeBurnSplTokens:
+      return (
+        <NativeBurnSplTokens index={index} governedAccount={governedAccount} />
+>>>>>>> a7d61def (add burn instruction support)
       );
     default:
       return null;
