@@ -53,6 +53,7 @@ import UXDSetMangoDepositoriesRedeemableSoftCap from './UXD/SetMangoDepositories
 import UXDSetRedeemableGlobalSupplyCap from './UXD/SetRedeemGlobalSupplyCap';
 import UXDWithdrawInsuranceFromMangoDepository from './UXD/WithdrawInsuranceFromMangoDepository';
 import UXDStakingInitializeStakingCampaign from './UXDStaking/InitializeStakingCampaign';
+import UXDStakingMigrateStakingCampaignFromV1ToV2 from './UXDStaking/MigrateStakingCampaignFromV1ToV2';
 import UXDStakingFinalizeStakingCampaign from './UXDStaking/FinalizeStakingCampaign';
 import UXDStakingAddStakingOption from './UXDStaking/AddStakingOption';
 import UXDStakingActivateStakingOption from './UXDStaking/ActivateStakingOption';
@@ -62,6 +63,9 @@ import MapleFinanceLenderDeposit from './MapleFinance/LenderDeposit';
 import DeltafiPoolDeposit from './Deltafi/Deposit';
 import DeltafiCreateLiquidityProvider from './Deltafi/CreateLiquidityProvider';
 import DeltafiPoolWithdraw from './Deltafi/Withdraw';
+import DeltafiCreateFarmUser from './Deltafi/CreateFarmUserV2';
+import DeltafiDepositToFarm from './Deltafi/DepositToFarm';
+import DeltafiFarmWithdraw from './Deltafi/WithdrawFromFarm';
 
 const SelectedInstruction = ({
   itxType,
@@ -229,6 +233,13 @@ const SelectedInstruction = ({
     case InstructionEnum.UXDWithdrawInsuranceFromMangoDepository:
       return (
         <UXDWithdrawInsuranceFromMangoDepository
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.UXDStakingMigrateStakingCampaignFromV1ToV2:
+      return (
+        <UXDStakingMigrateStakingCampaignFromV1ToV2
           index={index}
           governedAccount={governedAccount}
         />
@@ -418,6 +429,21 @@ const SelectedInstruction = ({
     case InstructionEnum.DeltafiPoolWithdraw:
       return (
         <DeltafiPoolWithdraw index={index} governedAccount={governedAccount} />
+      );
+    case InstructionEnum.DeltafiCreateFarmUser:
+      return (
+        <DeltafiCreateFarmUser
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.DeltafiFarmDeposit:
+      return (
+        <DeltafiDepositToFarm index={index} governedAccount={governedAccount} />
+      );
+    case InstructionEnum.DeltafiFarmWithdraw:
+      return (
+        <DeltafiFarmWithdraw index={index} governedAccount={governedAccount} />
       );
     default:
       return null;

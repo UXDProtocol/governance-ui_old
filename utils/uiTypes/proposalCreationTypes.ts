@@ -399,6 +399,11 @@ export interface QuarryMineClaimRewardsForm {
   mintName?: QuarryMineSupportedMintName;
 }
 
+export interface UXDStakingMigrateStakingCampaignFromV1ToV2Form {
+  governedAccount?: GovernedMultiTypeAccount;
+  stakingCampaignPda?: string;
+}
+
 export interface UXDStakingInitializeStakingCampaignForm {
   governedAccount?: GovernedMultiTypeAccount;
   rewardMintUIName?: SplTokenUIName;
@@ -458,6 +463,20 @@ export interface DeltafiPoolDepositForm {
   uiMinQuoteShare?: number;
 }
 
+export interface DeltafiFarmDepositForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  poolName?: DeltafiPoolName;
+  uiBaseAmount?: number;
+  uiQuoteAmount?: number;
+}
+
+export interface DeltafiFarmWithdrawForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  poolName?: DeltafiPoolName;
+  uiBaseAmount?: number;
+  uiQuoteAmount?: number;
+}
+
 export interface DeltafiPoolWithdrawForm {
   governedAccount?: GovernedMultiTypeAccount;
   poolName?: DeltafiPoolName;
@@ -468,6 +487,11 @@ export interface DeltafiPoolWithdrawForm {
 }
 
 export interface DeltafiCreateLiquidityProviderForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  poolName?: DeltafiPoolName;
+}
+
+export interface DeltafiCreateFarmUserForm {
   governedAccount?: GovernedMultiTypeAccount;
   poolName?: DeltafiPoolName;
 }
@@ -532,11 +556,15 @@ export enum InstructionEnum {
   UXDStakingAddStakingOption,
   UXDStakingActivateStakingOption,
   UXDStakingRefillRewardVault,
+  UXDStakingMigrateStakingCampaignFromV1ToV2,
   NativeTransferTokensForm,
   MapleFinanceLenderDepositForm,
   DeltafiPoolDeposit,
   DeltafiCreateLiquidityProvider,
   DeltafiPoolWithdraw,
+  DeltafiCreateFarmUser,
+  DeltafiFarmDeposit,
+  DeltafiFarmWithdraw,
 }
 
 export enum PackageEnum {

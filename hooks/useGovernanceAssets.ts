@@ -504,6 +504,11 @@ export default function useGovernanceAssets() {
       ),
       packageId: PackageEnum.Native,
     },
+    [InstructionEnum.UXDStakingMigrateStakingCampaignFromV1ToV2]: {
+      name: 'Migrate Staking Campaign From v1 to v2',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.UXDStaking,
+    },
     [InstructionEnum.UXDStakingInitializeStakingCampaign]: {
       name: 'Initialize Staking Campaign',
       isVisible: canUseAnyInstruction,
@@ -542,13 +547,31 @@ export default function useGovernanceAssets() {
       tag: 'beta',
     },
     [InstructionEnum.DeltafiPoolDeposit]: {
-      name: 'Deposit Tokens on Pool',
+      name: 'Deposit Tokens to Pool',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Deltafi,
       tag: 'beta',
     },
     [InstructionEnum.DeltafiPoolWithdraw]: {
       name: 'Withdraw Tokens from Pool',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Deltafi,
+      tag: 'beta',
+    },
+    [InstructionEnum.DeltafiCreateFarmUser]: {
+      name: 'Create Farm User',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Deltafi,
+      tag: 'beta',
+    },
+    [InstructionEnum.DeltafiFarmDeposit]: {
+      name: 'Deposit Tokens to Farm',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Deltafi,
+      tag: 'beta',
+    },
+    [InstructionEnum.DeltafiFarmWithdraw]: {
+      name: 'Withdraw Tokens from Farm',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Deltafi,
       tag: 'beta',
