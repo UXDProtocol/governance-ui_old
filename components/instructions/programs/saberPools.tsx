@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { nu64, struct, u8 } from 'buffer-layout';
 import { AccountMetaData } from '@solana/spl-governance';
 import { Connection } from '@solana/web3.js';
