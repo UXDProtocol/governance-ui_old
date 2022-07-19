@@ -262,8 +262,6 @@ export interface UXDSetMangoDepositoryQuoteMintAndRedeemFeeForm {
 
 export interface UXDSetMangoDepositoryQuoteMintAndRedeemSoftCapForm {
   governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
   softCapUiAmount?: number;
 }
 

@@ -5,20 +5,12 @@ import { UXDSetMangoDepositoryQuoteMintAndRedeemSoftCapForm } from '@utils/uiTyp
 import Input from '@components/inputs/Input';
 import createSetMangoDepositoryQuoteMintAndRedeemSoftCapInstruction from '@tools/sdk/uxdProtocol/createSetMangoDepositoryQuoteMintAndRedeemSoftCapInstruction';
 import useWalletStore from 'stores/useWalletStore';
-import Select from '@components/inputs/Select';
-import SelectOptionList from '../../SelectOptionList';
-import {
-  getDepositoryMintSymbols,
-  getInsuranceMintSymbols,
-} from '@tools/sdk/uxdProtocol/uxdClient';
 
 const schema = yup.object().shape({
   governedAccount: yup
     .object()
     .nullable()
     .required('Governance account is required'),
-  collateralName: yup.string().required('Collateral Name is required'),
-  insuranceName: yup.string().required('Insurance Name is required'),
   softCapUiAmount: yup
     .number()
     .moreThan(0, 'Soft Cap Amount should be more than 0')
@@ -52,8 +44,10 @@ const UXDSetMangoDepositoryQuoteMintAndRedeemSoftCap = ({
           uxdProgramId: form.governedAccount!.governance!.account
             .governedAccount,
           authority: governedAccountPubkey,
-          depositoryMintName: form.collateralName!,
-          insuranceMintName: form.insuranceName!,
+          // The underlying function just want to extract the quote
+          depositoryMintName: 'SOL',
+          insuranceMintName: 'USDC',
+          // -----
           softCapUiAmount: form.softCapUiAmount!,
         });
       },
@@ -62,30 +56,6 @@ const UXDSetMangoDepositoryQuoteMintAndRedeemSoftCap = ({
 
   return (
     <>
-      <Select
-        label="Collateral Name"
-        value={form.collateralName}
-        placeholder="Please select..."
-        onChange={(value) =>
-          handleSetForm({ value, propertyName: 'collateralName' })
-        }
-        error={formErrors['collateralName']}
-      >
-        <SelectOptionList list={getDepositoryMintSymbols(connection.cluster)} />
-      </Select>
-
-      <Select
-        label="Insurance Name"
-        value={form.insuranceName}
-        placeholder="Please select..."
-        onChange={(value) =>
-          handleSetForm({ value, propertyName: 'insuranceName' })
-        }
-        error={formErrors['insuranceName']}
-      >
-        <SelectOptionList list={getInsuranceMintSymbols(connection.cluster)} />
-      </Select>
-
       <Input
         label="Soft Cap Amount"
         value={form.softCapUiAmount}
