@@ -9,7 +9,6 @@ import { DEFAULT_NFT_TREASURY_MINT } from '@components/instructions/tools';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import Select from '@components/inputs/Select';
 import AccountItemNFT from '@components/TreasuryAccount/AccountItemNFT';
-import useRealm from '@hooks/useRealm';
 import useQueryContext from '@hooks/useQueryContext';
 import useTreasuryAccountStore from 'stores/useTreasuryAccountStore';
 import ImgWithLoader from '@components/ImgWithLoader';
@@ -24,7 +23,6 @@ const gallery = () => {
   const realmNfts = useTreasuryAccountStore((s) => s.allNfts);
   const isLoading = useTreasuryAccountStore((s) => s.isLoadingNfts);
   const governanceNfts = useTreasuryAccountStore((s) => s.governanceNfts);
-  const { symbol } = useRealm();
   const governancePk = router?.query?.governancePk;
   const { nftsGovernedTokenAccounts } = useGovernanceAssets();
   const { fmtUrlWithCluster } = useQueryContext();
@@ -79,9 +77,7 @@ const gallery = () => {
             <Select
               className="sm:w-44 mt-2 sm:mt-0"
               onChange={(value) => {
-                router.push(
-                  fmtUrlWithCluster(`/dao/${symbol}/gallery/${value}`),
-                );
+                router.push(fmtUrlWithCluster(`/gallery/${value}`));
               }}
               value={currentAccount?.governance?.pubkey.toBase58()}
               componentLabel={

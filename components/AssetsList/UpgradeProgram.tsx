@@ -4,7 +4,7 @@ import useRealm from 'hooks/useRealm';
 import Input from 'components/inputs/Input';
 import Button, { LinkButton } from '@components/Button';
 import Textarea from 'components/inputs/Textarea';
-import VoteBySwitch from 'pages/dao/[symbol]/proposal/components/VoteBySwitch';
+import VoteBySwitch from 'pages/proposal/components/VoteBySwitch';
 import useWalletStore from 'stores/useWalletStore';
 import { validateBuffer } from 'utils/validations';
 import { useEffect, useState } from 'react';
@@ -28,7 +28,7 @@ import { createUpgradeInstruction } from '@tools/sdk/bpfUpgradeableLoader/create
 import { debounce } from '@utils/debounce';
 import { isFormValid } from '@utils/formValidation';
 import { getProgramVersionForRealm } from '@models/registry/api';
-import ProgramUpgradeInfo from 'pages/dao/[symbol]/proposal/components/instructions/bpfUpgradeableLoader/ProgramUpgradeInfo';
+import ProgramUpgradeInfo from 'pages/proposal/components/instructions/bpfUpgradeableLoader/ProgramUpgradeInfo';
 import useVoteStakeRegistryClientStore from 'VoteStakeRegistry/stores/voteStakeRegistryClientStore';
 import { getProgramName } from '@components/instructions/programs/names';
 
@@ -51,7 +51,6 @@ const UpgradeProgram = ({
   };
   const { fmtUrlWithCluster } = useQueryContext();
   const { fetchRealmGovernance } = useWalletStore((s) => s.actions);
-  const { symbol } = router.query;
   const {
     realmInfo,
     canChooseWhoVote,
@@ -196,9 +195,7 @@ const UpgradeProgram = ({
           false,
           client,
         );
-        const url = fmtUrlWithCluster(
-          `/dao/${symbol}/proposal/${proposalAddress}`,
-        );
+        const url = fmtUrlWithCluster(`/proposal/${proposalAddress}`);
         router.push(url);
       } catch (ex) {
         notify({ type: 'error', message: `${ex}` });

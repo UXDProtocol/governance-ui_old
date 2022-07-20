@@ -7,7 +7,7 @@ import { isFormValid } from '@utils/formValidation';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { FormInstructionData } from '@utils/uiTypes/proposalCreationTypes';
 
-import { NewProposalContext } from 'pages/dao/[symbol]/proposal/new';
+import { NewProposalContext } from 'pages/proposal/new';
 import useWalletStore from 'stores/useWalletStore';
 import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import useGovernedMultiTypeAccounts from './useGovernedMultiTypeAccounts';

@@ -1,14 +1,12 @@
 import React from 'react';
 import AssetsList from './AssetsList';
 import { ChevronRightIcon } from '@heroicons/react/solid';
-import useRealm from '@hooks/useRealm';
 import useQueryContext from '@hooks/useQueryContext';
 import { useRouter } from 'next/router';
 import { LinkButton } from '@components/Button';
 
 const AssetsCompactWrapper = () => {
   const router = useRouter();
-  const { symbol } = useRealm();
   const { fmtUrlWithCluster } = useQueryContext();
 
   return (
@@ -18,7 +16,7 @@ const AssetsCompactWrapper = () => {
         <LinkButton
           className={`flex items-center text-primary-light`}
           onClick={() => {
-            const url = fmtUrlWithCluster(`/dao/${symbol}/assets`);
+            const url = fmtUrlWithCluster(`/assets`);
             router.push(url);
           }}
         >

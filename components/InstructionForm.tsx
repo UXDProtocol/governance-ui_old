@@ -3,8 +3,8 @@ import { XCircleIcon } from '@heroicons/react/solid';
 import { InstructionType } from '@hooks/useGovernanceAssets';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { ComponentInstructionData } from '@utils/uiTypes/proposalCreationTypes';
-import SelectedInstruction from 'pages/dao/[symbol]/proposal/components/instructions/SelectedInstruction';
-import InstructionContentContainer from '../pages/dao/[symbol]/proposal/components/InstructionContentContainer';
+import SelectedInstruction from 'pages/proposal/components/instructions/SelectedInstruction';
+import InstructionContentContainer from '../pages/proposal/components/InstructionContentContainer';
 import SelectInstructionType from './SelectInstructionType';
 
 const InstructionForm = ({

@@ -3,7 +3,7 @@ import { PlusCircleIcon } from '@heroicons/react/solid';
 import { InstructionType } from '@hooks/useGovernanceAssets';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { ComponentInstructionData } from '@utils/uiTypes/proposalCreationTypes';
-import { NewProposalContext } from 'pages/dao/[symbol]/proposal/new';
+import { NewProposalContext } from 'pages/proposal/new';
 import { useState } from 'react';
 import InstructionForm from './InstructionForm';
 

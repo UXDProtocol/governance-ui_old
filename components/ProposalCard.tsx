@@ -4,7 +4,6 @@ import ProposalStateBadge from './ProposalStatusBadge';
 import Link from 'next/link';
 import { Proposal, ProposalState } from '@solana/spl-governance';
 import ApprovalQuorum from './ApprovalQuorum';
-import useRealm from '../hooks/useRealm';
 import useProposalVotes from '../hooks/useProposalVotes';
 import ProposalTimeStatus from './ProposalTimeStatus';
 
@@ -28,17 +27,12 @@ const StyledCardWrapper = styled.div`
 `;
 
 const ProposalCard = ({ proposalPk, proposal }: ProposalCardProps) => {
-  const { symbol } = useRealm();
   const { fmtUrlWithCluster } = useQueryContext();
   const { yesVoteProgress, yesVotesRequired } = useProposalVotes(proposal);
 
   return (
     <div>
-      <Link
-        href={fmtUrlWithCluster(
-          `/dao/${symbol}/proposal/${proposalPk.toBase58()}`,
-        )}
-      >
+      <Link href={fmtUrlWithCluster(`/proposal/${proposalPk.toBase58()}`)}>
         <a>
           <StyledCardWrapper className="border border-fgd-4 default-transition rounded-lg hover:bg-bkg-3">
             <div className="p-4">

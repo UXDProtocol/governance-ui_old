@@ -1,6 +1,6 @@
 import PreviousRouteBtn from '@components/PreviousRouteBtn';
 import { LinkIcon } from '@heroicons/react/outline';
-import MyProposalsBtn from 'pages/dao/[symbol]/proposal/components/MyProposalsBtn';
+import MyProposalsBtn from 'pages/proposal/components/MyProposalsBtn';
 import useWalletStore from 'stores/useWalletStore';
 
 const Account = ({ withHeader = true }: { withHeader?: boolean }) => {

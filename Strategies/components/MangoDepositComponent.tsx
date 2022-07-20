@@ -70,7 +70,6 @@ const MangoDepositComponent = ({
     ownVoterWeight,
     mint,
     councilMint,
-    symbol,
   } = useRealm();
   const [isDepositing, setIsDepositing] = useState(false);
   const [
@@ -224,9 +223,7 @@ const MangoDepositComponent = ({
         market,
         client,
       );
-      const url = fmtUrlWithCluster(
-        `/dao/${symbol}/proposal/${proposalAddress}`,
-      );
+      const url = fmtUrlWithCluster(`/proposal/${proposalAddress}`);
       router.push(url);
     } catch (e) {
       console.log(e);

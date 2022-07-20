@@ -5,7 +5,6 @@ import { PhotographIcon } from '@heroicons/react/outline';
 import { ChevronRightIcon } from '@heroicons/react/solid';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import useQueryContext from '@hooks/useQueryContext';
-import useRealm from '@hooks/useRealm';
 import { useRouter } from 'next/router';
 import React from 'react';
 import useTreasuryAccountStore from 'stores/useTreasuryAccountStore';
@@ -18,7 +17,6 @@ const NFTSCompactWrapper = () => {
   const connection = useWalletStore((s) => s.connection);
   const realmNfts = useTreasuryAccountStore((s) => s.allNfts);
   const isLoading = useTreasuryAccountStore((s) => s.isLoadingNfts);
-  const { symbol } = useRealm();
   const { fmtUrlWithCluster } = useQueryContext();
   return nftsGovernedTokenAccounts.length ? (
     <div className="bg-bkg-2 p-4 md:p-6 rounded-lg transition-all">
@@ -28,7 +26,7 @@ const NFTSCompactWrapper = () => {
           className={`flex items-center text-primary-light`}
           onClick={() => {
             const url = fmtUrlWithCluster(
-              `/dao/${symbol}/gallery/${DEFAULT_NFT_TREASURY_MINT}`,
+              `/gallery/${DEFAULT_NFT_TREASURY_MINT}`,
             );
             router.push(url);
           }}

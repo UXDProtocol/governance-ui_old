@@ -57,7 +57,7 @@ const New = () => {
   const router = useRouter();
   const { handleCreateProposal } = useCreateProposal();
   const { fmtUrlWithCluster } = useQueryContext();
-  const { symbol, realm, realmDisplayName, canChooseWhoVote } = useRealm();
+  const { realm, realmDisplayName, canChooseWhoVote } = useRealm();
   const { availableInstructions } = useGovernanceAssets();
   const {
     fetchRealmGovernance,
@@ -188,9 +188,7 @@ const New = () => {
         }),
       });
 
-      router.push(
-        fmtUrlWithCluster(`/dao/${symbol}/proposal/${proposalAddress}`),
-      );
+      router.push(fmtUrlWithCluster(`/proposal/${proposalAddress}`));
     } catch (ex) {
       notify({ type: 'error', message: `${ex}` });
     }
@@ -210,7 +208,7 @@ const New = () => {
           isLoading ? 'pointer-events-none' : ''
         }`}
       >
-        <Link href={fmtUrlWithCluster(`/dao/${symbol}/`)}>
+        <Link href={fmtUrlWithCluster(`/`)}>
           <a className="flex items-center text-fgd-3 text-sm transition-all hover:text-fgd-1">
             <ArrowLeftIcon className="h-4 w-4 mr-1 text-primary-light" />
             Back

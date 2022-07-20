@@ -13,7 +13,6 @@ const NEW_PROGRAM_VIEW = `/program/new`;
 const Assets = () => {
   const router = useRouter();
   const {
-    symbol,
     realm,
     ownVoterWeight,
     toManyCommunityOutstandingProposalsForUser,
@@ -22,7 +21,7 @@ const Assets = () => {
   const connected = useWalletStore((s) => s.connected);
   const { fmtUrlWithCluster } = useQueryContext();
   const goToNewAssetForm = () => {
-    router.push(fmtUrlWithCluster(`/dao/${symbol}${NEW_PROGRAM_VIEW}`));
+    router.push(fmtUrlWithCluster(`/${NEW_PROGRAM_VIEW}`));
   };
   const canCreateGovernance = realm
     ? ownVoterWeight.canCreateGovernance(realm)

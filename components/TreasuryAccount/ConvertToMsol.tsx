@@ -1,7 +1,7 @@
 import { ArrowCircleDownIcon, ArrowCircleUpIcon } from '@heroicons/react/solid';
 import useTreasuryAccountStore from 'stores/useTreasuryAccountStore';
 import AccountLabel from './AccountHeader';
-import GovernedAccountSelect from 'pages/dao/[symbol]/proposal/components/GovernedAccountSelect';
+import GovernedAccountSelect from 'pages/proposal/components/GovernedAccountSelect';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import { useEffect, useState } from 'react';
 import {
@@ -13,7 +13,7 @@ import Input from '@components/inputs/Input';
 import Textarea from '@components/inputs/Textarea';
 import { precision } from '@utils/formatting';
 import useRealm from '@hooks/useRealm';
-import VoteBySwitch from 'pages/dao/[symbol]/proposal/components/VoteBySwitch';
+import VoteBySwitch from 'pages/proposal/components/VoteBySwitch';
 import Button from '@components/Button';
 import Tooltip from '@components/Tooltip';
 import useWalletStore from 'stores/useWalletStore';
@@ -41,7 +41,6 @@ const ConvertToMsol = () => {
     ownVoterWeight,
     mint,
     councilMint,
-    symbol,
   } = useRealm();
   const client = useVoteStakeRegistryClientStore((s) => s.state.client);
   const { canUseTransferInstruction } = useGovernanceAssets();
@@ -156,9 +155,7 @@ const ConvertToMsol = () => {
           false,
           client,
         );
-        const url = fmtUrlWithCluster(
-          `/dao/${symbol}/proposal/${proposalAddress}`,
-        );
+        const url = fmtUrlWithCluster(`/proposal/${proposalAddress}`);
         router.push(url);
       } catch (ex) {
         notify({ type: 'error', message: `${ex}` });

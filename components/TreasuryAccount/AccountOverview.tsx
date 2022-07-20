@@ -4,7 +4,6 @@ import { getAccountName } from '@components/instructions/tools';
 import Modal from '@components/Modal';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import useQueryContext from '@hooks/useQueryContext';
-import useRealm from '@hooks/useRealm';
 import { PublicKey } from '@solana/web3.js';
 import { abbreviateAddress, fmtUnixTime } from '@utils/formatting';
 import BN from 'bn.js';
@@ -42,7 +41,6 @@ const AccountOverview = () => {
     currentAccount?.governance && currentAccount.isNft
       ? governanceNfts[currentAccount?.governance?.pubkey.toBase58()]?.length
       : 0;
-  const { symbol } = useRealm();
   const { fmtUrlWithCluster } = useQueryContext();
   const isNFT = currentAccount?.isNft;
   const isSol = currentAccount?.isSol;
@@ -141,7 +139,7 @@ const AccountOverview = () => {
               className="cursor-pointer default-transition text-primary-light hover:text-primary-dark"
               onClick={() => {
                 const url = fmtUrlWithCluster(
-                  `/dao/${symbol}/gallery/${currentAccount.transferAddress}`,
+                  `/gallery/${currentAccount.transferAddress}`,
                 );
                 router.push(url);
               }}

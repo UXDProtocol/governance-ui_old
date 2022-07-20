@@ -14,8 +14,8 @@ import {
 } from '@solana/spl-governance';
 import { ProgramAccount } from '@solana/spl-governance';
 import { validateInstruction } from '@utils/instructionTools';
-import { NewProposalContext } from 'pages/dao/[symbol]/proposal/new';
-import GovernedAccountSelect from 'pages/dao/[symbol]/proposal/components/GovernedAccountSelect';
+import { NewProposalContext } from 'pages/proposal/new';
+import GovernedAccountSelect from 'pages/proposal/components/GovernedAccountSelect';
 import * as yup from 'yup';
 import {
   Deposit,

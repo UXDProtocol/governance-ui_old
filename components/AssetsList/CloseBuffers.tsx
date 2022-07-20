@@ -5,7 +5,7 @@ import useRealm from 'hooks/useRealm';
 import Input from 'components/inputs/Input';
 import Button, { LinkButton } from '@components/Button';
 import Textarea from 'components/inputs/Textarea';
-import VoteBySwitch from 'pages/dao/[symbol]/proposal/components/VoteBySwitch';
+import VoteBySwitch from 'pages/proposal/components/VoteBySwitch';
 import useWalletStore from 'stores/useWalletStore';
 import { getValidatedPublickKey } from 'utils/validations';
 import { useEffect, useState } from 'react';
@@ -44,7 +44,6 @@ const CloseBuffers = ({ program }: { program: ProgramAccount<Governance> }) => {
     governance: program!,
   };
   const { fmtUrlWithCluster } = useQueryContext();
-  const { symbol } = router.query;
   const { realmInfo, canChooseWhoVote, realm } = useRealm();
   const [isBuffersLoading, setIsBuffersLoading] = useState(false);
   const programId: PublicKey | undefined = realmInfo?.programId;
@@ -169,9 +168,7 @@ const CloseBuffers = ({ program }: { program: ProgramAccount<Governance> }) => {
           instructionsData: instructionsData,
           governance: governance!,
         });
-        const url = fmtUrlWithCluster(
-          `/dao/${symbol}/proposal/${proposalAddress}`,
-        );
+        const url = fmtUrlWithCluster(`/proposal/${proposalAddress}`);
         router.push(url);
       } catch (ex) {
         notify({ type: 'error', message: `${ex}` });

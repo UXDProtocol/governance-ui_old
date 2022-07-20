@@ -1,5 +1,4 @@
 import { isPublicKey } from '@tools/core/pubkey';
-import { useRouter } from 'next/router';
 import { useMemo, useState } from 'react';
 import useDepositStore from 'VoteStakeRegistry/stores/useDepositStore';
 import {
@@ -12,8 +11,7 @@ import { VoteRegistryVoterWeight, VoterWeight } from '../models/voteWeights';
 import useWalletStore from '../stores/useWalletStore';
 
 export default function useRealm() {
-  const router = useRouter();
-  const { symbol } = router.query;
+  const symbol = 'UXP';
   const connection = useWalletStore((s) => s.connection);
   const connected = useWalletStore((s) => s.connected);
   const wallet = useWalletStore((s) => s.current);

@@ -26,7 +26,7 @@ const LockPluginTokenBalanceCard = ({
 }) => {
   const router = useRouter();
   const { fmtUrlWithCluster } = useQueryContext();
-  const { councilMint, mint, realm, symbol } = useRealm();
+  const { councilMint, mint, realm } = useRealm();
   const [tokenOwnerRecordPk, setTokenOwneRecordPk] = useState('');
   const connected = useWalletStore((s) => s.connected);
   const wallet = useWalletStore((s) => s.current);
@@ -82,9 +82,7 @@ const LockPluginTokenBalanceCard = ({
               : ''
           }`}
           onClick={() => {
-            const url = fmtUrlWithCluster(
-              `/dao/${symbol}/account/${tokenOwnerRecordPk}`,
-            );
+            const url = fmtUrlWithCluster(`/account/${tokenOwnerRecordPk}`);
             router.push(url);
           }}
         >

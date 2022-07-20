@@ -10,7 +10,6 @@ import Tooltip from '@components/Tooltip';
 import useCreateProposal from '@hooks/useCreateProposal';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import useQueryContext from '@hooks/useQueryContext';
-import useRealm from '@hooks/useRealm';
 import {
   ProgramAccount,
   Governance,
@@ -38,7 +37,6 @@ const DelegateForm = ({
   market: MarketStore;
 }) => {
   const router = useRouter();
-  const { symbol } = useRealm();
   const { fmtUrlWithCluster } = useQueryContext();
   const { handleCreateProposal } = useCreateProposal();
   const { canUseTransferInstruction } = useGovernanceAssets();
@@ -87,9 +85,7 @@ const DelegateForm = ({
         governance: governance!,
         voteByCouncil,
       });
-      const url = fmtUrlWithCluster(
-        `/dao/${symbol}/proposal/${proposalAddress}`,
-      );
+      const url = fmtUrlWithCluster(`/proposal/${proposalAddress}`);
       router.push(url);
     } catch (e) {
       console.log(e);

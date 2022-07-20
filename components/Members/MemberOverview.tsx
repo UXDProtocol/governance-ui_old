@@ -32,7 +32,7 @@ const MemberOverview = () => {
   const member = useMembersListStore((s) => s.compact.currentMember);
   const connection = useWalletStore((s) => s.connection);
   const selectedRealm = useWalletStore((s) => s.selectedRealm);
-  const { mint, councilMint, proposals, symbol } = useRealm();
+  const { mint, councilMint, proposals } = useRealm();
   const {
     setCurrentCompactView,
     resetCompactViewState,
@@ -208,9 +208,7 @@ const MemberOverview = () => {
       <div style={{ maxHeight: '350px' }} className="overflow-auto">
         {ownVoteRecords.map((x) => (
           <a
-            href={fmtUrlWithCluster(
-              `/dao/${symbol}/proposal/${x.proposalPublicKey}`,
-            )}
+            href={fmtUrlWithCluster(`/proposal/${x.proposalPublicKey}`)}
             rel="noopener noreferrer"
             className="border border-fgd-4 default-transition rounded-lg hover:bg-bkg-3 css-1ug690d-StyledCardWrapepr elzt7lo0 p-4 text-xs text-th-fgd-1 mb-2 flex"
             key={x.proposalPublicKey}

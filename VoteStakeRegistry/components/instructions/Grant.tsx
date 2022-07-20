@@ -26,8 +26,8 @@ import {
 } from '@solana/spl-governance';
 import { ProgramAccount } from '@solana/spl-governance';
 import { validateInstruction } from '@utils/instructionTools';
-import { NewProposalContext } from 'pages/dao/[symbol]/proposal/new';
-import GovernedAccountSelect from 'pages/dao/[symbol]/proposal/components/GovernedAccountSelect';
+import { NewProposalContext } from 'pages/proposal/new';
+import GovernedAccountSelect from 'pages/proposal/components/GovernedAccountSelect';
 import { lockupTypes } from 'VoteStakeRegistry/tools/types';
 import Select from '@components/inputs/Select';
 import Switch from '@components/Switch';

@@ -1,6 +1,6 @@
 import { ChevronDownIcon } from '@heroicons/react/outline';
 import useRealm from '@hooks/useRealm';
-import VoteBySwitch from 'pages/dao/[symbol]/proposal/components/VoteBySwitch';
+import VoteBySwitch from 'pages/proposal/components/VoteBySwitch';
 import { useState } from 'react';
 import { LinkButton } from './Button';
 import Input from './inputs/Input';

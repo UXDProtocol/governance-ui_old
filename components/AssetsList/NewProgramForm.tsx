@@ -44,13 +44,7 @@ const NewProgramForm = () => {
   const router = useRouter();
   const { fmtUrlWithCluster } = useQueryContext();
   const client = useVoteStakeRegistryClientStore((s) => s.state.client);
-  const {
-    realmInfo,
-    realm,
-    mint: realmMint,
-    symbol,
-    ownVoterWeight,
-  } = useRealm();
+  const { realmInfo, realm, mint: realmMint, ownVoterWeight } = useRealm();
   const wallet = useWalletStore((s) => s.current);
   const connection = useWalletStore((s) => s.connection);
   const connected = useWalletStore((s) => s.connected);
@@ -114,7 +108,7 @@ const NewProgramForm = () => {
         );
         setIsLoading(false);
         fetchRealm(realmInfo!.programId, realmInfo!.realmId);
-        router.push(fmtUrlWithCluster(`/dao/${symbol}/`));
+        router.push(fmtUrlWithCluster(`/`));
       }
     } catch (e) {
       //TODO how do we present errors maybe something more generic ?

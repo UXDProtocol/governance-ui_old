@@ -12,7 +12,6 @@ const NewProposalBtn = () => {
   const connected = useWalletStore((s) => s.connected);
 
   const {
-    symbol,
     realm,
     governances,
     ownVoterWeight,
@@ -50,7 +49,7 @@ const NewProposalBtn = () => {
         <div
           className={!canCreateProposal ? 'cursor-not-allowed opacity-60' : ''}
         >
-          <Link href={fmtUrlWithCluster(`/dao/${symbol}/proposal/new`)}>
+          <Link href={fmtUrlWithCluster(`/proposal/new`)}>
             <a
               className={`${
                 !canCreateProposal

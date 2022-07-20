@@ -47,7 +47,7 @@ import {
   getTransferInstruction,
   getTransferNftInstruction,
 } from '@utils/instructionTools';
-import VoteBySwitch from 'pages/dao/[symbol]/proposal/components/VoteBySwitch';
+import VoteBySwitch from 'pages/proposal/components/VoteBySwitch';
 import NFTSelector from '@components/NFTS/NFTSelector';
 import { NFTWithMint } from '@utils/uiTypes/nfts';
 import { getProgramVersionForRealm } from '@models/registry/api';
@@ -58,7 +58,6 @@ const SendTokens = () => {
   const connection = useWalletStore((s) => s.connection);
   const {
     realmInfo,
-    symbol,
     realm,
     ownVoterWeight,
     mint,
@@ -236,9 +235,7 @@ const SendTokens = () => {
           false,
           client,
         );
-        const url = fmtUrlWithCluster(
-          `/dao/${symbol}/proposal/${proposalAddress}`,
-        );
+        const url = fmtUrlWithCluster(`/proposal/${proposalAddress}`);
         router.push(url);
       } catch (ex) {
         notify({ type: 'error', message: `${ex}` });

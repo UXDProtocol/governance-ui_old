@@ -1,4 +1,3 @@
-import useRealm from '@hooks/useRealm';
 import React, { useEffect } from 'react';
 import useMembersListStore from 'stores/useMembersStore';
 import { ViewState } from './types';
@@ -7,7 +6,6 @@ import useMembers from './useMembers';
 import MemberOverview from './MemberOverview';
 
 const MembersCompactWrapper = () => {
-  const { symbol } = useRealm();
   const { members, activeMembers } = useMembers();
   const activeMembersCount = activeMembers.length;
   const { resetCompactViewState } = useMembersListStore();
@@ -43,7 +41,7 @@ const MembersCompactWrapper = () => {
 
   useEffect(() => {
     resetCompactViewState();
-  }, [symbol]);
+  }, []);
 
   return (
     <div className="bg-bkg-2 p-4 md:p-6 rounded-lg">{getCurrentView()}</div>

@@ -4,7 +4,8 @@ import useWalletStore from '../stores/useWalletStore';
 
 export default function useHydrateStore() {
   const router = useRouter();
-  const { symbol, cluster, pk } = router.query;
+  const symbol = 'UXP';
+  const { cluster, pk } = router.query;
   const selectedRealmMints = useWalletStore((s) => s.selectedRealm.mints);
   const { fetchRealmBySymbol, fetchProposal } = useWalletStore(
     (s) => s.actions,
