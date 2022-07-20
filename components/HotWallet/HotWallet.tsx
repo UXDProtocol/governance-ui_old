@@ -10,7 +10,7 @@ import HotWalletPluginTokenAccounts from './plugins/TokenAccounts/TokenAccounts'
 import HotWalletPluginSaberStats from './plugins/SaberStats/SaberStats';
 import HotWalletPluginUXDStaking from './plugins/UXDStaking/UXDStaking';
 
-const HotWallet = (): JSX.Element => {
+const HotWallet = ({ className }: { className?: string }): JSX.Element => {
   const { hotWalletAccount } = useHotWallet();
 
   if (!hotWalletAccount) {
@@ -29,7 +29,7 @@ const HotWallet = (): JSX.Element => {
         hotWalletName={hotWalletAccount.name}
       />
 
-      <div className="space-y-6 mt-6">
+      <div className={`space-y-6 mt-6 ${className}`}>
         <HotWalletPluginTokenAccounts hotWalletAccount={hotWalletAccount} />
 
         <HotWalletPluginUXDStaking hotWalletAccount={hotWalletAccount} />
