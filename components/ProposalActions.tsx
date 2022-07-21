@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useHasVoteTimeExpired } from '../hooks/useHasVoteTimeExpired';
 import useRealm from '../hooks/useRealm';
-import { getSignatoryRecordAddress } from '@solana/spl-governance';
+import {
+  getSignatoryRecordAddress,
+  InstructionExecutionStatus,
+} from '@solana/spl-governance';
 import useWalletStore, {
   EnhancedProposalState,
 } from '../stores/useWalletStore';
@@ -78,7 +81,12 @@ const ProposalActionsPanel = () => {
     proposalOwner &&
     wallet?.publicKey &&
     (proposal?.account.state === EnhancedProposalState.Succeeded ||
-      proposal?.account.state === EnhancedProposalState.Executing);
+      proposal?.account.state === EnhancedProposalState.Executing ||
+      proposal?.account.state === EnhancedProposalState.ExecutingWithErrors) &&
+    Object.values(instructions).some(
+      (instruction) =>
+        instruction.account.executionStatus === InstructionExecutionStatus.None,
+    );
 
   const signOffTooltipContent = !connected
     ? 'Connect your wallet to sign off this proposal'
@@ -164,22 +172,16 @@ const ProposalActionsPanel = () => {
           return;
         }
 
-        if (Object.keys(instructions).length > 1) {
-          notify({
-            type: 'info',
-            message: 'Cannot set the error flag',
-            description:
-              'The proposal contains more than one instruction. It is not handled yet.',
-          });
-
-          return;
-        }
-
-        await flagInstructionError(
-          rpcContext,
-          proposal,
-          Object.values(instructions)[0].pubkey,
+        const filteredInstructions = Object.values(instructions).filter(
+          (instruction) =>
+            instruction.account.executionStatus ===
+            InstructionExecutionStatus.None,
         );
+
+        // Set flag error for one instruction after another until there are no more to set flag to
+        for (const instruction of filteredInstructions) {
+          await flagInstructionError(rpcContext, proposal, instruction.pubkey);
+        }
 
         await fetchRealm(realmInfo!.programId, realmInfo!.realmId);
       }
