@@ -47,7 +47,7 @@ import {
 } from '@models/api';
 import { accountsToPubkeyMap } from '@tools/sdk/accounts';
 import { HIDDEN_PROPOSALS } from '@components/instructions/tools';
-import { BN } from '@blockworks-foundation/mango-client';
+import { BN } from '@project-serum/anchor';
 
 export const EnhancedProposalState = {
   ...ProposalState,

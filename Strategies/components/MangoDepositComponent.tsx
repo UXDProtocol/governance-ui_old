@@ -1,7 +1,6 @@
 import {
   MangoAccount,
   MangoAccountLayout,
-  PublicKey,
 } from '@blockworks-foundation/mango-client';
 import Button, { LinkButton } from '@components/Button';
 import Input from '@components/inputs/Input';
@@ -16,7 +15,11 @@ import {
   RpcContext,
   withCreateNativeTreasury,
 } from '@solana/spl-governance';
-import { SystemProgram, TransactionInstruction } from '@solana/web3.js';
+import {
+  PublicKey,
+  SystemProgram,
+  TransactionInstruction,
+} from '@solana/web3.js';
 import {
   fmtMintAmount,
   getMintDecimalAmount,

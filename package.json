@@ -1,5 +1,6 @@
 {
   "name": "@uxdprotocol/governance-ui",
+  "description": "Fork of spl governance made for uxdprotocol",
   "author": "UXD Protocol",
   "private": true,
   "license": "MIT",
@@ -10,17 +11,17 @@
     "start": "next start",
     "prepare": "husky install",
     "analyze": "ANALYZE=true next build",
-    "tc": "yarn type-check --watch",
+    "tc": "npm run type-check --watch",
     "type-check": "tsc --pretty --noEmit",
     "format": "prettier --write .",
     "lint": "eslint . --ext ts --ext tsx --ext js --ext jsx",
     "test": "jest",
-    "test-all": "yarn lint && yarn type-check && yarn test",
+    "test-all": "npm run lint && npm run type-check && npm run test",
     "notifier": "ts-node scripts/governance-notifier.ts"
   },
   "lint-staged": {
     "*.@(ts|tsx|js|jsx)": [
-      "yarn format"
+      "npm run format"
     ]
   },
   "dependencies": {
@@ -80,8 +81,6 @@
     "react-markdown": "^7.0.0",
     "react-portal": "^4.2.1",
     "superstruct": "^0.15.3",
-    "ts-node": "^10.5.0",
-    "tsconfig-paths": "^3.12.0",
     "yup": "^0.32.11",
     "zustand": "^3.4.1"
   },

@@ -1,11 +1,11 @@
 import {
   makeCreateMangoAccountInstruction,
   makeDepositInstruction,
-  PublicKey,
-  BN,
   makeSetDelegateInstruction,
   MangoAccount,
 } from '@blockworks-foundation/mango-client';
+import { PublicKey } from '@solana/web3.js';
+import { BN } from '@project-serum/anchor';
 import {
   getInstructionDataFromBase64,
   getNativeTreasuryAddress,

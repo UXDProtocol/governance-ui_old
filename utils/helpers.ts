@@ -1,5 +1,5 @@
 import { u8 } from 'buffer-layout';
-import { BN } from '@blockworks-foundation/mango-client';
+import { BN } from '@project-serum/anchor';
 import { fetchGistFile } from './github';
 
 export function capitalize(str?: string) {

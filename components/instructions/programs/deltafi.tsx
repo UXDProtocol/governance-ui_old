@@ -3,9 +3,9 @@ import { AccountMetaData } from '@solana/spl-governance';
 import { Connection } from '@solana/web3.js';
 import { DeltafiDexV2 } from '@tools/sdk/deltafi/configuration';
 import { tryGetTokenMint } from '@utils/tokens';
-import { BN } from '@blockworks-foundation/mango-client';
 import { nativeAmountToFormattedUiAmount } from '@tools/sdk/units';
 import { ANCHOR_DISCRIMINATOR_LAYOUT } from '@utils/helpers';
+import { BN } from '@project-serum/anchor';
 
 export const DELTAFI_PROGRAM_INSTRUCTIONS = {
   [DeltafiDexV2.DeltafiProgramId.toBase58()]: {
