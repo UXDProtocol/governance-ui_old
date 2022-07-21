@@ -80,6 +80,7 @@ const ProposalActionsPanel = () => {
     governance &&
     proposalOwner &&
     wallet?.publicKey &&
+    proposalOwner?.account.governingTokenOwner.equals(wallet.publicKey) &&
     (proposal?.account.state === EnhancedProposalState.Succeeded ||
       proposal?.account.state === EnhancedProposalState.Executing ||
       proposal?.account.state === EnhancedProposalState.ExecutingWithErrors) &&
@@ -303,7 +304,6 @@ const ProposalActionsPanel = () => {
         {canSetFlagToExecutionError && (
           <Button
             tooltipMessage={setFlagToExecutionErrorTooltipContent}
-            className="w-1/2"
             onClick={handleSetExecutionErrorFlag}
             disabled={!connected}
           >
