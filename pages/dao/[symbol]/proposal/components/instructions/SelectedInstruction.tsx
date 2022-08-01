@@ -72,6 +72,8 @@ import DeltafiCreateFarmUser from './Deltafi/CreateFarmUserV2';
 import DeltafiDepositToFarm from './Deltafi/DepositToFarm';
 import DeltafiFarmWithdraw from './Deltafi/WithdrawFromFarm';
 import NativeBurnSplTokens from './Native/BurnSplTokens';
+import OrcaWhirlpoolOpenPosition from './Orca/WhirlpoolOpenPosition';
+import OrcaWhirlpoolIncreaseLiquidity from './Orca/WhirlpoolIncreaseLiquidity';
 
 const SelectedInstruction = ({
   itxType,
@@ -489,6 +491,20 @@ const SelectedInstruction = ({
     case InstructionEnum.NativeBurnSplTokens:
       return (
         <NativeBurnSplTokens index={index} governedAccount={governedAccount} />
+      );
+    case InstructionEnum.OrcaWhirlpoolOpenPosition:
+      return (
+        <OrcaWhirlpoolOpenPosition
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.OrcaWhirlpoolIncreaseLiquidity:
+      return (
+        <OrcaWhirlpoolIncreaseLiquidity
+          index={index}
+          governedAccount={governedAccount}
+        />
       );
     default:
       return null;
