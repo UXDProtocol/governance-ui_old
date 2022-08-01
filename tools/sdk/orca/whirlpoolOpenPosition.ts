@@ -32,26 +32,17 @@ export async function whirlpoolOpenPosition({
     throw new Error('tickUpper is out of bounds.');
   }
 
-  const whirlpoolData = await whirlpool.fetcher.getPool(
-    whirlpool.address,
-    false,
-  );
+  const { tickSpacing } = whirlpool.getData();
 
-  if (!whirlpoolData) {
+  if (!TickUtil.isTickInitializable(tickLower, tickSpacing)) {
     throw new Error(
-      `Cannot find the whirlpool data at address ${whirlpool.address.toBase58()}`,
+      `lower tick ${tickLower} is not an initializable tick for tick-spacing ${tickSpacing}`,
     );
   }
 
-  if (!TickUtil.isTickInitializable(tickLower, whirlpoolData.tickSpacing)) {
+  if (!TickUtil.isTickInitializable(tickUpper, tickSpacing)) {
     throw new Error(
-      `lower tick ${tickLower} is not an initializable tick for tick-spacing ${whirlpoolData.tickSpacing}`,
-    );
-  }
-
-  if (!TickUtil.isTickInitializable(tickUpper, whirlpoolData.tickSpacing)) {
-    throw new Error(
-      `upper tick ${tickUpper} is not an initializable tick for tick-spacing ${whirlpoolData.tickSpacing}`,
+      `upper tick ${tickUpper} is not an initializable tick for tick-spacing ${tickSpacing}`,
     );
   }
 

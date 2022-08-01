@@ -74,6 +74,9 @@ import DeltafiFarmWithdraw from './Deltafi/WithdrawFromFarm';
 import NativeBurnSplTokens from './Native/BurnSplTokens';
 import OrcaWhirlpoolOpenPosition from './Orca/WhirlpoolOpenPosition';
 import OrcaWhirlpoolIncreaseLiquidity from './Orca/WhirlpoolIncreaseLiquidity';
+import OrcaWhirlpoolUpdateFeesAndRewards from './Orca/WhirlpoolUpdateFeesAndRewards';
+import OrcaWhirlpoolCollectFees from './Orca/WhirlpoolCollectFees';
+import OrcaWhirlpoolDecreaseLiquidity from './Orca/WhirlpoolDecreaseLiquidity';
 
 const SelectedInstruction = ({
   itxType,
@@ -502,6 +505,27 @@ const SelectedInstruction = ({
     case InstructionEnum.OrcaWhirlpoolIncreaseLiquidity:
       return (
         <OrcaWhirlpoolIncreaseLiquidity
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.OrcaWhirlpoolUpdateFeesAndRewards:
+      return (
+        <OrcaWhirlpoolUpdateFeesAndRewards
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.OrcaWhirlpoolCollectFees:
+      return (
+        <OrcaWhirlpoolCollectFees
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.OrcaWhirlpoolDecreaseLiquidity:
+      return (
+        <OrcaWhirlpoolDecreaseLiquidity
           index={index}
           governedAccount={governedAccount}
         />

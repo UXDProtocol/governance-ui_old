@@ -18,7 +18,7 @@ export type Whirlpools = {
 
 export type WhirlpoolPositionInfo = {
   publicKey: PublicKey;
-  uiLiquidity: number;
+  liquidity: number;
   positionMint: PublicKey;
   uiLowerPrice: number;
   uiUpperPrice: number;
@@ -187,7 +187,7 @@ export class OrcaConfiguration {
 
       positionsInfo.push({
         publicKey: potentialPositionsPda[index].publicKey,
-        uiLiquidity: positionData.liquidity.toNumber(),
+        liquidity: positionData.liquidity.toNumber(),
         positionMint: positionData.positionMint,
         uiLowerPrice: Number(
           PriceMath.tickIndexToPrice(

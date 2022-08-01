@@ -32,7 +32,7 @@ const SelectOrcaWhirlpoolPosition = ({
 
       <div className="flex w-full justify-between items-center flex-wrap">
         <strong>Liquidity</strong>
-        <span>{positionInfo.uiLiquidity}</span>
+        <span>{positionInfo.liquidity}</span>
       </div>
 
       <div className="flex w-full justify-between items-center flex-wrap">

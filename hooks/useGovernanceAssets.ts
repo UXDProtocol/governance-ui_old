@@ -629,6 +629,24 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.Orca,
       tag: 'beta',
     },
+    [InstructionEnum.OrcaWhirlpoolUpdateFeesAndRewards]: {
+      name: 'Orca Whirlpool Update Fees and Rewards',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Orca,
+      tag: 'beta',
+    },
+    [InstructionEnum.OrcaWhirlpoolCollectFees]: {
+      name: 'Orca Whirlpool Collect Fees',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Orca,
+      tag: 'beta',
+    },
+    [InstructionEnum.OrcaWhirlpoolDecreaseLiquidity]: {
+      name: 'Orca Whirlpool Decrease Liquidity',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Orca,
+      tag: 'beta',
+    },
   };
 
   const availableInstructions = Object.entries(instructions)

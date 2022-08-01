@@ -554,6 +554,26 @@ export interface OrcaWhirlpoolIncreaseLiquidityForm {
   uiAmountTokenA?: number;
 }
 
+export interface OrcaWhirlpoolUpdateFeesAndRewardsForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  whirlpoolName?: OrcaWhirlpoolName;
+  positionInfo?: OrcaWhirlpoolPositionInfo;
+}
+
+export interface OrcaWhirlpoolCollectFeesForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  whirlpoolName?: OrcaWhirlpoolName;
+  positionInfo?: OrcaWhirlpoolPositionInfo;
+}
+
+export interface OrcaWhirlpoolDecreaseLiquidityForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  whirlpoolName?: OrcaWhirlpoolName;
+  positionInfo?: OrcaWhirlpoolPositionInfo;
+  uiSlippage?: number;
+  uiLiquidityAmountToDecrease?: number;
+}
+
 export enum InstructionEnum {
   Transfer,
   ProgramUpgrade,
@@ -631,6 +651,9 @@ export enum InstructionEnum {
   NativeBurnSplTokens,
   OrcaWhirlpoolOpenPosition,
   OrcaWhirlpoolIncreaseLiquidity,
+  OrcaWhirlpoolUpdateFeesAndRewards,
+  OrcaWhirlpoolCollectFees,
+  OrcaWhirlpoolDecreaseLiquidity,
 }
 
 export enum PackageEnum {
