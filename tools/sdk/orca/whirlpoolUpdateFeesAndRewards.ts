@@ -20,17 +20,19 @@ export async function whirlpoolUpdateFeesAndRewards({
     );
   }
 
+  const { tickLowerIndex, tickUpperIndex } = positionData;
+
   const { tickSpacing } = whirlpool.getData();
 
   const tickArrayLowerPda = PDAUtil.getTickArrayFromTickIndex(
-    positionData.tickLowerIndex,
+    tickLowerIndex,
     tickSpacing,
     whirlpool.address,
     whirlpool.ctx.program.programId,
   );
 
   const tickArrayUpperPda = PDAUtil.getTickArrayFromTickIndex(
-    positionData.tickUpperIndex,
+    tickUpperIndex,
     tickSpacing,
     whirlpool.address,
     whirlpool.ctx.program.programId,

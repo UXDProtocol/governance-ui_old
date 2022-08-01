@@ -54,8 +54,8 @@ const SelectOrcaWhirlpoolPosition = ({
           value={
             selectedValue ? (
               <>
-                Position with price range ${selectedValue.uiLowerPrice} - $
-                {selectedValue.uiUpperPrice} (${selectedValue.tokenAName} per $
+                Position with price range {selectedValue.uiLowerPrice} -
+                {selectedValue.uiUpperPrice} ({selectedValue.tokenAName} per
                 {selectedValue.tokenBName})
               </>
             ) : null

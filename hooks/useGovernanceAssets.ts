@@ -647,6 +647,12 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.Orca,
       tag: 'beta',
     },
+    [InstructionEnum.OrcaWhirlpoolClosePosition]: {
+      name: 'Orca Whirlpool Close Position',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Orca,
+      tag: 'beta',
+    },
   };
 
   const availableInstructions = Object.entries(instructions)

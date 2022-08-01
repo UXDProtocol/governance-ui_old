@@ -574,6 +574,12 @@ export interface OrcaWhirlpoolDecreaseLiquidityForm {
   uiLiquidityAmountToDecrease?: number;
 }
 
+export interface OrcaWhirlpoolClosePositionForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  whirlpoolName?: OrcaWhirlpoolName;
+  positionInfo?: OrcaWhirlpoolPositionInfo;
+}
+
 export enum InstructionEnum {
   Transfer,
   ProgramUpgrade,
@@ -654,6 +660,7 @@ export enum InstructionEnum {
   OrcaWhirlpoolUpdateFeesAndRewards,
   OrcaWhirlpoolCollectFees,
   OrcaWhirlpoolDecreaseLiquidity,
+  OrcaWhirlpoolClosePosition,
 }
 
 export enum PackageEnum {

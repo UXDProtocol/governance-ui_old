@@ -34,6 +34,10 @@ export class OrcaConfiguration {
   public static readonly instructionsCode = {
     WhirlpoolOpenPositionWithMetadata: 242,
     WhirlpoolIncreaseLiquidity: 46,
+    WhirlpoolUpdateFeesAndRewards: 154,
+    WhirlpoolCollectFees: 164,
+    WhirlpoolDecreaseLiquidity: 160,
+    WhirlpoolClosePosition: 123,
   };
 
   /*

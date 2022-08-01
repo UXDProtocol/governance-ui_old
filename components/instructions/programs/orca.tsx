@@ -77,5 +77,110 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
         );
       },
     },
+
+    [OrcaConfiguration.instructionsCode.WhirlpoolUpdateFeesAndRewards]: {
+      name: 'Orca - Whirlpool Update Fees and Rewards',
+      accounts: [
+        'Whirlpool',
+        'Position',
+        'Tick Array Lower',
+        'Tick Array Upper',
+      ],
+      getDataUI: async (
+        _connection: Connection,
+        _data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        // No useful data to display. Do not use null to avoid having the bytes displayed
+        return <></>;
+      },
+    },
+
+    [OrcaConfiguration.instructionsCode.WhirlpoolCollectFees]: {
+      name: 'Orca - Whirlpool Collect Fees',
+      accounts: [
+        'Whirlpool',
+        'Position Authority',
+        'Position',
+        'Position Token Account',
+        'Token Owner Account A',
+        'Token Vault A',
+        'Token Owner Account B',
+        'Token Vault B',
+        'Token Program',
+      ],
+      getDataUI: async (
+        _connection: Connection,
+        _data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        // No useful data to display. Do not use null to avoid having the bytes displayed
+        return <></>;
+      },
+    },
+
+    [OrcaConfiguration.instructionsCode.WhirlpoolDecreaseLiquidity]: {
+      name: 'Orca - Whirlpool Decrease Liquidity',
+      accounts: [
+        'Whirlpool',
+        'Token Program',
+        'Position Authority',
+        'Position',
+        'Position Token Account',
+        'Token Owner Account A',
+        'Token Owner Account B',
+        'Token Vault A',
+        'Token Vault B',
+        'Tick Array Lower',
+        'Tick Array Upper',
+      ],
+      getDataUI: async (
+        _connection: Connection,
+        data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        const dataLayout = struct([
+          u8('instruction'),
+          ...ANCHOR_DISCRIMINATOR_LAYOUT,
+          u128('liquidityAmount'),
+          nu64('tokenMinA'),
+          nu64('tokenMinB'),
+        ]);
+
+        const { liquidityAmount, tokenMinA, tokenMinB } = dataLayout.decode(
+          Buffer.from(data),
+        ) as any;
+
+        return (
+          <>
+            <p>{`Native Liquidity Amount: ${Number(
+              liquidityAmount.toString(),
+            ).toLocaleString()}`}</p>
+            <p>{`Native Token Min A: ${tokenMinA.toLocaleString()}`}</p>
+            <p>{`Native Token Min B: ${tokenMinB.toLocaleString()}`}</p>
+          </>
+        );
+      },
+    },
+
+    [OrcaConfiguration.instructionsCode.WhirlpoolClosePosition]: {
+      name: 'Orca - Whirlpool Close Position',
+      accounts: [
+        'Position Authority',
+        'Receiver',
+        'Position',
+        'Position Mint',
+        'Position Token Account',
+        'Token Program',
+      ],
+      getDataUI: async (
+        _connection: Connection,
+        _data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        // No useful data to display. Do not use null to avoid having the bytes displayed
+        return <></>;
+      },
+    },
   },
 };
