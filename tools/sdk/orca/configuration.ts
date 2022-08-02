@@ -189,6 +189,10 @@ export class OrcaConfiguration {
         return positionsInfo;
       }
 
+      if (!positionData.whirlpool.equals(whirlpool.address)) {
+        return positionsInfo;
+      }
+
       positionsInfo.push({
         publicKey: potentialPositionsPda[index].publicKey,
         liquidity: positionData.liquidity.toNumber(),

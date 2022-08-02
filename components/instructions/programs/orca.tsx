@@ -1,9 +1,33 @@
 import { AccountMetaData } from '@solana/spl-governance';
-import { Connection } from '@solana/web3.js';
+import { Connection, Keypair } from '@solana/web3.js';
 import { OrcaConfiguration } from '@tools/sdk/orca/configuration';
 import { ANCHOR_DISCRIMINATOR_LAYOUT } from '@utils/helpers';
 import { struct, u8, nu64 } from 'buffer-layout';
 import { u128 } from '@project-serum/borsh';
+import {
+  buildWhirlpoolClient,
+  WhirlpoolContext,
+} from '@orca-so/whirlpools-sdk';
+
+// target the same wallet as orca
+import { Wallet } from '@project-serum/anchor/dist/cjs/provider';
+import { nativeBNToUiAmount } from '@tools/sdk/units';
+import { tryGetMint } from '@utils/tokens';
+import { getSplTokenNameByMint } from '@utils/splTokens';
+
+function buildLocalWhirlpoolClient(connection: Connection) {
+  return buildWhirlpoolClient(
+    WhirlpoolContext.from(
+      connection,
+
+      // No need for wallet for what we are doing with the client
+      // Generate a new keypair to satisfy WhirlpoolContext.from()
+      (Keypair.generate() as unknown) as Wallet,
+
+      OrcaConfiguration.WhirlpoolProgramId,
+    ),
+  );
+}
 
 export const ORCA_PROGRAM_INSTRUCTIONS = {
   [OrcaConfiguration.WhirlpoolProgramId.toBase58()]: {
@@ -50,9 +74,9 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
         'Tick Array Upper',
       ],
       getDataUI: async (
-        _connection: Connection,
+        connection: Connection,
         data: Uint8Array,
-        _accounts: AccountMetaData[],
+        accounts: AccountMetaData[],
       ) => {
         const dataLayout = struct([
           u8('instruction'),
@@ -66,13 +90,51 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
           Buffer.from(data),
         ) as any;
 
+        const whirlpoolAddress = accounts[0].pubkey;
+        const whirlpoolClient = buildLocalWhirlpoolClient(connection);
+        const whirlpool = await whirlpoolClient.getPool(whirlpoolAddress);
+
+        if (!whirlpool) {
+          throw new Error(
+            `Cannot load whirlpool ${whirlpoolAddress.toBase58()} data`,
+          );
+        }
+
+        const { tokenMintA, tokenMintB } = whirlpool.getData();
+
+        const [tokenAMintInfo, tokenBMintInfo] = await Promise.all([
+          tryGetMint(connection, tokenMintA),
+          tryGetMint(connection, tokenMintB),
+        ]);
+
+        if (!tokenAMintInfo || !tokenBMintInfo) {
+          throw new Error(
+            `Cannot load information about tokenA or tokenB mints`,
+          );
+        }
+
+        const uiTokenMaxA = nativeBNToUiAmount(
+          tokenMaxA,
+          tokenAMintInfo.account.decimals,
+        );
+        const uiTokenMaxB = nativeBNToUiAmount(
+          tokenMaxB,
+          tokenBMintInfo.account.decimals,
+        );
+
+        const tokenAName = getSplTokenNameByMint(tokenAMintInfo.publicKey);
+        const tokenBName = getSplTokenNameByMint(tokenBMintInfo.publicKey);
+
         return (
           <>
+            <p>
+              Whirlpool {tokenAName} - {tokenBName}
+            </p>
             <p>{`Native Liquidity Amount: ${Number(
               liquidityAmount.toString(),
             ).toLocaleString()}`}</p>
-            <p>{`Native Token Max A: ${tokenMaxA.toLocaleString()}`}</p>
-            <p>{`Native Token Max B: ${tokenMaxB.toLocaleString()}`}</p>
+            <p>{`Max ${tokenAName}: ${uiTokenMaxA.toLocaleString()}`}</p>
+            <p>{`Max ${tokenBName}: ${uiTokenMaxB.toLocaleString()}`}</p>
           </>
         );
       },
@@ -135,9 +197,9 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
         'Tick Array Upper',
       ],
       getDataUI: async (
-        _connection: Connection,
+        connection: Connection,
         data: Uint8Array,
-        _accounts: AccountMetaData[],
+        accounts: AccountMetaData[],
       ) => {
         const dataLayout = struct([
           u8('instruction'),
@@ -151,13 +213,51 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
           Buffer.from(data),
         ) as any;
 
+        const whirlpoolAddress = accounts[0].pubkey;
+        const whirlpoolClient = buildLocalWhirlpoolClient(connection);
+        const whirlpool = await whirlpoolClient.getPool(whirlpoolAddress);
+
+        if (!whirlpool) {
+          throw new Error(
+            `Cannot load whirlpool ${whirlpoolAddress.toBase58()} data`,
+          );
+        }
+
+        const { tokenMintA, tokenMintB } = whirlpool.getData();
+
+        const [tokenAMintInfo, tokenBMintInfo] = await Promise.all([
+          tryGetMint(connection, tokenMintA),
+          tryGetMint(connection, tokenMintB),
+        ]);
+
+        if (!tokenAMintInfo || !tokenBMintInfo) {
+          throw new Error(
+            `Cannot load information about tokenA or tokenB mints`,
+          );
+        }
+
+        const uiTokenMinA = nativeBNToUiAmount(
+          tokenMinA,
+          tokenAMintInfo.account.decimals,
+        );
+        const uiTokenMinB = nativeBNToUiAmount(
+          tokenMinB,
+          tokenBMintInfo.account.decimals,
+        );
+
+        const tokenAName = getSplTokenNameByMint(tokenAMintInfo.publicKey);
+        const tokenBName = getSplTokenNameByMint(tokenBMintInfo.publicKey);
+
         return (
           <>
+            <p>
+              Whirlpool {tokenAName} - {tokenBName}
+            </p>
             <p>{`Native Liquidity Amount: ${Number(
               liquidityAmount.toString(),
             ).toLocaleString()}`}</p>
-            <p>{`Native Token Min A: ${tokenMinA.toLocaleString()}`}</p>
-            <p>{`Native Token Min B: ${tokenMinB.toLocaleString()}`}</p>
+            <p>{`Min ${tokenAName}: ${uiTokenMinA.toLocaleString()}`}</p>
+            <p>{`Min ${tokenBName}: ${uiTokenMinB.toLocaleString()}`}</p>
           </>
         );
       },
