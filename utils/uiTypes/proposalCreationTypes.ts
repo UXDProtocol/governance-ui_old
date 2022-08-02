@@ -580,6 +580,14 @@ export interface OrcaWhirlpoolClosePositionForm {
   positionInfo?: OrcaWhirlpoolPositionInfo;
 }
 
+export interface OrcaWhirlpoolSwapForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  whirlpoolName?: OrcaWhirlpoolName;
+  outputToken?: 'TokenA' | 'TokenB';
+  uiAmount?: number;
+  quoteByOutput?: boolean;
+}
+
 export enum InstructionEnum {
   Transfer,
   ProgramUpgrade,
@@ -661,6 +669,7 @@ export enum InstructionEnum {
   OrcaWhirlpoolCollectFees,
   OrcaWhirlpoolDecreaseLiquidity,
   OrcaWhirlpoolClosePosition,
+  OrcaWhirlpoolSwap,
 }
 
 export enum PackageEnum {

@@ -3,7 +3,7 @@ import { Connection, Keypair } from '@solana/web3.js';
 import { OrcaConfiguration } from '@tools/sdk/orca/configuration';
 import { ANCHOR_DISCRIMINATOR_LAYOUT } from '@utils/helpers';
 import { struct, u8, nu64 } from 'buffer-layout';
-import { u128 } from '@project-serum/borsh';
+import { u128, bool } from '@project-serum/borsh';
 import {
   buildWhirlpoolClient,
   WhirlpoolContext,
@@ -12,8 +12,8 @@ import {
 // target the same wallet as orca
 import { Wallet } from '@project-serum/anchor/dist/cjs/provider';
 import { nativeBNToUiAmount } from '@tools/sdk/units';
-import { tryGetMint } from '@utils/tokens';
 import { getSplTokenNameByMint } from '@utils/splTokens';
+import { WhirlpoolImpl } from '@orca-so/whirlpools-sdk/dist/impl/whirlpool-impl';
 
 function buildLocalWhirlpoolClient(connection: Connection) {
   return buildWhirlpoolClient(
@@ -92,7 +92,9 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
 
         const whirlpoolAddress = accounts[0].pubkey;
         const whirlpoolClient = buildLocalWhirlpoolClient(connection);
-        const whirlpool = await whirlpoolClient.getPool(whirlpoolAddress);
+        const whirlpool = (await whirlpoolClient.getPool(
+          whirlpoolAddress,
+        )) as WhirlpoolImpl;
 
         if (!whirlpool) {
           throw new Error(
@@ -100,30 +102,17 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
           );
         }
 
-        const { tokenMintA, tokenMintB } = whirlpool.getData();
-
-        const [tokenAMintInfo, tokenBMintInfo] = await Promise.all([
-          tryGetMint(connection, tokenMintA),
-          tryGetMint(connection, tokenMintB),
-        ]);
-
-        if (!tokenAMintInfo || !tokenBMintInfo) {
-          throw new Error(
-            `Cannot load information about tokenA or tokenB mints`,
-          );
-        }
+        const tokenAName = getSplTokenNameByMint(whirlpool.tokenAInfo.mint);
+        const tokenBName = getSplTokenNameByMint(whirlpool.tokenBInfo.mint);
 
         const uiTokenMaxA = nativeBNToUiAmount(
           tokenMaxA,
-          tokenAMintInfo.account.decimals,
+          whirlpool.tokenAInfo.decimals,
         );
         const uiTokenMaxB = nativeBNToUiAmount(
           tokenMaxB,
-          tokenBMintInfo.account.decimals,
+          whirlpool.tokenBInfo.decimals,
         );
-
-        const tokenAName = getSplTokenNameByMint(tokenAMintInfo.publicKey);
-        const tokenBName = getSplTokenNameByMint(tokenBMintInfo.publicKey);
 
         return (
           <>
@@ -215,7 +204,9 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
 
         const whirlpoolAddress = accounts[0].pubkey;
         const whirlpoolClient = buildLocalWhirlpoolClient(connection);
-        const whirlpool = await whirlpoolClient.getPool(whirlpoolAddress);
+        const whirlpool = (await whirlpoolClient.getPool(
+          whirlpoolAddress,
+        )) as WhirlpoolImpl;
 
         if (!whirlpool) {
           throw new Error(
@@ -223,30 +214,17 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
           );
         }
 
-        const { tokenMintA, tokenMintB } = whirlpool.getData();
-
-        const [tokenAMintInfo, tokenBMintInfo] = await Promise.all([
-          tryGetMint(connection, tokenMintA),
-          tryGetMint(connection, tokenMintB),
-        ]);
-
-        if (!tokenAMintInfo || !tokenBMintInfo) {
-          throw new Error(
-            `Cannot load information about tokenA or tokenB mints`,
-          );
-        }
+        const tokenAName = getSplTokenNameByMint(whirlpool.tokenAInfo.mint);
+        const tokenBName = getSplTokenNameByMint(whirlpool.tokenBInfo.mint);
 
         const uiTokenMinA = nativeBNToUiAmount(
           tokenMinA,
-          tokenAMintInfo.account.decimals,
+          whirlpool.tokenAInfo.decimals,
         );
         const uiTokenMinB = nativeBNToUiAmount(
           tokenMinB,
-          tokenBMintInfo.account.decimals,
+          whirlpool.tokenBInfo.decimals,
         );
-
-        const tokenAName = getSplTokenNameByMint(tokenAMintInfo.publicKey);
-        const tokenBName = getSplTokenNameByMint(tokenBMintInfo.publicKey);
 
         return (
           <>
@@ -280,6 +258,75 @@ export const ORCA_PROGRAM_INSTRUCTIONS = {
       ) => {
         // No useful data to display. Do not use null to avoid having the bytes displayed
         return <></>;
+      },
+    },
+    [OrcaConfiguration.instructionsCode.WhirlpoolSwap]: {
+      name: 'Orca - Whirlpool Swap',
+      accounts: [
+        'Token Program',
+        'Token Authority',
+        'Whirlpool',
+        'Token Owner Account A',
+        'Token Vault A',
+        'Token Owner Account B',
+        'Token Vault B',
+        'Tick Array 0',
+        'Tick Array 1',
+        'Tick Array 2',
+        'Oracle',
+      ],
+      getDataUI: async (
+        connection: Connection,
+        data: Uint8Array,
+        accounts: AccountMetaData[],
+      ) => {
+        const dataLayout = struct([
+          u8('instruction'),
+          ...ANCHOR_DISCRIMINATOR_LAYOUT,
+          nu64('amount'),
+          nu64('otherAmountThreshold'),
+          u128('sqrtPriceLimit'),
+          bool('amountSpecifiedIsInput'),
+          bool('AtoB'),
+        ]);
+
+        const whirlpoolAddress = accounts[2].pubkey;
+        const whirlpoolClient = buildLocalWhirlpoolClient(connection);
+        const whirlpool = (await whirlpoolClient.getPool(
+          whirlpoolAddress,
+        )) as WhirlpoolImpl;
+
+        if (!whirlpool) {
+          throw new Error(
+            `Cannot load whirlpool ${whirlpoolAddress.toBase58()} data`,
+          );
+        }
+
+        const tokenAName = getSplTokenNameByMint(whirlpool.tokenAInfo.mint);
+        const tokenBName = getSplTokenNameByMint(whirlpool.tokenBInfo.mint);
+
+        const {
+          amount,
+          otherAmountThreshold,
+          sqrtPriceLimit,
+          amountSpecifiedIsInput,
+          AtoB,
+        } = dataLayout.decode(Buffer.from(data)) as any;
+
+        return (
+          <>
+            <p>
+              Whirlpool {tokenAName} - {tokenBName}
+            </p>
+            <p>{`Native Amount: ${Number(
+              amount.toString(),
+            ).toLocaleString()}`}</p>
+            <p>{`Other Amount Threshold: ${otherAmountThreshold.toLocaleString()}`}</p>
+            <p>{`Sqrt Price Limit: ${sqrtPriceLimit.toLocaleString()}`}</p>
+            <p>{`Amount Specified is Input: ${amountSpecifiedIsInput.toString()}`}</p>
+            <p>{`A to B: ${AtoB.toString()}`}</p>
+          </>
+        );
       },
     },
   },

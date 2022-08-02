@@ -78,6 +78,7 @@ import OrcaWhirlpoolUpdateFeesAndRewards from './Orca/WhirlpoolUpdateFeesAndRewa
 import OrcaWhirlpoolCollectFees from './Orca/WhirlpoolCollectFees';
 import OrcaWhirlpoolDecreaseLiquidity from './Orca/WhirlpoolDecreaseLiquidity';
 import OrcaWhirlpoolClosePosition from './Orca/WhirlpoolClosePosition';
+import OrcaWhirlpoolSwap from './Orca/WhirlpoolSwap';
 
 const SelectedInstruction = ({
   itxType,
@@ -537,6 +538,10 @@ const SelectedInstruction = ({
           index={index}
           governedAccount={governedAccount}
         />
+      );
+    case InstructionEnum.OrcaWhirlpoolSwap:
+      return (
+        <OrcaWhirlpoolSwap index={index} governedAccount={governedAccount} />
       );
     default:
       return null;

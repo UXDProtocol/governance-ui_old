@@ -5,7 +5,14 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import { getSplTokenNameByMint } from '@utils/splTokens';
 import { parseMintAccountData } from '@utils/tokens';
 
-export type WhirlpoolName = 'UXD_USDC' | 'SOL_UXD';
+export type WhirlpoolName =
+  | 'UXD_USDC'
+  | 'SOL_UXD'
+  | 'SOL_USDC'
+  | 'stSOL_USDC'
+  | 'SOL_stSOL'
+  | 'mSOL_USDC'
+  | 'SOL_mSOL';
 
 export type Whirlpool = {
   displayName: string;
@@ -38,6 +45,7 @@ export class OrcaConfiguration {
     WhirlpoolCollectFees: 164,
     WhirlpoolDecreaseLiquidity: 160,
     WhirlpoolClosePosition: 123,
+    WhirlpoolSwap: 248,
   };
 
   /*
@@ -70,7 +78,27 @@ export class OrcaConfiguration {
       displayName: 'SOL-UXD',
       // How to find it?
       // #1 of increaseLiquidity ix
+      publicKey: new PublicKey('2HtfXbKo531ghGgFYzcnJQJ9GNKAdeEJBbMgfF2zagQK'),
+    },
+    SOL_USDC: {
+      displayName: 'SOL-USDC',
       publicKey: new PublicKey('HJPjoWUrhoZzkNfRpHuieeFk9WcZWjwy6PBjZ81ngndJ'),
+    },
+    stSOL_USDC: {
+      displayName: 'stSOL-USDC',
+      publicKey: new PublicKey('AXtdSZ2mpagmtM5aipN5kV9CyGBA8dxhSBnqMRp7UpdN'),
+    },
+    SOL_stSOL: {
+      displayName: 'SOL-stSOL',
+      publicKey: new PublicKey('2AEWSvUds1wsufnsDPCXjFsJCMJH5SNNm7fSF4kxys9a'),
+    },
+    mSOL_USDC: {
+      displayName: 'mSOL-USDC',
+      publicKey: new PublicKey('AiMZS5U3JMvpdvsr1KeaMiS354Z1DeSg5XjA4yYRxtFf'),
+    },
+    SOL_mSOL: {
+      displayName: 'SOL_mSOL',
+      publicKey: new PublicKey('HQcY5n2zP6rW74fyFEhWeBd3LnJpBcZechkvJpmdb8cx'),
     },
   };
 

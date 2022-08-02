@@ -653,6 +653,12 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.Orca,
       tag: 'beta',
     },
+    [InstructionEnum.OrcaWhirlpoolSwap]: {
+      name: 'Orca Whirlpool Swap',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Orca,
+      tag: 'beta',
+    },
   };
 
   const availableInstructions = Object.entries(instructions)
