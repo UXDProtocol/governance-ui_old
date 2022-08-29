@@ -80,6 +80,7 @@ import OrcaWhirlpoolDecreaseLiquidity from './Orca/WhirlpoolDecreaseLiquidity';
 import OrcaWhirlpoolClosePosition from './Orca/WhirlpoolClosePosition';
 import OrcaWhirlpoolSwap from './Orca/WhirlpoolSwap';
 import MercurialPoolDeposit from './Mercurial/PoolDeposit';
+import MercurialPoolWithdraw from './Mercurial/PoolWithdraw';
 import NativeIncreaseComputingBudget from './Native/IncreaseComputingBudget';
 
 const SelectedInstruction = ({
@@ -548,6 +549,13 @@ const SelectedInstruction = ({
     case InstructionEnum.MercurialPoolDeposit:
       return (
         <MercurialPoolDeposit index={index} governedAccount={governedAccount} />
+      );
+    case InstructionEnum.MercurialPoolWithdraw:
+      return (
+        <MercurialPoolWithdraw
+          index={index}
+          governedAccount={governedAccount}
+        />
       );
     case InstructionEnum.NativeIncreaseComputingBudget:
       return (

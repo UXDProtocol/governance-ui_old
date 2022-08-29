@@ -7,22 +7,22 @@ import { findMultipleATAAddSync } from '@uxd-protocol/uxd-client';
 import { uiAmountToNativeBN } from '../units';
 import { MercurialConfiguration } from './configuration';
 
-export async function poolDeposit({
+export async function poolWithdraw({
   connection,
   authority,
   pool,
-  uiTokenAmountA,
-  uiTokenAmountB,
-  uiMinimumPoolTokenAmountOut,
+  uiPoolTokenAmount,
+  uiMinimumATokenOut,
+  uiMinimumBTokenOut,
   ammProgram,
   poolPubkey,
 }: {
   connection: Connection;
   authority: PublicKey;
   pool: Pool;
-  uiTokenAmountA: number;
-  uiTokenAmountB: number;
-  uiMinimumPoolTokenAmountOut: number;
+  uiPoolTokenAmount: number;
+  uiMinimumATokenOut: number;
+  uiMinimumBTokenOut: number;
   ammProgram: AmmProgram;
   poolPubkey: PublicKey;
 }) {
@@ -69,27 +69,23 @@ export async function poolDeposit({
     [userPoolLp],
   ] = findMultipleATAAddSync(authority, [tokenAMint, tokenBMint, lpMint]);
 
-  const tokenAAmount = uiAmountToNativeBN(
-    uiTokenAmountA,
+  const minimumATokenOut = uiAmountToNativeBN(
+    uiMinimumATokenOut,
     tokenAInfo.account.decimals,
   );
 
-  const tokenBAmount = uiAmountToNativeBN(
-    uiTokenAmountB,
+  const minimumBTokenOut = uiAmountToNativeBN(
+    uiMinimumBTokenOut,
     tokenBInfo.account.decimals,
   );
 
-  const minimumPoolTokenAmountOut = uiAmountToNativeBN(
-    uiMinimumPoolTokenAmountOut,
+  const poolTokenAmount = uiAmountToNativeBN(
+    uiPoolTokenAmount,
     lpTokenInfo.account.decimals,
   );
 
   return ammProgram.methods
-    .addImbalanceLiquidity(
-      minimumPoolTokenAmountOut,
-      tokenAAmount,
-      tokenBAmount,
-    )
+    .removeBalanceLiquidity(poolTokenAmount, minimumATokenOut, minimumBTokenOut)
     .accounts({
       pool: poolPubkey,
       lpMint,

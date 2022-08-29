@@ -15,6 +15,7 @@ export type Pools = {
 export class MercurialConfiguration {
   public static readonly instructionsCode = {
     addImbalanceLiquidity: 79,
+    removeBalanceLiquidity: 133,
   };
 
   public static readonly poolProgram = new PublicKey(

@@ -593,7 +593,15 @@ export interface MercurialPoolDepositForm {
   poolName?: SupportedSaberPoolNames;
   uiTokenAmountA?: number;
   uiTokenAmountB?: number;
-  slippage?: number;
+  uiMinimumPoolTokenAmountOut?: number;
+}
+
+export interface MercurialPoolWithdrawForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  poolName?: SupportedSaberPoolNames;
+  uiMinimumATokenOut?: number;
+  uiMinimumBTokenOut?: number;
+  uiPoolTokenAmount?: number;
 }
 
 export interface NativeIncreaseComputingBudgetForm {
@@ -684,6 +692,7 @@ export enum InstructionEnum {
   OrcaWhirlpoolClosePosition,
   OrcaWhirlpoolSwap,
   MercurialPoolDeposit,
+  MercurialPoolWithdraw,
   NativeIncreaseComputingBudget,
 }
 

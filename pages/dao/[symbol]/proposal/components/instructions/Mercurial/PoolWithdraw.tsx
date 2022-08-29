@@ -4,7 +4,7 @@ import Input from '@components/inputs/Input';
 import Select from '@components/inputs/Select';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { MercurialPoolDepositForm } from '@utils/uiTypes/proposalCreationTypes';
+import { MercurialPoolWithdrawForm } from '@utils/uiTypes/proposalCreationTypes';
 import useWalletStore from 'stores/useWalletStore';
 import mercurialConfiguration, {
   PoolDescription,
@@ -12,23 +12,25 @@ import mercurialConfiguration, {
 import { getSplTokenNameByMint } from '@utils/splTokens';
 import { Pool } from '@mercurial-finance/dynamic-amm-sdk';
 import useMercurialAmmProgram from '@hooks/useMercurialAmmProgram';
-import { findMultipleATAAddSync } from '@uxd-protocol/uxd-client';
 import { PublicKey } from '@solana/web3.js';
-import { poolDeposit } from '@tools/sdk/mercurial/poolDeposit';
+import { poolWithdraw } from '@tools/sdk/mercurial/poolWithdraw';
+import { findATAAddrSync } from '@utils/ataTools';
 
 const schema = yup.object().shape({
   governedAccount: yup
     .object()
     .nullable()
     .required('Governed account is required'),
-  uiTokenAmountA: yup.number().required('Amount for Token A is required'),
-  uiTokenAmountB: yup.number().required('Amount for Token B is required'),
-  uiMinimumPoolTokenAmountOut: yup
+  uiMinimumATokenOut: yup
     .number()
-    .required('Minimum Pool Token Amount is required'),
+    .required('Minimum Amount for Token A is required'),
+  uiMinimumBTokenOut: yup
+    .number()
+    .required('Minimum Amount for Token B is required'),
+  uiPoolTokenAmount: yup.number().required('Pool Token Account is required'),
 });
 
-const Deposit = ({
+const Withdraw = ({
   index,
   governedAccount,
 }: {
@@ -38,18 +40,9 @@ const Deposit = ({
   const connection = useWalletStore((s) => s.connection);
   const [pool, setPool] = useState<Pool | null>(null);
 
-  const [
-    associatedTokenAccounts,
-    setAssociatedTokenAccounts,
-  ] = useState<null | {
-    A: {
-      account: PublicKey;
-      uiBalance: string;
-    };
-    B: {
-      account: PublicKey;
-      uiBalance: string;
-    };
+  const [lpTokenATA, setLpTokenATA] = useState<null | {
+    account: PublicKey;
+    uiBalance: string;
   }>(null);
 
   const ammProgram = useMercurialAmmProgram();
@@ -59,7 +52,7 @@ const Deposit = ({
     handleSetForm,
     formErrors,
     governedAccountPubkey,
-  } = useInstructionFormBuilder<MercurialPoolDepositForm>({
+  } = useInstructionFormBuilder<MercurialPoolWithdrawForm>({
     index,
     initialFormValues: {
       governedAccount,
@@ -75,13 +68,13 @@ const Deposit = ({
         throw new Error('AmmProgram not loaded yet');
       }
 
-      return poolDeposit({
+      return poolWithdraw({
         connection: connection.current,
         authority: governedAccountPubkey,
         pool,
-        uiTokenAmountA: form.uiTokenAmountA!,
-        uiTokenAmountB: form.uiTokenAmountB!,
-        uiMinimumPoolTokenAmountOut: form.uiMinimumPoolTokenAmountOut!,
+        uiPoolTokenAmount: form.uiPoolTokenAmount!,
+        uiMinimumATokenOut: form.uiMinimumATokenOut!,
+        uiMinimumBTokenOut: form.uiMinimumBTokenOut!,
         ammProgram,
         poolPubkey: mercurialConfiguration.pools[form.poolName!].publicKey,
       });
@@ -118,33 +111,21 @@ const Deposit = ({
 
   useEffect(() => {
     if (!pool || !pool.state || !governedAccountPubkey) {
-      setAssociatedTokenAccounts(null);
+      setLpTokenATA(null);
       return;
     }
 
     (async () => {
-      const [
-        [sourceA],
-        [sourceB],
-      ] = findMultipleATAAddSync(governedAccountPubkey, [
-        pool.state.tokenAMint,
-        pool.state.tokenBMint,
-      ]);
+      const [source] = findATAAddrSync(
+        governedAccountPubkey,
+        pool.state.lpMint,
+      );
 
-      const [amountA, amountB] = await Promise.all([
-        connection.current.getTokenAccountBalance(sourceA),
-        connection.current.getTokenAccountBalance(sourceB),
-      ]);
+      const amount = await connection.current.getTokenAccountBalance(source);
 
-      setAssociatedTokenAccounts({
-        A: {
-          account: sourceA,
-          uiBalance: amountA.value.uiAmountString ?? '',
-        },
-        B: {
-          account: sourceB,
-          uiBalance: amountB.value.uiAmountString ?? '',
-        },
+      setLpTokenATA({
+        account: source,
+        uiBalance: amount.value.uiAmountString ?? '',
       });
     })();
   }, [pool, governedAccountPubkey]);
@@ -180,85 +161,67 @@ const Deposit = ({
       {pool && pool.state && (
         <>
           <Input
-            label={`${getSplTokenNameByMint(pool.state.tokenAMint)} Amount`}
-            value={form.uiTokenAmountA}
+            label="Pool Token Amount"
+            value={form.uiPoolTokenAmount}
             type="number"
             min="0"
             onChange={(evt) =>
               handleSetForm({
                 value: evt.target.value,
-                propertyName: 'uiTokenAmountA',
+                propertyName: 'uiPoolTokenAmount',
               })
             }
-            error={formErrors['uiTokenAmountA']}
+            error={formErrors['uiPoolTokenAmount']}
           />
 
-          {associatedTokenAccounts ? (
+          {lpTokenATA ? (
             <div className="text-xs text-fgd-3 mt-0 flex flex-col">
-              <span>
-                ATA: {associatedTokenAccounts.A.account.toBase58() ?? '-'}
-              </span>
+              <span>ATA: {lpTokenATA.account.toBase58() ?? '-'}</span>
 
               <span
                 className="hover:text-white cursor-pointer"
                 onClick={() =>
                   handleSetForm({
-                    value: associatedTokenAccounts.A.uiBalance,
-                    propertyName: 'uiTokenAmountA',
+                    value: lpTokenATA.uiBalance,
+                    propertyName: 'uiPoolTokenAmount',
                   })
                 }
               >
-                max: {associatedTokenAccounts.A.uiBalance}
+                max: {lpTokenATA.uiBalance}
               </span>
             </div>
           ) : null}
 
           <Input
-            label={`${getSplTokenNameByMint(pool.state.tokenBMint)} Amount`}
-            value={form.uiTokenAmountB}
+            label={`Minimum ${getSplTokenNameByMint(
+              pool.state.tokenAMint,
+            )} Amount`}
+            value={form.uiMinimumATokenOut}
             type="number"
             min="0"
             onChange={(evt) =>
               handleSetForm({
                 value: evt.target.value,
-                propertyName: 'uiTokenAmountB',
+                propertyName: 'uiMinimumATokenOut',
               })
             }
-            error={formErrors['uiTokenAmountB']}
+            error={formErrors['uiMinimumATokenOut']}
           />
 
-          {associatedTokenAccounts ? (
-            <div className="text-xs text-fgd-3 mt-0 flex flex-col">
-              <span>
-                ATA: {associatedTokenAccounts.B.account.toBase58() ?? '-'}
-              </span>
-
-              <span
-                className="hover:text-white cursor-pointer"
-                onClick={() =>
-                  handleSetForm({
-                    value: associatedTokenAccounts.B.uiBalance,
-                    propertyName: 'uiTokenAmountB',
-                  })
-                }
-              >
-                max: {associatedTokenAccounts.B.uiBalance}
-              </span>
-            </div>
-          ) : null}
-
           <Input
-            label="Minimum Pool Token Amount Out"
-            value={form.uiMinimumPoolTokenAmountOut}
+            label={`Minimum ${getSplTokenNameByMint(
+              pool.state.tokenBMint,
+            )} Amount`}
+            value={form.uiMinimumBTokenOut}
             type="number"
             min="0"
             onChange={(evt) =>
               handleSetForm({
                 value: evt.target.value,
-                propertyName: 'uiMinimumPoolTokenAmountOut',
+                propertyName: 'uiMinimumBTokenOut',
               })
             }
-            error={formErrors['uiMinimumPoolTokenAmountOut']}
+            error={formErrors['uiMinimumBTokenOut']}
           />
         </>
       )}
@@ -266,4 +229,4 @@ const Deposit = ({
   );
 };
 
-export default Deposit;
+export default Withdraw;

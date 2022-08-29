@@ -669,6 +669,12 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.Mercurial,
       tag: 'beta',
     },
+    [InstructionEnum.MercurialPoolWithdraw]: {
+      name: 'Mercurial Pool Withdraw',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Mercurial,
+      tag: 'beta',
+    },
     [InstructionEnum.NativeIncreaseComputingBudget]: {
       name: 'Increase Computing Budget',
       isVisible: canUseAnyInstruction,
