@@ -596,6 +596,11 @@ export interface MercurialPoolDepositForm {
   slippage?: number;
 }
 
+export interface NativeIncreaseComputingBudgetForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  computingBudget?: number;
+}
+
 export enum InstructionEnum {
   Transfer,
   ProgramUpgrade,
@@ -679,6 +684,7 @@ export enum InstructionEnum {
   OrcaWhirlpoolClosePosition,
   OrcaWhirlpoolSwap,
   MercurialPoolDeposit,
+  NativeIncreaseComputingBudget,
 }
 
 export enum PackageEnum {

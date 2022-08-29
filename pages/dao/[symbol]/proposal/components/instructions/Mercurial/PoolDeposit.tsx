@@ -6,12 +6,15 @@ import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { MercurialPoolDepositForm } from '@utils/uiTypes/proposalCreationTypes';
 import useWalletStore from 'stores/useWalletStore';
-import { uiAmountToNativeBN } from '@tools/sdk/units';
 import mercurialConfiguration, {
   PoolDescription,
 } from '@tools/sdk/mercurial/configuration';
 import { getSplTokenNameByMint } from '@utils/splTokens';
-import AmmImpl from '@mercurial-finance/dynamic-amm-sdk';
+import { Pool } from '@mercurial-finance/dynamic-amm-sdk';
+import useMercurialAmmProgram from '@hooks/useMercurialAmmProgram';
+import { findMultipleATAAddSync } from '@uxd-protocol/uxd-client';
+import { PublicKey } from '@solana/web3.js';
+import { poolDeposit } from '@tools/sdk/mercurial/poolDeposit';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -31,7 +34,23 @@ const Deposit = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const connection = useWalletStore((s) => s.connection);
-  const [pool, setPool] = useState<AmmImpl | null>(null);
+  const [pool, setPool] = useState<Pool | null>(null);
+
+  const [
+    associatedTokenAccounts,
+    setAssociatedTokenAccounts,
+  ] = useState<null | {
+    A: {
+      account: PublicKey;
+      uiBalance: string;
+    };
+    B: {
+      account: PublicKey;
+      uiBalance: string;
+    };
+  }>(null);
+
+  const ammProgram = useMercurialAmmProgram();
 
   const {
     form,
@@ -43,49 +62,32 @@ const Deposit = ({
     initialFormValues: {
       governedAccount,
     },
+    shouldSplitIntoSeparateTxs: true,
     schema,
     buildInstruction: async function ({ form, governedAccountPubkey }) {
       if (!pool) {
         throw new Error('Mercurial Pool not found');
       }
 
-      const {
-        poolTokenAmountOut,
-        tokenAInAmount,
-        tokenBInAmount,
-      } = pool.getDepositQuote(
-        uiAmountToNativeBN(
-          form.uiTokenAmountA!.toString(),
-          pool.tokenA.decimals,
-        ),
-        uiAmountToNativeBN(
-          form.uiTokenAmountB!.toString(),
-          pool.tokenB.decimals,
-        ),
-        true,
-        form.slippage!,
-      );
-
-      const transaction = await pool.deposit(
-        governedAccountPubkey,
-        tokenAInAmount,
-        tokenBInAmount,
-        poolTokenAmountOut,
-      );
-
-      if (transaction.instructions.length !== 1) {
-        throw new Error('More than 1 instruction for deposit');
+      if (!ammProgram) {
+        throw new Error('AmmProgram not loaded yet');
       }
 
-      const instruction = transaction.instructions[0];
-
-      return instruction;
+      return poolDeposit({
+        connection: connection.current,
+        authority: governedAccountPubkey,
+        pool,
+        uiTokenAmountA: form.uiTokenAmountA!,
+        uiTokenAmountB: form.uiTokenAmountB!,
+        ammProgram,
+        poolPubkey: mercurialConfiguration.pools[form.poolName!].publicKey,
+      });
     },
   });
 
   useEffect(() => {
     (async () => {
-      if (!governedAccountPubkey || !connection) {
+      if (!governedAccountPubkey || !ammProgram) {
         return;
       }
 
@@ -99,25 +101,50 @@ const Deposit = ({
 
       try {
         const pool = await mercurialConfiguration.loadPool({
-          connection: connection.current,
+          ammProgram,
+          authority: governedAccountPubkey,
           pool: poolInfo.publicKey,
-        });
-
-        console.log('Pool', pool.poolState, pool.poolInfo);
-        console.log('Pool infos', {
-          lpMint: pool.poolState.lpMint.toBase58(),
-          tokenAMint: pool.poolState.tokenAMint.toBase58(),
-          tokenBMint: pool.poolState.tokenBMint.toBase58(),
-          tokenAAmount: pool.poolInfo.tokenAAmount.toString(),
-          tokenBAmount: pool.poolInfo.tokenBAmount.toString(),
         });
 
         setPool(pool);
       } catch (e) {
-        console.log('e', e);
+        console.log('Cannot load pool info', e);
       }
     })();
-  }, [form.poolName, connection]);
+  }, [form.poolName, ammProgram, governedAccountPubkey]);
+
+  useEffect(() => {
+    if (!pool || !pool.state || !governedAccountPubkey) {
+      setAssociatedTokenAccounts(null);
+      return;
+    }
+
+    (async () => {
+      const [
+        [sourceA],
+        [sourceB],
+      ] = findMultipleATAAddSync(governedAccountPubkey, [
+        pool.state.tokenAMint,
+        pool.state.tokenBMint,
+      ]);
+
+      const [amountA, amountB] = await Promise.all([
+        connection.current.getTokenAccountBalance(sourceA),
+        connection.current.getTokenAccountBalance(sourceB),
+      ]);
+
+      setAssociatedTokenAccounts({
+        A: {
+          account: sourceA,
+          uiBalance: amountA.value.uiAmountString ?? '',
+        },
+        B: {
+          account: sourceB,
+          uiBalance: amountB.value.uiAmountString ?? '',
+        },
+      });
+    })();
+  }, [pool, governedAccountPubkey]);
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {
@@ -147,10 +174,10 @@ const Deposit = ({
         ))}
       </Select>
 
-      {pool && pool.poolState && (
+      {pool && pool.state && (
         <>
           <Input
-            label={`${getSplTokenNameByMint(pool.poolState.tokenAMint)} Amount`}
+            label={`${getSplTokenNameByMint(pool.state.tokenAMint)} Amount`}
             value={form.uiTokenAmountA}
             type="number"
             min="0"
@@ -163,8 +190,28 @@ const Deposit = ({
             error={formErrors['uiTokenAmountA']}
           />
 
+          {associatedTokenAccounts ? (
+            <div className="text-xs text-fgd-3 mt-0 flex flex-col">
+              <span>
+                ATA: {associatedTokenAccounts.A.account.toBase58() ?? '-'}
+              </span>
+
+              <span
+                className="hover:text-white cursor-pointer"
+                onClick={() =>
+                  handleSetForm({
+                    value: associatedTokenAccounts.A.uiBalance,
+                    propertyName: 'uiTokenAmountA',
+                  })
+                }
+              >
+                max: {associatedTokenAccounts.A.uiBalance}
+              </span>
+            </div>
+          ) : null}
+
           <Input
-            label={`${getSplTokenNameByMint(pool.poolState.tokenBMint)} Amount`}
+            label={`${getSplTokenNameByMint(pool.state.tokenBMint)} Amount`}
             value={form.uiTokenAmountB}
             type="number"
             min="0"
@@ -176,6 +223,26 @@ const Deposit = ({
             }
             error={formErrors['uiTokenAmountB']}
           />
+
+          {associatedTokenAccounts ? (
+            <div className="text-xs text-fgd-3 mt-0 flex flex-col">
+              <span>
+                ATA: {associatedTokenAccounts.B.account.toBase58() ?? '-'}
+              </span>
+
+              <span
+                className="hover:text-white cursor-pointer"
+                onClick={() =>
+                  handleSetForm({
+                    value: associatedTokenAccounts.B.uiBalance,
+                    propertyName: 'uiTokenAmountB',
+                  })
+                }
+              >
+                max: {associatedTokenAccounts.B.uiBalance}
+              </span>
+            </div>
+          ) : null}
 
           <Input
             label="Slippage from 0 to 100, up to 2 decimals"
