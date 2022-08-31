@@ -10,11 +10,10 @@ import mercurialConfiguration, {
   PoolDescription,
 } from '@tools/sdk/mercurial/configuration';
 import { getSplTokenNameByMint } from '@utils/splTokens';
-import { Pool } from '@mercurial-finance/dynamic-amm-sdk';
-import useMercurialAmmProgram from '@hooks/useMercurialAmmProgram';
+import AmmImpl from '@mercurial-finance/dynamic-amm-sdk';
 import { findMultipleATAAddSync } from '@uxd-protocol/uxd-client';
 import { PublicKey } from '@solana/web3.js';
-import { poolDeposit } from '@tools/sdk/mercurial/poolDeposit';
+import deposit from '@tools/sdk/mercurial/poolDeposit';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -23,9 +22,7 @@ const schema = yup.object().shape({
     .required('Governed account is required'),
   uiTokenAmountA: yup.number().required('Amount for Token A is required'),
   uiTokenAmountB: yup.number().required('Amount for Token B is required'),
-  uiMinimumPoolTokenAmountOut: yup
-    .number()
-    .required('Minimum Pool Token Amount is required'),
+  slippage: yup.number().required('Slippage is required'),
 });
 
 const Deposit = ({
@@ -36,7 +33,7 @@ const Deposit = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const connection = useWalletStore((s) => s.connection);
-  const [pool, setPool] = useState<Pool | null>(null);
+  const [ammPool, setAmmPool] = useState<AmmImpl | null>(null);
 
   const [
     associatedTokenAccounts,
@@ -52,8 +49,6 @@ const Deposit = ({
     };
   }>(null);
 
-  const ammProgram = useMercurialAmmProgram();
-
   const {
     form,
     handleSetForm,
@@ -67,35 +62,29 @@ const Deposit = ({
     shouldSplitIntoSeparateTxs: true,
     schema,
     buildInstruction: async function ({ form, governedAccountPubkey }) {
-      if (!pool) {
+      if (!ammPool) {
         throw new Error('Mercurial Pool not found');
       }
 
-      if (!ammProgram) {
-        throw new Error('AmmProgram not loaded yet');
-      }
-
-      return poolDeposit({
+      return deposit({
         connection: connection.current,
         authority: governedAccountPubkey,
-        pool,
-        uiTokenAmountA: form.uiTokenAmountA!,
-        uiTokenAmountB: form.uiTokenAmountB!,
-        uiMinimumPoolTokenAmountOut: form.uiMinimumPoolTokenAmountOut!,
-        ammProgram,
-        poolPubkey: mercurialConfiguration.pools[form.poolName!].publicKey,
+        uiTokenAInAmount: form.uiTokenAmountA!,
+        uiTokenBInAmount: form.uiTokenAmountB!,
+        slippage: form.slippage!,
+        ammPool,
       });
     },
   });
 
   useEffect(() => {
     (async () => {
-      if (!governedAccountPubkey || !ammProgram) {
+      if (!governedAccountPubkey) {
         return;
       }
 
       if (!form.poolName) {
-        setPool(null);
+        setAmmPool(null);
         return;
       }
 
@@ -103,21 +92,20 @@ const Deposit = ({
         mercurialConfiguration.pools[form.poolName];
 
       try {
-        const pool = await mercurialConfiguration.loadPool({
-          ammProgram,
-          authority: governedAccountPubkey,
+        const ammPool = await mercurialConfiguration.loadAmmPool({
+          connection: connection.current,
           pool: poolInfo.publicKey,
         });
 
-        setPool(pool);
+        setAmmPool(ammPool);
       } catch (e) {
         console.log('Cannot load pool info', e);
       }
     })();
-  }, [form.poolName, ammProgram, governedAccountPubkey]);
+  }, [form.poolName, connection]);
 
   useEffect(() => {
-    if (!pool || !pool.state || !governedAccountPubkey) {
+    if (!ammPool || !ammPool.poolState || !governedAccountPubkey) {
       setAssociatedTokenAccounts(null);
       return;
     }
@@ -127,8 +115,8 @@ const Deposit = ({
         [sourceA],
         [sourceB],
       ] = findMultipleATAAddSync(governedAccountPubkey, [
-        pool.state.tokenAMint,
-        pool.state.tokenBMint,
+        ammPool.poolState.tokenAMint,
+        ammPool.poolState.tokenBMint,
       ]);
 
       const [amountA, amountB] = await Promise.all([
@@ -147,7 +135,7 @@ const Deposit = ({
         },
       });
     })();
-  }, [pool, governedAccountPubkey]);
+  }, [ammPool, governedAccountPubkey]);
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {
@@ -165,8 +153,6 @@ const Deposit = ({
             value,
             propertyName: 'poolName',
           });
-
-          setPool(mercurialConfiguration.pools[value] ?? null);
         }}
         error={formErrors['poolName']}
       >
@@ -177,10 +163,12 @@ const Deposit = ({
         ))}
       </Select>
 
-      {pool && pool.state && (
+      {ammPool && ammPool.poolState && (
         <>
           <Input
-            label={`${getSplTokenNameByMint(pool.state.tokenAMint)} Amount`}
+            label={`${getSplTokenNameByMint(
+              ammPool.poolState.tokenAMint,
+            )} Amount`}
             value={form.uiTokenAmountA}
             type="number"
             min="0"
@@ -214,7 +202,9 @@ const Deposit = ({
           ) : null}
 
           <Input
-            label={`${getSplTokenNameByMint(pool.state.tokenBMint)} Amount`}
+            label={`${getSplTokenNameByMint(
+              ammPool.poolState.tokenBMint,
+            )} Amount`}
             value={form.uiTokenAmountB}
             type="number"
             min="0"
@@ -248,18 +238,25 @@ const Deposit = ({
           ) : null}
 
           <Input
-            label="Minimum Pool Token Amount Out"
-            value={form.uiMinimumPoolTokenAmountOut}
+            label="Slippage from 0 to 100, max 2 decimals"
+            value={form.slippage}
             type="number"
             min="0"
             onChange={(evt) =>
               handleSetForm({
                 value: evt.target.value,
-                propertyName: 'uiMinimumPoolTokenAmountOut',
+                propertyName: 'slippage',
               })
             }
-            error={formErrors['uiMinimumPoolTokenAmountOut']}
+            error={formErrors['slippage']}
           />
+
+          {ammPool && ammPool.poolState.lpMint ? (
+            <div className="flex flex-col text-xs text-fgd-3">
+              <span>Lp mint</span>
+              <span>{ammPool.poolState.lpMint.toBase58()}</span>
+            </div>
+          ) : null}
         </>
       )}
     </>

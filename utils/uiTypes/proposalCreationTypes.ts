@@ -593,15 +593,14 @@ export interface MercurialPoolDepositForm {
   poolName?: SupportedSaberPoolNames;
   uiTokenAmountA?: number;
   uiTokenAmountB?: number;
-  uiMinimumPoolTokenAmountOut?: number;
+  slippage?: number;
 }
 
 export interface MercurialPoolWithdrawForm {
   governedAccount?: GovernedMultiTypeAccount;
   poolName?: SupportedSaberPoolNames;
-  uiMinimumATokenOut?: number;
-  uiMinimumBTokenOut?: number;
-  uiPoolTokenAmount?: number;
+  uiLpTokenAmount?: number;
+  slippage?: number;
 }
 
 export interface NativeIncreaseComputingBudgetForm {

@@ -1,7 +1,11 @@
-import { PublicKey } from '@solana/web3.js';
-import { AmmProgram, Pool } from '@mercurial-finance/dynamic-amm-sdk';
+import { Connection, PublicKey } from '@solana/web3.js';
+import AmmImpl, { PROGRAM_ID } from '@mercurial-finance/dynamic-amm-sdk';
+import {
+  MAINNET_POOL,
+  VAULT_PROGRAM_ID,
+} from '@mercurial-finance/dynamic-amm-sdk/dist/cjs/src/amm/constants';
 
-export type PoolName = 'USDT_USDC';
+export type PoolName = 'USDT_USDC' | 'USDC_UXD';
 
 export type PoolDescription = {
   displayName: string;
@@ -18,31 +22,31 @@ export class MercurialConfiguration {
     removeBalanceLiquidity: 133,
   };
 
-  public static readonly poolProgram = new PublicKey(
-    '5B23C376Kwtd1vzb5LCJHiHLPnoWSnnx661hhGGDEv8y',
-  );
+  public static readonly poolProgram = new PublicKey(PROGRAM_ID);
 
-  public static readonly vaultProgram = new PublicKey(
-    '24Uqj9JCLxUeoC3hGfh5W3s9FM9uCHDS2SG3LYwBpyTi',
-  );
+  public static readonly vaultProgram = new PublicKey(VAULT_PROGRAM_ID);
 
   public readonly pools: Pools = {
     USDT_USDC: {
       displayName: 'USDT/USDC',
-      publicKey: new PublicKey('GRggGuVnFtRtVD2yiiKPDZ8GPzfbGsxd3FNoPSmupH9U'),
+      publicKey: new PublicKey(MAINNET_POOL.USDT_USDC),
+    },
+    USDC_UXD: {
+      displayName: 'USDC/UXD',
+      publicKey: new PublicKey('4xqyRGWMRkfVo7GH74aryKjSLcpQiVHGAZY4u1n6wAbZ'),
     },
   };
 
-  public loadPool({
-    ammProgram,
-    authority,
+  public loadAmmPool({
+    connection,
     pool,
   }: {
-    ammProgram: AmmProgram;
-    authority: PublicKey;
+    connection: Connection;
     pool: PublicKey;
-  }): Promise<Pool> {
-    return Pool.load(authority, ammProgram, pool);
+  }): Promise<AmmImpl> {
+    return AmmImpl.create(connection, pool, {
+      cluster: 'mainnet-beta',
+    });
   }
 }
 

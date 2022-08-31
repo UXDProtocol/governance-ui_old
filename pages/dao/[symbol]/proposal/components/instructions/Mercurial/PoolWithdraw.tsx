@@ -9,11 +9,9 @@ import useWalletStore from 'stores/useWalletStore';
 import mercurialConfiguration, {
   PoolDescription,
 } from '@tools/sdk/mercurial/configuration';
-import { getSplTokenNameByMint } from '@utils/splTokens';
-import { Pool } from '@mercurial-finance/dynamic-amm-sdk';
-import useMercurialAmmProgram from '@hooks/useMercurialAmmProgram';
+import AmmImpl from '@mercurial-finance/dynamic-amm-sdk';
 import { PublicKey } from '@solana/web3.js';
-import { poolWithdraw } from '@tools/sdk/mercurial/poolWithdraw';
+import withdraw from '@tools/sdk/mercurial/poolWithdraw';
 import { findATAAddrSync } from '@utils/ataTools';
 
 const schema = yup.object().shape({
@@ -21,13 +19,8 @@ const schema = yup.object().shape({
     .object()
     .nullable()
     .required('Governed account is required'),
-  uiMinimumATokenOut: yup
-    .number()
-    .required('Minimum Amount for Token A is required'),
-  uiMinimumBTokenOut: yup
-    .number()
-    .required('Minimum Amount for Token B is required'),
-  uiPoolTokenAmount: yup.number().required('Pool Token Account is required'),
+  uiLpTokenAmount: yup.number().required('Amount for LP Token is required'),
+  slippage: yup.number().required('Slippage is required'),
 });
 
 const Withdraw = ({
@@ -38,14 +31,12 @@ const Withdraw = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   const connection = useWalletStore((s) => s.connection);
-  const [pool, setPool] = useState<Pool | null>(null);
+  const [ammPool, setAmmPool] = useState<AmmImpl | null>(null);
 
-  const [lpTokenATA, setLpTokenATA] = useState<null | {
+  const [authorityLpATA, setAuthorityLpATA] = useState<null | {
     account: PublicKey;
     uiBalance: string;
   }>(null);
-
-  const ammProgram = useMercurialAmmProgram();
 
   const {
     form,
@@ -60,35 +51,28 @@ const Withdraw = ({
     shouldSplitIntoSeparateTxs: true,
     schema,
     buildInstruction: async function ({ form, governedAccountPubkey }) {
-      if (!pool) {
+      if (!ammPool) {
         throw new Error('Mercurial Pool not found');
       }
 
-      if (!ammProgram) {
-        throw new Error('AmmProgram not loaded yet');
-      }
-
-      return poolWithdraw({
+      return withdraw({
         connection: connection.current,
         authority: governedAccountPubkey,
-        pool,
-        uiPoolTokenAmount: form.uiPoolTokenAmount!,
-        uiMinimumATokenOut: form.uiMinimumATokenOut!,
-        uiMinimumBTokenOut: form.uiMinimumBTokenOut!,
-        ammProgram,
-        poolPubkey: mercurialConfiguration.pools[form.poolName!].publicKey,
+        uiLpTokenAmount: form.uiLpTokenAmount!,
+        slippage: form.slippage!,
+        ammPool,
       });
     },
   });
 
   useEffect(() => {
     (async () => {
-      if (!governedAccountPubkey || !ammProgram) {
+      if (!governedAccountPubkey) {
         return;
       }
 
       if (!form.poolName) {
-        setPool(null);
+        setAmmPool(null);
         return;
       }
 
@@ -96,39 +80,38 @@ const Withdraw = ({
         mercurialConfiguration.pools[form.poolName];
 
       try {
-        const pool = await mercurialConfiguration.loadPool({
-          ammProgram,
-          authority: governedAccountPubkey,
+        const ammPool = await mercurialConfiguration.loadAmmPool({
+          connection: connection.current,
           pool: poolInfo.publicKey,
         });
 
-        setPool(pool);
+        setAmmPool(ammPool);
       } catch (e) {
         console.log('Cannot load pool info', e);
       }
     })();
-  }, [form.poolName, ammProgram, governedAccountPubkey]);
+  }, [form.poolName, connection]);
 
   useEffect(() => {
-    if (!pool || !pool.state || !governedAccountPubkey) {
-      setLpTokenATA(null);
+    if (!ammPool || !ammPool.poolState || !governedAccountPubkey) {
+      setAuthorityLpATA(null);
       return;
     }
 
     (async () => {
-      const [source] = findATAAddrSync(
+      const [ata] = findATAAddrSync(
         governedAccountPubkey,
-        pool.state.lpMint,
+        ammPool.poolState.lpMint,
       );
 
-      const amount = await connection.current.getTokenAccountBalance(source);
+      const amount = await connection.current.getTokenAccountBalance(ata);
 
-      setLpTokenATA({
-        account: source,
+      setAuthorityLpATA({
+        account: ata,
         uiBalance: amount.value.uiAmountString ?? '',
       });
     })();
-  }, [pool, governedAccountPubkey]);
+  }, [ammPool, governedAccountPubkey]);
 
   // Hardcoded gate used to be clear about what cluster is supported for now
   if (connection.cluster !== 'mainnet') {
@@ -146,8 +129,6 @@ const Withdraw = ({
             value,
             propertyName: 'poolName',
           });
-
-          setPool(mercurialConfiguration.pools[value] ?? null);
         }}
         error={formErrors['poolName']}
       >
@@ -158,70 +139,52 @@ const Withdraw = ({
         ))}
       </Select>
 
-      {pool && pool.state && (
+      {ammPool && ammPool.poolState && (
         <>
           <Input
-            label="Pool Token Amount"
-            value={form.uiPoolTokenAmount}
+            label="LP Token Amount"
+            value={form.uiLpTokenAmount}
             type="number"
             min="0"
             onChange={(evt) =>
               handleSetForm({
                 value: evt.target.value,
-                propertyName: 'uiPoolTokenAmount',
+                propertyName: 'uiLpTokenAmount',
               })
             }
-            error={formErrors['uiPoolTokenAmount']}
+            error={formErrors['uiLpTokenAmount']}
           />
 
-          {lpTokenATA ? (
+          {authorityLpATA ? (
             <div className="text-xs text-fgd-3 mt-0 flex flex-col">
-              <span>ATA: {lpTokenATA.account.toBase58() ?? '-'}</span>
+              <span>ATA: {authorityLpATA.account.toBase58() ?? '-'}</span>
 
               <span
                 className="hover:text-white cursor-pointer"
                 onClick={() =>
                   handleSetForm({
-                    value: lpTokenATA.uiBalance,
-                    propertyName: 'uiPoolTokenAmount',
+                    value: authorityLpATA.uiBalance,
+                    propertyName: 'uiLpTokenAmount',
                   })
                 }
               >
-                max: {lpTokenATA.uiBalance}
+                max: {authorityLpATA.uiBalance}
               </span>
             </div>
           ) : null}
 
           <Input
-            label={`Minimum ${getSplTokenNameByMint(
-              pool.state.tokenAMint,
-            )} Amount`}
-            value={form.uiMinimumATokenOut}
+            label="Slippage from 0 to 100, max 2 decimals"
+            value={form.slippage}
             type="number"
             min="0"
             onChange={(evt) =>
               handleSetForm({
                 value: evt.target.value,
-                propertyName: 'uiMinimumATokenOut',
+                propertyName: 'slippage',
               })
             }
-            error={formErrors['uiMinimumATokenOut']}
-          />
-
-          <Input
-            label={`Minimum ${getSplTokenNameByMint(
-              pool.state.tokenBMint,
-            )} Amount`}
-            value={form.uiMinimumBTokenOut}
-            type="number"
-            min="0"
-            onChange={(evt) =>
-              handleSetForm({
-                value: evt.target.value,
-                propertyName: 'uiMinimumBTokenOut',
-              })
-            }
-            error={formErrors['uiMinimumBTokenOut']}
+            error={formErrors['slippage']}
           />
         </>
       )}
