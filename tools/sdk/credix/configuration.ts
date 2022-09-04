@@ -8,7 +8,8 @@ export class CredixConfiguration {
   );
 
   public static readonly instructionsCode = {
-    //
+    deposit: 202,
+    withdraw: 241,
   };
 
   public getClient({

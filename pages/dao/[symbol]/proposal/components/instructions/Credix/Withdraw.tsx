@@ -72,29 +72,24 @@ const CredixWithdraw = ({
         marketMintInfo.account.decimals,
       );
 
-      console.log('market.baseMintPK', market.baseMintPK.toBase58());
-      console.log('market.lpMintPK', market.lpMintPK.toBase58());
-
       return market.withdrawIx(amount.toNumber(), governedAccountPubkey);
     },
   });
 
   return (
-    <>
-      <Input
-        min={0}
-        label="Amount"
-        value={form.uiAmount}
-        type="number"
-        onChange={(evt) => {
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiAmount',
-          });
-        }}
-        error={formErrors['uiAmount']}
-      />
-    </>
+    <Input
+      min={0}
+      label="USDC Amount"
+      value={form.uiAmount}
+      type="number"
+      onChange={(evt) => {
+        handleSetForm({
+          value: evt.target.value,
+          propertyName: 'uiAmount',
+        });
+      }}
+      error={formErrors['uiAmount']}
+    />
   );
 };
 
