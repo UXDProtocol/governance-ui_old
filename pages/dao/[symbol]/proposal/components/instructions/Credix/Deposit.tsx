@@ -73,8 +73,11 @@ const CredixDeposit = ({
         marketMintInfo.account.decimals,
       );
 
+      console.log('market', market);
       console.log('market.baseMintPK', market.baseMintPK.toBase58());
       console.log('market.lpMintPK', market.lpMintPK.toBase58());
+      console.log('governedAccountPubkey', governedAccountPubkey.toBase58());
+      console.log('gatekeeperNetwork', market.gateKeeperNetwork.toBase58());
 
       return market.depositIx(amount.toNumber(), governedAccountPubkey);
     },
