@@ -67,7 +67,6 @@ const CredixWithdraw = ({
         );
       }
 
-      // amount to deposit
       const amount = uiAmountToNativeBN(
         form.uiAmount!,
         marketMintInfo.account.decimals,

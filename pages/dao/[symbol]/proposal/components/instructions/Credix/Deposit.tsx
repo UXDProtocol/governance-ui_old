@@ -67,13 +67,13 @@ const CredixDeposit = ({
         );
       }
 
-      // amount to deposit
       const amount = uiAmountToNativeBN(
         form.uiAmount!,
         marketMintInfo.account.decimals,
       );
 
       console.log('market', market);
+      console.log('market.address', market.address.toBase58());
       console.log('market.baseMintPK', market.baseMintPK.toBase58());
       console.log('market.lpMintPK', market.lpMintPK.toBase58());
       console.log('governedAccountPubkey', governedAccountPubkey.toBase58());
