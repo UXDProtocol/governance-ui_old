@@ -1,8 +1,10 @@
 import {
   getGovernanceProgramVersion,
   ProgramAccount,
+  RpcContext,
+  Proposal,
+  withFinalizeVote,
 } from '@solana/spl-governance';
-import { RpcContext } from '@solana/spl-governance';
 import {
   Keypair,
   PublicKey,
@@ -10,8 +12,6 @@ import {
   TransactionInstruction,
 } from '@solana/web3.js';
 import { sendTransaction } from '@utils/send';
-import { Proposal } from '@solana/spl-governance';
-import { withFinalizeVote } from '@solana/spl-governance';
 
 export const finalizeVote = async (
   { connection, wallet, programId }: RpcContext,

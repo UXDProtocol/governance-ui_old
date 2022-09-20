@@ -8,14 +8,14 @@ import {
   GOVERNANCE_CHAT_PROGRAM_ID,
   Proposal,
   Realm,
+  ChatMessageBody,
+  RpcContext,
+  withPostChatMessage,
+  ProgramAccount,
 } from '@solana/spl-governance';
-import { ChatMessageBody } from '@solana/spl-governance';
-import { withPostChatMessage } from '@solana/spl-governance';
-import { ProgramAccount } from '@solana/spl-governance';
-import { RpcContext } from '@solana/spl-governance';
-import { sendTransaction } from '../../utils/send';
 import { VsrClient } from '@blockworks-foundation/voter-stake-registry-client';
 import { withUpdateVoterWeightRecord } from 'VoteStakeRegistry/sdk/withUpdateVoterWeightRecord';
+import { sendTransaction } from '../../utils/send';
 
 export async function postChatMessage(
   { connection, wallet, programId, walletPubkey }: RpcContext,

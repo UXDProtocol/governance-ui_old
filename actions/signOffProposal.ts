@@ -9,11 +9,11 @@ import {
   getGovernanceProgramVersion,
   Proposal,
   RpcContext,
+  SignatoryRecord,
+  ProgramAccount,
+  withSignOffProposal,
 } from '@solana/spl-governance';
-import { SignatoryRecord } from '@solana/spl-governance';
-import { ProgramAccount } from '@solana/spl-governance';
 import { sendTransaction } from 'utils/send';
-import { withSignOffProposal } from '@solana/spl-governance';
 
 export const signOffProposal = async (
   { connection, wallet, programId }: RpcContext,

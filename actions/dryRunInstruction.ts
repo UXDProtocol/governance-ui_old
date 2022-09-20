@@ -1,12 +1,11 @@
 import { InstructionData } from '@solana/spl-governance';
-
 import {
   Connection,
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js';
-import { simulateTransaction } from '../utils/send';
 import { WalletAdapter } from '@solana/wallet-adapter-base';
+import { simulateTransaction } from '../utils/send';
 
 export async function dryRunInstruction(
   connection: Connection,

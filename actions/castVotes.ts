@@ -1,6 +1,5 @@
 import { VsrClient } from '@blockworks-foundation/voter-stake-registry-client';
 import { Keypair, Transaction, TransactionInstruction } from '@solana/web3.js';
-import { withUpdateVoterWeightRecord } from 'VoteStakeRegistry/sdk/withUpdateVoterWeightRecord';
 import {
   ChatMessageBody,
   getGovernanceProgramVersion,
@@ -10,13 +9,14 @@ import {
   TokenOwnerRecord,
   withPostChatMessage,
   YesNoVote,
+  ProgramAccount,
+  RpcContext,
+  Vote,
+  withCastVote,
 } from '@solana/spl-governance';
-import { ProgramAccount } from '@solana/spl-governance';
-import { RpcContext } from '@solana/spl-governance';
-import { Vote } from '@solana/spl-governance';
-import { withCastVote } from '@solana/spl-governance';
-import { sendTransaction } from '../utils/send';
 import { notify } from '@utils/notifications';
+import { withUpdateVoterWeightRecord } from 'VoteStakeRegistry/sdk/withUpdateVoterWeightRecord';
+import { sendTransaction } from '../utils/send';
 
 export async function castVotes({
   rpcContext: { connection, wallet, programId, walletPubkey },

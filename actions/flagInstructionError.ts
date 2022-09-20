@@ -4,12 +4,13 @@ import {
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js';
-
-import { getGovernanceProgramVersion, Proposal } from '@solana/spl-governance';
-
-import { withFlagTransactionError } from '@solana/spl-governance';
-import { RpcContext } from '@solana/spl-governance';
-import { ProgramAccount } from '@solana/spl-governance';
+import {
+  getGovernanceProgramVersion,
+  Proposal,
+  withFlagTransactionError,
+  RpcContext,
+  ProgramAccount,
+} from '@solana/spl-governance';
 import { sendTransaction } from '@utils/send';
 
 export const flagInstructionError = async (

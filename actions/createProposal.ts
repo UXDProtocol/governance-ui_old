@@ -4,7 +4,6 @@ import {
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js';
-
 import {
   getGovernanceProgramVersion,
   getInstructionDataFromBase64,
@@ -14,18 +13,18 @@ import {
   Realm,
   VoteType,
   withCreateProposal,
+  withAddSignatory,
+  RpcContext,
+  withInsertTransaction,
+  InstructionData,
+  withSignOffProposal,
 } from '@solana/spl-governance';
-import { withAddSignatory } from '@solana/spl-governance';
-import { RpcContext } from '@solana/spl-governance';
-import { withInsertTransaction } from '@solana/spl-governance';
-import { InstructionData } from '@solana/spl-governance';
-import { sendTransaction } from 'utils/send';
-import { withSignOffProposal } from '@solana/spl-governance';
+import { sendTransaction } from '@utils/send';
+import { chunks } from '@utils/helpers';
+import { sendTransactions, SequenceType } from '@utils/sendTransactions';
+import { FormInstructionData } from '@utils/uiTypes/proposalCreationTypes';
 import { withUpdateVoterWeightRecord } from 'VoteStakeRegistry/sdk/withUpdateVoterWeightRecord';
 import { VsrClient } from '@blockworks-foundation/voter-stake-registry-client';
-import { sendTransactions, SequenceType } from '@utils/sendTransactions';
-import { chunks } from '@utils/helpers';
-import { FormInstructionData } from '@utils/uiTypes/proposalCreationTypes';
 
 export interface InstructionDataWithHoldUpTime {
   data: InstructionData | null;

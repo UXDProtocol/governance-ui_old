@@ -4,15 +4,14 @@ import {
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js';
-
 import {
   getGovernanceProgramVersion,
   RpcContext,
+  Proposal,
+  ProgramAccount,
+  withCancelProposal,
 } from '@solana/spl-governance';
-import { Proposal } from '@solana/spl-governance';
-import { ProgramAccount } from '@solana/spl-governance';
 import { sendTransaction } from 'utils/send';
-import { withCancelProposal } from '@solana/spl-governance';
 
 export const cancelProposal = async (
   { connection, wallet, programId, walletPubkey }: RpcContext,

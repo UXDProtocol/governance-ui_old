@@ -9,10 +9,10 @@ import {
   GovernanceType,
   ProgramAccount,
   Realm,
+  GovernanceConfig,
+  withCreateProgramGovernance,
+  RpcContext,
 } from '@solana/spl-governance';
-import { GovernanceConfig } from '@solana/spl-governance';
-import { withCreateProgramGovernance } from '@solana/spl-governance';
-import { RpcContext } from '@solana/spl-governance';
 import { sendTransaction } from '@utils/send';
 import { withUpdateVoterWeightRecord } from 'VoteStakeRegistry/sdk/withUpdateVoterWeightRecord';
 import { VsrClient } from '@blockworks-foundation/voter-stake-registry-client';

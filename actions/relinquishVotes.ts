@@ -4,12 +4,13 @@ import {
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js';
-
-import { Proposal } from '@solana/spl-governance';
-import { RpcContext } from '@solana/spl-governance';
-import { ProgramAccount } from '@solana/spl-governance';
+import {
+  Proposal,
+  RpcContext,
+  ProgramAccount,
+  withRelinquishVote,
+} from '@solana/spl-governance';
 import { sendTransaction } from '../utils/send';
-import { withRelinquishVote } from '@solana/spl-governance';
 
 export default async ({
   rpcContext: { connection, wallet, programId, walletPubkey },

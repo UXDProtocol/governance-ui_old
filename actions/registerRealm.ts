@@ -1,3 +1,5 @@
+import BN from 'bn.js';
+import BigNumber from 'bignumber.js';
 import {
   Connection,
   Keypair,
@@ -5,7 +7,6 @@ import {
   Transaction,
   TransactionInstruction,
 } from '@solana/web3.js';
-import BN from 'bn.js';
 import {
   getTokenOwnerRecordAddress,
   GovernanceConfig,
@@ -13,36 +14,34 @@ import {
   SetRealmAuthorityAction,
   VoteThresholdPercentage,
   VoteTipping,
+  withCreateRealm,
+  withDepositGoverningTokens,
+  withCreateMintGovernance,
+  withSetRealmAuthority,
 } from '@solana/spl-governance';
-import { withCreateRealm } from '@solana/spl-governance';
-import { sendTransaction } from '../utils/send';
-
+import { AccountInfo, u64 } from '@solana/spl-token';
+import { sendTransaction } from '@utils/send';
 import {
   sendTransactions,
   SequenceType,
   WalletSigner,
-} from 'utils/sendTransactions';
+} from '@utils/sendTransactions';
+import { TokenProgramAccount } from '@utils/tokens';
+import { ConnectionContext } from '@utils/connection';
+import { tryGetAta } from '@utils/validations';
+import { chunks, BN_ZERO } from '@utils/helpers';
 import { withCreateMint } from '@tools/sdk/splToken/withCreateMint';
 import { withCreateAssociatedTokenAccount } from '@tools/sdk/splToken/withCreateAssociatedTokenAccount';
 import { withMintTo } from '@tools/sdk/splToken/withMintTo';
-import { chunks, BN_ZERO } from '@utils/helpers';
 import {
   SignerWalletAdapter,
   WalletConnectionError,
 } from '@solana/wallet-adapter-base';
-import { withDepositGoverningTokens } from '@solana/spl-governance';
 import {
   getMintNaturalAmountFromDecimalAsBN,
   getTimestampFromDays,
 } from '@tools/sdk/units';
-import { withCreateMintGovernance } from '@solana/spl-governance';
-import { withSetRealmAuthority } from '@solana/spl-governance';
-import { AccountInfo, u64 } from '@solana/spl-token';
-import { tryGetAta } from '@utils/validations';
-import { ConnectionContext } from '@utils/connection';
 import { MIN_COMMUNITY_TOKENS_TO_CREATE_W_0_SUPPLY } from '@tools/constants';
-import BigNumber from 'bignumber.js';
-import { TokenProgramAccount } from '@utils/tokens';
 
 interface RegisterRealmRpc {
   connection: ConnectionContext;
