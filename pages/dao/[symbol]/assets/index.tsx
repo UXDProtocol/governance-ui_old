@@ -1,5 +1,5 @@
 import React from 'react';
-import AssetsList from '@components/AssetsList/AssetsList';
+import AssetsList from '@components/assetsList/AssetsList';
 import Tooltip from '@components/Tooltip';
 import useRealm from '@hooks/useRealm';
 import useQueryContext from '@hooks/useQueryContext';

@@ -1,4 +1,4 @@
-import NewProgramForm from '@components/AssetsList/NewProgramForm';
+import NewProgramForm from '@components/assetsList/NewProgramForm';
 import React from 'react';
 
 const New = () => {

@@ -8,13 +8,13 @@ import { NFTWithMint } from '@utils/uiTypes/nfts';
 import { DEFAULT_NFT_TREASURY_MINT } from '@components/instructions/tools';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import Select from '@components/inputs/Select';
-import AccountItemNFT from '@components/TreasuryAccount/AccountItemNFT';
+import AccountItemNFT from '@components/treasuryAccount/AccountItemNFT';
 import useRealm from '@hooks/useRealm';
 import useQueryContext from '@hooks/useQueryContext';
 import useTreasuryAccountStore from 'stores/useTreasuryAccountStore';
 import ImgWithLoader from '@components/ImgWithLoader';
 import Modal from '@components/Modal';
-import DepositNFT from '@components/TreasuryAccount/DepositNFT';
+import DepositNFT from '@components/treasuryAccount/DepositNFT';
 import { LinkButton } from '@components/Button';
 
 const gallery = () => {

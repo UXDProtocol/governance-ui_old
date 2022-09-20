@@ -5,7 +5,7 @@ import { ExternalLinkIcon } from '@heroicons/react/outline';
 import ApprovalQuorum from '@components/ApprovalQuorum';
 import PreviousRouteBtn from '@components/PreviousRouteBtn';
 import ProposalActionsPanel from '@components/ProposalActions';
-import TokenBalanceCardWrapper from '@components/TokenBalance/TokenBalanceCardWrapper';
+import TokenBalanceCardWrapper from '@components/tokenBalance/TokenBalanceCardWrapper';
 import VoteResults from '@components/VoteResults';
 import VoteResultStatus from '@components/VoteResultStatus';
 import useRealm from '@hooks/useRealm';

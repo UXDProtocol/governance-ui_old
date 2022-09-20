@@ -11,7 +11,7 @@ import {
 import Button, { SecondaryButton } from '@components/Button';
 import Input from '@components/inputs/Input';
 import Textarea from '@components/inputs/Textarea';
-import TokenBalanceCardWrapper from '@components/TokenBalance/TokenBalanceCardWrapper';
+import TokenBalanceCardWrapper from '@components/tokenBalance/TokenBalanceCardWrapper';
 import useCreateProposal from '@hooks/useCreateProposal';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import useQueryContext from '@hooks/useQueryContext';

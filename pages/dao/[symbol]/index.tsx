@@ -13,27 +13,27 @@ import { PublicKey } from '@solana/web3.js';
 import useGovernanceAssets from '@hooks/useGovernanceAssets';
 import useTreasuryAccountStore from 'stores/useTreasuryAccountStore';
 import { usePrevious } from '@hooks/usePrevious';
-import TokenBalanceCardWrapper from '@components/TokenBalance/TokenBalanceCardWrapper';
+import TokenBalanceCardWrapper from '@components/tokenBalance/TokenBalanceCardWrapper';
 import dynamic from 'next/dynamic';
 import Loading from '@components/Loading';
 import PaginationComponent from '@components/Pagination';
 import SearchInput from '@components/SearchInput';
 const AccountsCompactWrapper = dynamic(
-  () => import('@components/TreasuryAccount/AccountsCompactWrapper'),
+  () => import('@components/treasuryAccount/AccountsCompactWrapper'),
 );
 const MembersCompactWrapper = dynamic(
-  () => import('@components/Members/MembersCompactWrapper'),
+  () => import('@components/members/MembersCompactWrapper'),
 );
 const AssetsCompactWrapper = dynamic(
-  () => import('@components/AssetsList/AssetsCompactWrapper'),
+  () => import('@components/assetsList/AssetsCompactWrapper'),
 );
 const NFTSCompactWrapper = dynamic(
-  () => import('@components/NFTS/NFTSCompactWrapper'),
+  () => import('@components/nfts/NFTSCompactWrapper'),
 );
 const ProposalCard = dynamic(() => import('components/ProposalCard'));
 const RealmHeader = dynamic(() => import('components/RealmHeader'));
 const DepositLabel = dynamic(
-  () => import('@components/TreasuryAccount/DepositLabel'),
+  () => import('@components/treasuryAccount/DepositLabel'),
 );
 
 const compareProposals = (

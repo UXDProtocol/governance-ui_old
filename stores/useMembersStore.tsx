@@ -1,5 +1,5 @@
 import create, { State } from 'zustand';
-import { ViewState } from '@components/Members/types';
+import { ViewState } from '@components/members/types';
 import { Member } from '@utils/uiTypes/members';
 
 interface MembersStore extends State {

@@ -14,7 +14,7 @@ import useWalletStore from 'stores/useWalletStore';
 import { useVoteRegistry } from 'VoteStakeRegistry/hooks/useVoteRegistry';
 import ErrorBoundary from '@components/ErrorBoundary';
 import useVoteStakeRegistryClientStore from 'VoteStakeRegistry/stores/voteStakeRegistryClientStore';
-import useMarketStore from 'Strategies/store/marketStore';
+import useMarketStore from 'strategies/store/marketStore';
 import handleGovernanceAssetsStore from '@hooks/handleGovernanceAssetsStore';
 import tokenService from '@utils/services/token';
 
