@@ -427,11 +427,13 @@ export default function useGovernanceAssets() {
       name: 'Set Redeemable Global Supply Cap',
       isVisible: canUseUxdInstructions,
       packageId: PackageEnum.UXD,
+      tag: 'deprecated',
     },
     [InstructionEnum.UXDSetMangoDepositoriesRedeemableSoftCap]: {
       name: 'Set Mango Depositories Redeemable Supply Soft Cap',
       isVisible: canUseUxdInstructions,
       packageId: PackageEnum.UXD,
+      tag: 'deprecated',
     },
     [InstructionEnum.UXDRegisterMangoDepository]: {
       name: 'Register Mango Depository',
@@ -462,6 +464,30 @@ export default function useGovernanceAssets() {
     },
     [InstructionEnum.UXDQuoteRedeemWithMangoDepository]: {
       name: 'Quote Redeem With Mango Depository',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDRegisterMercurialVaultDepository]: {
+      name: 'Register Mercurial Vault Depository',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDEditMercurialVaultDepository]: {
+      name: 'Edit Mercurial Vault Depository',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDEditControllerDepository]: {
+      name: 'Edit Controller',
+      isVisible: canUseUxdInstructions,
+      packageId: PackageEnum.UXD,
+      tag: 'beta',
+    },
+    [InstructionEnum.UXDEditMangoDepository]: {
+      name: 'Edit Mango Depository',
       isVisible: canUseUxdInstructions,
       packageId: PackageEnum.UXD,
       tag: 'beta',

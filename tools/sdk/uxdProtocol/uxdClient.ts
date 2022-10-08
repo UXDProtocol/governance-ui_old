@@ -18,6 +18,10 @@ export const DEPOSITORY_MINTS = {
       address: new PublicKey('So11111111111111111111111111111111111111112'),
       decimals: 9,
     },
+    SOLEND_USDC: {
+      address: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
+      decimals: 6,
+    },
   },
   mainnet: {
     BTC: {
