@@ -480,7 +480,7 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.UXD,
       tag: 'beta',
     },
-    [InstructionEnum.UXDEditControllerDepository]: {
+    [InstructionEnum.UXDEditController]: {
       name: 'Edit Controller',
       isVisible: canUseUxdInstructions,
       packageId: PackageEnum.UXD,

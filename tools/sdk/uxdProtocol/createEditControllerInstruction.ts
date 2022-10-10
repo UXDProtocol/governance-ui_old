@@ -1,7 +1,11 @@
 import { Provider } from '@project-serum/anchor';
 import { TransactionInstruction, PublicKey } from '@solana/web3.js';
 import { ConnectionContext } from '@utils/connection';
-import { Controller, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
+import {
+  Controller,
+  MangoDepository,
+  UXD_DECIMALS,
+} from '@uxd-protocol/uxd-client';
 import {
   getDepositoryMintInfo,
   getInsuranceMintInfo,
@@ -22,31 +26,36 @@ const createEditControllerInstruction = ({
   connection: ConnectionContext;
   uxdProgramId: PublicKey;
   authority: PublicKey;
-  depositoryMintName: string;
-  insuranceMintName: string;
-  quoteMintAndRedeemSoftCap?: number;
   redeemableSoftCap?: number;
   redeemableGlobalSupplyCap?: number;
-}): TransactionInstruction => {
-  const {
-    address: depositoryMint,
-    decimals: depositoryDecimals,
-  } = getDepositoryMintInfo(connection.cluster, depositoryMintName);
+} & ({
+  depositoryMintName: string;
+  insuranceMintName: string;
+  quoteMintAndRedeemSoftCap: number;
+} | null)): TransactionInstruction => {
+  let depository: MangoDepository;
 
-  const {
-    address: insuranceMint,
-    decimals: insuranceDecimals,
-  } = getInsuranceMintInfo(connection.cluster, insuranceMintName);
+  if (typeof quoteMintAndRedeemSoftCap !== 'undefined') {
+    const {
+      address: depositoryMint,
+      decimals: depositoryDecimals,
+    } = getDepositoryMintInfo(connection.cluster, depositoryMintName);
 
-  const depository = instantiateMangoDepository({
-    uxdProgramId,
-    depositoryMint,
-    insuranceMint,
-    depositoryName: depositoryMintName,
-    depositoryDecimals,
-    insuranceName: insuranceMintName,
-    insuranceDecimals,
-  });
+    const {
+      address: insuranceMint,
+      decimals: insuranceDecimals,
+    } = getInsuranceMintInfo(connection.cluster, insuranceMintName);
+
+    depository = instantiateMangoDepository({
+      uxdProgramId,
+      depositoryMint,
+      insuranceMint,
+      depositoryName: depositoryMintName,
+      depositoryDecimals,
+      insuranceName: insuranceMintName,
+      insuranceDecimals,
+    });
+  }
 
   const client = uxdClient(uxdProgramId);
 
@@ -54,12 +63,13 @@ const createEditControllerInstruction = ({
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     authority,
     {
-      quoteMintAndRedeemSoftCap: quoteMintAndRedeemSoftCap
-        ? {
-            value: quoteMintAndRedeemSoftCap,
-            depository,
-          }
-        : undefined,
+      quoteMintAndRedeemSoftCap:
+        typeof quoteMintAndRedeemSoftCap !== 'undefined'
+          ? {
+              value: quoteMintAndRedeemSoftCap,
+              depository: depository!,
+            }
+          : undefined,
       redeemableSoftCap,
       redeemableGlobalSupplyCap,
     },

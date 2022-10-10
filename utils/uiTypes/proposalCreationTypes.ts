@@ -243,7 +243,7 @@ export interface UXDEditMangoDepositoryForm {
   uiRedeemableDepositorySupplyCap?: number;
 }
 
-export interface UXDEditControllerDepositoryForm {
+export interface UXDEditControllerForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
   insuranceName?: string;
@@ -717,7 +717,7 @@ export enum InstructionEnum {
   UXDQuoteRedeemWithMangoDepository,
   UXDRegisterMercurialVaultDepository,
   UXDEditMercurialVaultDepository,
-  UXDEditControllerDepository,
+  UXDEditController,
   UXDEditMangoDepository,
   UXDSetMangoDepositoryQuoteMintAndRedeemFee,
   UXDSetMangoDepositoryQuoteMintAndRedeemSoftCap,

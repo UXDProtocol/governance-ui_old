@@ -54,7 +54,7 @@ import UXDSetRedeemableGlobalSupplyCap from './UXD/SetRedeemGlobalSupplyCap';
 import UXDWithdrawInsuranceFromMangoDepository from './UXD/WithdrawInsuranceFromMangoDepository';
 import UXDRegisterMercurialVaultDepository from './UXD/RegisterMercurialVaultDepository';
 import UXDEditMercurialVaultDepository from './UXD/EditMercurialVaultDepository';
-import UXDEditControllerDepository from './UXD/EditControllerDepository';
+import UXDEditController from './UXD/EditController';
 import UXDEditMangoDepository from './UXD/EditMangoDepository';
 import UXDDisableDepositoryMinting from './UXD/DisableDepositoryMinting';
 import UXDQuoteMintWithMangoDepository from './UXD/QuoteMintWithMangoDepository';
@@ -295,12 +295,9 @@ const SelectedInstruction = ({
           governedAccount={governedAccount}
         />
       );
-    case InstructionEnum.UXDEditControllerDepository:
+    case InstructionEnum.UXDEditController:
       return (
-        <UXDEditControllerDepository
-          index={index}
-          governedAccount={governedAccount}
-        />
+        <UXDEditController index={index} governedAccount={governedAccount} />
       );
     case InstructionEnum.UXDEditMangoDepository:
       return (

@@ -3,7 +3,7 @@ import Select from '@components/inputs/Select';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { getDepositoryMintSymbols } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { UXDEditControllerDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDEditControllerForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
 import Input from '@components/inputs/Input';
 import Switch from '@components/Switch';
@@ -15,8 +15,8 @@ const schema = yup.object().shape({
     .object()
     .nullable()
     .required('Governance account is required'),
-  collateralName: yup.string().required('Valid Collateral name is required'),
-  insuranceName: yup.string().required('Valid Insurance name is required'),
+  collateralName: yup.string(),
+  insuranceName: yup.string(),
   uiQuoteMintAndRedeemSoftCap: yup
     .number()
     .min(0, 'Quote mint and redeem soft cap should be min 0'),
@@ -55,7 +55,7 @@ const RegisterMercurialVaultDepository = ({
     form,
     formErrors,
     handleSetForm,
-  } = useInstructionFormBuilder<UXDEditControllerDepositoryForm>({
+  } = useInstructionFormBuilder<UXDEditControllerForm>({
     index,
     initialFormValues: {
       governedAccount,
@@ -66,11 +66,14 @@ const RegisterMercurialVaultDepository = ({
         connection,
         uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
         authority: governedAccountPubkey,
-        depositoryMintName: form.collateralName!,
-        insuranceMintName: form.insuranceName!,
-        quoteMintAndRedeemSoftCap: quoteMintAndRedeemSoftCapChange
-          ? form.uiQuoteMintAndRedeemSoftCap!
-          : undefined,
+
+        ...(quoteMintAndRedeemSoftCapChange
+          ? {
+              depositoryMintName: form.collateralName!,
+              insuranceMintName: form.insuranceName!,
+              quoteMintAndRedeemSoftCap: form.uiQuoteMintAndRedeemSoftCap!,
+            }
+          : (null as any)),
 
         redeemableSoftCap: redeemableSoftCapChange
           ? form.uiRedeemableSoftCap!
@@ -86,7 +89,7 @@ const RegisterMercurialVaultDepository = ({
   return (
     <>
       <Select
-        label="Collateral Name"
+        label="Collateral name of an existing mango depository"
         value={form.collateralName}
         placeholder="Please select..."
         onChange={(value) =>
