@@ -22,11 +22,11 @@ const schema = yup.object().shape({
   insuranceName: yup.string().required('Valid Insurance name is required'),
   quoteMintAndRedeemFee: yup
     .number()
-    .moreThan(0, 'Quote mint and redeem fee should be more than 0')
-    .lessThan(255, 'Quote mint and redeem fee should be less than 255'),
+    .min(0, 'Quote mint and redeem fee should be min 0')
+    .max(255, 'Quote mint and redeem fee should be max 255'),
   uiRedeemableDepositorySupplyCap: yup
     .number()
-    .moreThan(0, 'Redeemable depository supply cap should be more than 0'),
+    .min(0, 'Redeemable depository supply cap should be min 0'),
 });
 
 const EditMangoDepository = ({
@@ -100,44 +100,50 @@ const EditMangoDepository = ({
         <SelectOptionList list={getInsuranceMintSymbols(connection.cluster)} />
       </Select>
 
+      <h5>Quote Mint and Redeem Fee</h5>
+
       <Switch
         checked={quoteMintAndRedeemFeeChange}
         onChange={(checked) => setQuoteMintAndRedeemFeeChange(checked)}
       />
 
-      <Input
-        label="Quote Mint and Redeem Fee"
-        value={form.quoteMintAndRedeemFee}
-        type="number"
-        min={0}
-        max={255}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'quoteMintAndRedeemFee',
-          })
-        }
-        error={formErrors['quoteMintAndRedeemFee']}
-      />
+      {quoteMintAndRedeemFeeChange ? (
+        <Input
+          value={form.quoteMintAndRedeemFee}
+          type="number"
+          min={0}
+          max={255}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'quoteMintAndRedeemFee',
+            })
+          }
+          error={formErrors['quoteMintAndRedeemFee']}
+        />
+      ) : null}
+
+      <h5>Redeemable Depository Supply Cap</h5>
 
       <Switch
         checked={redeemableDepositorySupplyCapChange}
         onChange={(checked) => setRedeemableDepositorySupplyCapChange(checked)}
       />
 
-      <Input
-        label="Rdeemable Depository Supply Cap"
-        value={form.uiRedeemableDepositorySupplyCap}
-        type="number"
-        min={0}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiRedeemableDepositorySupplyCap',
-          })
-        }
-        error={formErrors['uiRedeemableDepositorySupplyCap']}
-      />
+      {redeemableDepositorySupplyCapChange ? (
+        <Input
+          value={form.uiRedeemableDepositorySupplyCap}
+          type="number"
+          min={0}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'uiRedeemableDepositorySupplyCap',
+            })
+          }
+          error={formErrors['uiRedeemableDepositorySupplyCap']}
+        />
+      ) : null}
     </>
   );
 };

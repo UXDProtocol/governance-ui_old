@@ -19,7 +19,7 @@ export const DEPOSITORY_MINTS = {
       decimals: 9,
     },
     SOLEND_USDC: {
-      address: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
+      address: new PublicKey('zVzi5VAf4qMEwzv7NXECVx5v2pQ7xnqVVjCXZwS9XzA'),
       decimals: 6,
     },
   },
@@ -38,6 +38,10 @@ export const DEPOSITORY_MINTS = {
     },
     ETH: {
       address: new PublicKey('2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk'),
+      decimals: 6,
+    },
+    USDC: {
+      address: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
       decimals: 6,
     },
   },

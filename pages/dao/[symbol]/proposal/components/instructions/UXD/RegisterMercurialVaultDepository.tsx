@@ -14,20 +14,19 @@ const schema = yup.object().shape({
     .nullable()
     .required('Governance account is required'),
   collateralName: yup.string().required('Valid Collateral name is required'),
-  insuranceName: yup.string().required('Valid Insurance name is required'),
   mintingFeeInBps: yup
     .number()
-    .moreThan(0, 'Minting fee in bps should be more than 0')
-    .lessThan(255, 'Minting fee in bps should be less than 255')
+    .min(0, 'Minting fee in bps should be min 0')
+    .max(255, 'Minting fee in bps should be max 255')
     .required('Minting fee in bps is required'),
   redeemingFeeInBps: yup
     .number()
-    .moreThan(0, 'Redeeming fee in bps should be more than 0')
-    .lessThan(255, 'Redeeming fee in bps should be less than 255')
+    .min(0, 'Redeeming fee in bps should be min 0')
+    .max(255, 'Redeeming fee in bps should be max 255')
     .required('Redeeming fee in bps is required'),
   uiRedeemableDepositorySupplyCap: yup
     .number()
-    .moreThan(0, 'Redeemable depository supply cap should be more than 0')
+    .min(0, 'Redeemable depository supply cap should be min 0')
     .required('Redeemable depository supply cap is required'),
 });
 

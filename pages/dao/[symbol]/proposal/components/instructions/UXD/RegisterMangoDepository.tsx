@@ -20,7 +20,7 @@ const schema = yup.object().shape({
   insuranceName: yup.string().required('Valid Insurance name is required'),
   uiRedeemableDepositorySupplyCap: yup
     .number()
-    .moreThan(0, 'Redeemable depository supply cap should be more than 0')
+    .min(0, 'Redeemable depository supply cap should be min 0')
     .required('Redeemable depository supply cap is required'),
 });
 

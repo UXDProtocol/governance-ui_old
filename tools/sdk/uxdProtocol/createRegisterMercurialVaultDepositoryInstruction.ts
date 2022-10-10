@@ -34,6 +34,13 @@ const createRegisterMercurialVaultDepositoryInstruction = async ({
 
   const client = uxdClient(uxdProgramId);
 
+  console.log('Register', {
+    mint: collateralMint.toBase58(),
+    name: depositoryMintName,
+    symbol: depositoryMintName,
+    decimals: collateralDecimals,
+  });
+
   const depository = await MercurialVaultDepository.initialize({
     connection: connection.current,
     collateralMint: {

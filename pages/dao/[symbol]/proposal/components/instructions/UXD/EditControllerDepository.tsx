@@ -19,13 +19,13 @@ const schema = yup.object().shape({
   insuranceName: yup.string().required('Valid Insurance name is required'),
   uiQuoteMintAndRedeemSoftCap: yup
     .number()
-    .moreThan(0, 'Quote mint and redeem soft cap should be more than 0'),
+    .min(0, 'Quote mint and redeem soft cap should be min 0'),
   uiRedeemableSoftCap: yup
     .number()
-    .moreThan(0, 'Redeemable soft cap should be more than 0'),
+    .min(0, 'Redeemable soft cap should be min 0'),
   uiRedeemableGlobalSupplyCap: yup
     .number()
-    .moreThan(0, 'Redeemable global supply cap should be more than 0'),
+    .min(0, 'Redeemable global supply cap should be min 0'),
 });
 
 const RegisterMercurialVaultDepository = ({
@@ -96,66 +96,67 @@ const RegisterMercurialVaultDepository = ({
       >
         <SelectOptionList list={getDepositoryMintSymbols(connection.cluster)} />
       </Select>
-
+      <h5>Quote Mint and Redeem Soft Cap</h5>
       <Switch
         checked={quoteMintAndRedeemSoftCapChange}
         onChange={(checked) => setQuoteMintAndRedeemSoftCapChange(checked)}
       />
-
-      <Input
-        label="Quote Mint and Redeem Soft Cap"
-        value={form.uiQuoteMintAndRedeemSoftCap}
-        type="number"
-        min={0}
-        max={10 ** 12}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiQuoteMintAndRedeemSoftCap',
-          })
-        }
-        error={formErrors['uiQuoteMintAndRedeemSoftCap']}
-      />
-
+      {quoteMintAndRedeemSoftCapChange ? (
+        <Input
+          value={form.uiQuoteMintAndRedeemSoftCap}
+          type="number"
+          min={0}
+          max={10 ** 12}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'uiQuoteMintAndRedeemSoftCap',
+            })
+          }
+          error={formErrors['uiQuoteMintAndRedeemSoftCap']}
+        />
+      ) : null}
+      <h5>Redeemable Soft Cap Change</h5>
       <Switch
         checked={redeemableSoftCapChange}
         onChange={(checked) => setRedeemableSoftCapChange(checked)}
       />
-
-      <Input
-        label="Redeemable Soft Cap Change"
-        value={form.uiRedeemableSoftCap}
-        type="number"
-        min={0}
-        max={10 ** 12}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiRedeemableSoftCap',
-          })
-        }
-        error={formErrors['uiRedeemableSoftCap']}
-      />
-
+      {redeemableSoftCapChange ? (
+        <Input
+          value={form.uiRedeemableSoftCap}
+          type="number"
+          min={0}
+          max={10 ** 12}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'uiRedeemableSoftCap',
+            })
+          }
+          error={formErrors['uiRedeemableSoftCap']}
+        />
+      ) : null}
+      <h5>Redeemable Global Supply Cap</h5>
       <Switch
         checked={redeemableGlobalSupplyCapChange}
         onChange={(checked) => setRedeemableGlobalSupplyCapChange(checked)}
       />
-
-      <Input
-        label="Redeemable Global Supply Cap"
-        value={form.uiRedeemableGlobalSupplyCap}
-        type="number"
-        min={0}
-        max={10 ** 12}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiRedeemableGlobalSupplyCap',
-          })
-        }
-        error={formErrors['uiRedeemableGlobalSupplyCap']}
-      />
+      {redeemableGlobalSupplyCapChange ? (
+        <Input
+          label="Redeemable Global Supply Cap"
+          value={form.uiRedeemableGlobalSupplyCap}
+          type="number"
+          min={0}
+          max={10 ** 12}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'uiRedeemableGlobalSupplyCap',
+            })
+          }
+          error={formErrors['uiRedeemableGlobalSupplyCap']}
+        />
+      ) : null}
     </>
   );
 };

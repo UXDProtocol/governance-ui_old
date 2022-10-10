@@ -18,16 +18,15 @@ const schema = yup.object().shape({
   collateralName: yup.string().required('Valid Collateral name is required'),
   mintingFeeInBps: yup
     .number()
-    .moreThan(0, 'Minting fee in bps should be more than 0')
-    .lessThan(255, 'Minting fee in bps should be less than 255'),
+    .min(0, 'Minting fee in bps should be min 0')
+    .max(255, 'Minting fee in bps should be max 255'),
   redeemingFeeInBps: yup
     .number()
-    .moreThan(0, 'Redeeming fee in bps should be more than 0')
-    .lessThan(255, 'Redeeming fee in bps should be less than 255')
-    .required('Redeeming fee in bps is required'),
+    .min(0, 'Redeeming fee in bps should be min 0')
+    .max(255, 'Redeeming fee in bps should be max 255'),
   uiRedeemableDepositorySupplyCap: yup
     .number()
-    .moreThan(0, 'Redeemable depository supply cap should be more than 0'),
+    .min(0, 'Redeemable depository supply cap should be min 0'),
 });
 
 const RegisterMercurialVaultDepository = ({
@@ -97,65 +96,74 @@ const RegisterMercurialVaultDepository = ({
         <SelectOptionList list={getDepositoryMintSymbols(connection.cluster)} />
       </Select>
 
+      <h5>Minting Fees in BPS</h5>
+
       <Switch
         checked={mintingFeesInBpsChange}
         onChange={(checked) => setMintingFeesInBpsChange(checked)}
       />
 
-      <Input
-        label="Minting Fees in BPS"
-        value={form.mintingFeeInBps}
-        type="number"
-        min={0}
-        max={255}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'mintingFeeInBps',
-          })
-        }
-        error={formErrors['mintingFeeInBps']}
-      />
+      {mintingFeesInBpsChange ? (
+        <Input
+          value={form.mintingFeeInBps}
+          type="number"
+          min={0}
+          max={255}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'mintingFeeInBps',
+            })
+          }
+          error={formErrors['mintingFeeInBps']}
+        />
+      ) : null}
+
+      <h5>Redeeming Fees in BPS</h5>
 
       <Switch
         checked={redeemingFeesInBpsChange}
         onChange={(checked) => setRedeemingFeesInBpsChange(checked)}
       />
 
-      <Input
-        label="Redeeming Fees in BPS"
-        value={form.redeemingFeeInBps}
-        type="number"
-        min={0}
-        max={255}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'redeemingFeeInBps',
-          })
-        }
-        error={formErrors['redeemingFeeInBps']}
-      />
+      {redeemingFeesInBpsChange ? (
+        <Input
+          value={form.redeemingFeeInBps}
+          type="number"
+          min={0}
+          max={255}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'redeemingFeeInBps',
+            })
+          }
+          error={formErrors['redeemingFeeInBps']}
+        />
+      ) : null}
+
+      <h5>Redeemable Depository Supply Cap</h5>
 
       <Switch
         checked={redeemableDepositorySupplyCapChange}
         onChange={(checked) => setRedeemableDepositorySupplyCapChange(checked)}
       />
 
-      <Input
-        label="Redeemable Depository Supply Cap"
-        value={form.uiRedeemableDepositorySupplyCap}
-        type="number"
-        min={0}
-        max={10 ** 12}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiRedeemableDepositorySupplyCap',
-          })
-        }
-        error={formErrors['uiRedeemableDepositorySupplyCap']}
-      />
+      {redeemableDepositorySupplyCapChange ? (
+        <Input
+          value={form.uiRedeemableDepositorySupplyCap}
+          type="number"
+          min={0}
+          max={10 ** 12}
+          onChange={(evt) =>
+            handleSetForm({
+              value: evt.target.value,
+              propertyName: 'uiRedeemableDepositorySupplyCap',
+            })
+          }
+          error={formErrors['uiRedeemableDepositorySupplyCap']}
+        />
+      ) : null}
     </>
   );
 };
