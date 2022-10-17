@@ -15,7 +15,7 @@ const createEditMercurialVaultDepositoryInstruction = async ({
   depositoryMintName,
   mintingFeeInBps,
   redeemingFeeInBps,
-  redeemableDepositorySupplyCap,
+  redeemableAmountUnderManagementCap,
 }: {
   connection: ConnectionContext;
   uxdProgramId: PublicKey;
@@ -23,7 +23,7 @@ const createEditMercurialVaultDepositoryInstruction = async ({
   depositoryMintName: string;
   mintingFeeInBps?: number;
   redeemingFeeInBps?: number;
-  redeemableDepositorySupplyCap?: number;
+  redeemableAmountUnderManagementCap?: number;
 }): Promise<TransactionInstruction> => {
   const {
     address: collateralMint,
@@ -48,7 +48,7 @@ const createEditMercurialVaultDepositoryInstruction = async ({
     depository,
     authority,
     {
-      redeemableDepositorySupplyCap,
+      redeemableAmountUnderManagementCap,
       mintingFeeInBps,
       redeemingFeeInBps,
     },

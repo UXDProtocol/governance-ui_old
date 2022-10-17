@@ -16,7 +16,7 @@ const createEditMangoDepositoryInstruction = async ({
   depositoryMintName,
   insuranceMintName,
   quoteMintAndRedeemFee,
-  redeemableDepositorySupplyCap,
+  redeemableAmountUnderManagementCap,
 }: {
   connection: ConnectionContext;
   uxdProgramId: PublicKey;
@@ -24,7 +24,7 @@ const createEditMangoDepositoryInstruction = async ({
   depositoryMintName: string;
   insuranceMintName: string;
   quoteMintAndRedeemFee?: number;
-  redeemableDepositorySupplyCap?: number;
+  redeemableAmountUnderManagementCap?: number;
 }): Promise<TransactionInstruction> => {
   const {
     address: depositoryMint,
@@ -54,7 +54,7 @@ const createEditMangoDepositoryInstruction = async ({
     authority,
     {
       quoteMintAndRedeemFee,
-      redeemableDepositorySupplyCap,
+      redeemableAmountUnderManagementCap,
     },
     Provider.defaultOptions(),
   );

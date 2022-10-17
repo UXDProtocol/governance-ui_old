@@ -230,7 +230,7 @@ export interface UXDRegisterMercurialVaultDepositoryForm {
 export interface UXDEditMercurialVaultDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
-  uiRedeemableDepositorySupplyCap?: number;
+  uiRedeemableAmountUnderManagementCap?: number;
   mintingFeeInBps?: number;
   redeemingFeeInBps?: number;
 }
@@ -240,7 +240,7 @@ export interface UXDEditMangoDepositoryForm {
   collateralName?: string;
   insuranceName?: string;
   quoteMintAndRedeemFee?: number;
-  uiRedeemableDepositorySupplyCap?: number;
+  uiRedeemableAmountUnderManagementCap?: number;
 }
 
 export interface UXDEditControllerForm {

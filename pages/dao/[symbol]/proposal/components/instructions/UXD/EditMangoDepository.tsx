@@ -24,9 +24,9 @@ const schema = yup.object().shape({
     .number()
     .min(0, 'Quote mint and redeem fee should be min 0')
     .max(255, 'Quote mint and redeem fee should be max 255'),
-  uiRedeemableDepositorySupplyCap: yup
+  uiRedeemableAmountUnderManagementCap: yup
     .number()
-    .min(0, 'Redeemable depository supply cap should be min 0'),
+    .min(0, 'Redeemable amount under management cap cap should be min 0'),
 });
 
 const EditMangoDepository = ({
@@ -42,8 +42,8 @@ const EditMangoDepository = ({
   ] = useState<boolean>(false);
 
   const [
-    redeemableDepositorySupplyCapChange,
-    setRedeemableDepositorySupplyCapChange,
+    uiRedeemableAmountUnderManagementCapChange,
+    setUiRedeemableAmountUnderManagementCapChange,
   ] = useState<boolean>(false);
 
   const {
@@ -67,8 +67,8 @@ const EditMangoDepository = ({
         quoteMintAndRedeemFee: quoteMintAndRedeemFeeChange
           ? form.quoteMintAndRedeemFee!
           : undefined,
-        redeemableDepositorySupplyCap: redeemableDepositorySupplyCapChange
-          ? form.uiRedeemableDepositorySupplyCap!
+        redeemableAmountUnderManagementCap: uiRedeemableAmountUnderManagementCapChange
+          ? form.uiRedeemableAmountUnderManagementCap!
           : undefined,
       });
     },
@@ -126,22 +126,24 @@ const EditMangoDepository = ({
       <h5>Redeemable Depository Supply Cap</h5>
 
       <Switch
-        checked={redeemableDepositorySupplyCapChange}
-        onChange={(checked) => setRedeemableDepositorySupplyCapChange(checked)}
+        checked={uiRedeemableAmountUnderManagementCapChange}
+        onChange={(checked) =>
+          setUiRedeemableAmountUnderManagementCapChange(checked)
+        }
       />
 
-      {redeemableDepositorySupplyCapChange ? (
+      {uiRedeemableAmountUnderManagementCapChange ? (
         <Input
-          value={form.uiRedeemableDepositorySupplyCap}
+          value={form.uiRedeemableAmountUnderManagementCap}
           type="number"
           min={0}
           onChange={(evt) =>
             handleSetForm({
               value: evt.target.value,
-              propertyName: 'uiRedeemableDepositorySupplyCap',
+              propertyName: 'uiRedeemableAmountUnderManagementCap',
             })
           }
-          error={formErrors['uiRedeemableDepositorySupplyCap']}
+          error={formErrors['uiRedeemableAmountUnderManagementCap']}
         />
       ) : null}
     </>
