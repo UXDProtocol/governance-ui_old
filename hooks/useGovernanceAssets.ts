@@ -233,6 +233,10 @@ export default function useGovernanceAssets() {
       name: 'Credix',
       image: '/img/credix.jpeg',
     },
+    [PackageEnum.Streamflow]: {
+      name: 'Streamflow',
+      image: '/img/streamflow.jpeg',
+    },
   };
 
   const instructions: Instructions = {
@@ -682,6 +686,11 @@ export default function useGovernanceAssets() {
       name: 'Withdraw',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Credix,
+    },
+    [InstructionEnum.StreamflowCreateStream]: {
+      name: 'Streamflow Create Stream',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Streamflow,
     },
   };
 

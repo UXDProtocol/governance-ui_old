@@ -26,6 +26,7 @@ import { PoolNames as LifinityPoolNames } from '@tools/sdk/lifinity/poolList';
 import { PoolName as DeltafiPoolName } from '@components/SelectDeltafiPool';
 import { WhirlpoolName as OrcaWhirlpoolName } from '@tools/sdk/orca/configuration';
 import { WhirlpoolPositionInfo as OrcaWhirlpoolPositionInfo } from '@tools/sdk/orca/configuration';
+import { OwnedTokenAccountInfo } from '@hooks/useGovernanceUnderlyingTokenAccounts';
 
 export interface FormInstructionData {
   serializedInstruction: string;
@@ -195,6 +196,17 @@ export interface RemoveLiquidityRaydiumForm {
   governedAccount?: GovernedMultiTypeAccount;
   liquidityPool: string;
   amountIn: number;
+}
+
+export interface StreamflowCreateStreamForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  recipient: string;
+  tokenAccount?: OwnedTokenAccountInfo;
+  start: string;
+  depositedAmount: number;
+  releaseAmount: number;
+  amountAtCliff: number;
+  cancelable: boolean;
 }
 
 export interface UXDInitializeControllerForm {
@@ -661,6 +673,7 @@ export enum InstructionEnum {
   SoceanPurchaseBondedTokens,
   SoceanCancelVest,
   SoceanVest,
+  StreamflowCreateStream,
   TribecaCreateEpochGauge,
   TribecaCreateEscrowGovernanceTokenATA,
   TribecaCreateGaugeVote,
@@ -731,6 +744,7 @@ export enum PackageEnum {
   Orca,
   Mercurial,
   Credix,
+  Streamflow,
 }
 
 export type createParams = [

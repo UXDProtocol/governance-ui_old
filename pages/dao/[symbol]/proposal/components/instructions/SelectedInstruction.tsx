@@ -85,6 +85,7 @@ import MercurialPoolWithdraw from './Mercurial/PoolWithdraw';
 import NativeIncreaseComputingBudget from './Native/IncreaseComputingBudget';
 import CredixDeposit from './Credix/Deposit';
 import CredixWithdraw from './Credix/Withdraw';
+import StreamflowCreateStream from './Streamflow/CreateStream';
 
 const SelectedInstruction = ({
   itxType,
@@ -578,6 +579,13 @@ const SelectedInstruction = ({
       return <CredixDeposit index={index} governedAccount={governedAccount} />;
     case InstructionEnum.CredixWithdraw:
       return <CredixWithdraw index={index} governedAccount={governedAccount} />;
+    case InstructionEnum.StreamflowCreateStream:
+      return (
+        <StreamflowCreateStream
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
     default:
       return null;
   }

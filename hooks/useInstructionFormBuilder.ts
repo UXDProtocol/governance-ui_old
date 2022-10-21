@@ -1,7 +1,12 @@
 import { useContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { serializeInstructionToBase64 } from '@solana/spl-governance';
-import { Connection, PublicKey, TransactionInstruction } from '@solana/web3.js';
+import {
+  Connection,
+  Keypair,
+  PublicKey,
+  TransactionInstruction,
+} from '@solana/web3.js';
 import { debounce } from '@utils/debounce';
 import { isFormValid } from '@utils/formValidation';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
@@ -14,6 +19,12 @@ import useGovernedMultiTypeAccounts from './useGovernedMultiTypeAccounts';
 import { EndpointTypes } from '@models/types';
 
 export type SerializedInstruction = string;
+
+type Extra = {
+  itx: TransactionInstruction;
+  signers: Keypair[];
+  prerequisiteInstructions: TransactionInstruction[];
+};
 
 function useInstructionFormBuilder<
   T extends {
@@ -46,7 +57,7 @@ function useInstructionFormBuilder<
     cluster: EndpointTypes;
     wallet: SignerWalletAdapter;
     governedAccountPubkey: PublicKey;
-  }) => Promise<TransactionInstruction | SerializedInstruction>;
+  }) => Promise<TransactionInstruction | SerializedInstruction | Extra>;
   getCustomHoldUpTime?: () => Promise<number>;
   shouldSplitIntoSeparateTxs?: boolean;
 }) {
@@ -89,7 +100,7 @@ function useInstructionFormBuilder<
 
     try {
       const prerequisiteInstructions: TransactionInstruction[] = [];
-
+      const signers: Keypair[] = [];
       const transactionInstructionOrSerializedInstruction = buildInstruction
         ? await buildInstruction({
             form,
@@ -99,13 +110,34 @@ function useInstructionFormBuilder<
             governedAccountPubkey,
           })
         : '';
+      let serializedInstruction;
 
-      const serializedInstruction =
-        typeof transactionInstructionOrSerializedInstruction === 'string'
-          ? transactionInstructionOrSerializedInstruction
-          : serializeInstructionToBase64(
-              transactionInstructionOrSerializedInstruction,
-            );
+      if (typeof transactionInstructionOrSerializedInstruction === 'string') {
+        serializedInstruction = transactionInstructionOrSerializedInstruction;
+      } else {
+        if (
+          transactionInstructionOrSerializedInstruction instanceof
+          TransactionInstruction
+        ) {
+          serializedInstruction = serializeInstructionToBase64(
+            transactionInstructionOrSerializedInstruction,
+          );
+        } else {
+          serializedInstruction = serializeInstructionToBase64(
+            transactionInstructionOrSerializedInstruction.itx,
+          );
+          prerequisiteInstructions.push(
+            ...transactionInstructionOrSerializedInstruction.prerequisiteInstructions,
+          );
+          signers.push(
+            ...transactionInstructionOrSerializedInstruction.signers,
+          );
+        }
+      }
+      console.log(
+        'transactionInstructionOrSerializedInstruction',
+        transactionInstructionOrSerializedInstruction,
+      );
 
       const customHoldUpTime = getCustomHoldUpTime
         ? await getCustomHoldUpTime()
@@ -114,6 +146,7 @@ function useInstructionFormBuilder<
       return {
         serializedInstruction,
         prerequisiteInstructions,
+        signers,
         isValid: true,
         governance: form.governedAccount?.governance,
         customHoldUpTime,

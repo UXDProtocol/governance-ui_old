@@ -61,6 +61,7 @@
     "@solana/web3.js": "^1.34.0",
     "@solana/web3.js-1.41.0": "npm:@solana/web3.js@1.41.0",
     "@solendprotocol/solend-sdk": "^0.4.9",
+    "@streamflow/stream": "^3.0.12",
     "@tippyjs/react": "^4.2.5",
     "@uxd-protocol/uxd-client": "2.0.1",
     "@uxdprotocol/uxd-staking-client": "3.1.0",
