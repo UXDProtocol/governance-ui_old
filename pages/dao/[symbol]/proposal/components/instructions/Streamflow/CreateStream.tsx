@@ -179,12 +179,8 @@ const CreateStream = ({
       cancelable: false,
     },
     schema,
-    buildInstruction: async function ({
-      form,
-      connection,
-      wallet,
-      governedAccountPubkey,
-    }) {
+    shouldSplitIntoSeparateTxs: true,
+    buildInstruction: async function ({ form, connection, wallet }) {
       if (
         !connection ||
         !programId ||
@@ -204,8 +200,10 @@ const CreateStream = ({
 
       const decimals = form.tokenAccount.mintDecimals;
       const tokenMint = form.tokenAccount.mint;
-      const senderAccount = governedAccountPubkey;
-      const partnerPublicKey = governedAccountPubkey;
+      const senderAccount = new PublicKey(
+        'Hb8DfK8Jj2ttBSEEgwR8xt5yPG9ptgNXitR5ByvS3Y2L',
+      );
+      const partnerPublicKey = senderAccount;
       const partnerTokens = await ata(
         tokenMintInfo.publicKey,
         partnerPublicKey,
@@ -216,7 +214,6 @@ const CreateStream = ({
         start = new u64(Math.floor(Date.parse(form.start) / 1000));
       } else [(start = new u64(0))];
       const strmMetadata = Keypair.generate();
-      console.log('strmMetadata key: ', strmMetadata.publicKey.toBase58());
       const [escrowTokens] = await PublicKey.findProgramAddress(
         [Buffer.from('strm'), strmMetadata.publicKey.toBuffer()],
         new PublicKey(STREAMFLOW_PROGRAM_ID),
