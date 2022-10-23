@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from 'components/inputs/Input';
 import Switch from '@components/Switch';
 
@@ -22,13 +22,13 @@ import { StreamflowCreateStreamForm } from '@utils/uiTypes/proposalCreationTypes
 import { BN, createUncheckedStreamInstruction } from '@streamflow/stream';
 import Select from '@components/inputs/Select';
 import { StyledLabel } from '@components/inputs/styles';
-import { GovernedMultiTypeAccount, tryGetMint } from '@utils/tokens';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import tokenService from '@utils/services/token';
-import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
-import TokenAccountSelect from '../../TokenAccountSelect';
 import { ConnectionContext } from '@utils/connection';
 import useWalletStore from 'stores/useWalletStore';
+import useGovernanceAssets from '@hooks/useGovernanceAssets';
+import { ProgramAccount, Governance } from '@solana/spl-governance';
+import AssetAccountSelect from '../../AssetAccountSelect';
 
 const STREAMFLOW_TREASURY_PUBLIC_KEY = new PublicKey(
   '5SEpbdjFK5FxwTvfsGMXVQTD2v4M2c5tyRTxhdsPkgDw',
@@ -155,22 +155,25 @@ const schema = yup.object().shape({
 
 const CreateStream = ({
   index,
-  governedAccount,
+  governance,
 }: {
   index: number;
-  governedAccount?: GovernedMultiTypeAccount;
+  governance: ProgramAccount<Governance> | undefined;
 }) => {
   const connectionCtx = useWalletStore((s) => s.connection);
-
+  const shouldBeGoverned = index !== 0 && governance;
+  const { assetAccounts } = useGovernanceAssets();
+  const [selectedGovernance, setSelectedGovernanceAcc] = useState<
+    ProgramAccount<Governance> | undefined
+  >(governance);
   const {
     form,
     formErrors,
     handleSetForm,
-    governedAccountPubkey,
   } = useInstructionFormBuilder<StreamflowCreateStreamForm>({
     index,
     initialFormValues: {
-      governedAccount,
+      governedAccount: { governance: selectedGovernance },
       recipient: '',
       start: new Date().toISOString(),
       depositedAmount: 0,
@@ -184,30 +187,24 @@ const CreateStream = ({
       if (
         !connection ||
         !programId ||
-        !form.tokenAccount ||
+        !form.tokenAccount?.governance?.account ||
+        !form.tokenAccount?.extensions.token ||
         !wallet?.publicKey
       ) {
         throw new Error('data incomplete');
       }
 
-      const tokenMintInfo = await tryGetMint(
-        connection,
-        form.tokenAccount.mint,
-      );
-      if (!tokenMintInfo?.publicKey) {
-        throw new Error('could not find corresponding token mint');
-      }
+      form.governedAccount = { governance: selectedGovernance };
 
-      const decimals = form.tokenAccount.mintDecimals;
-      const tokenMint = form.tokenAccount.mint;
-      const senderAccount = new PublicKey(
-        'Hb8DfK8Jj2ttBSEEgwR8xt5yPG9ptgNXitR5ByvS3Y2L',
+      const token = getMintMetadata(
+        form.tokenAccount.extensions.token?.account.mint,
       );
+      const decimals = token?.decimals ? token.decimals : 0;
+      const tokenMint = form.tokenAccount.extensions.token?.account.mint;
+      const senderAccount = form.tokenAccount.extensions.token.account.owner;
+
       const partnerPublicKey = senderAccount;
-      const partnerTokens = await ata(
-        tokenMintInfo.publicKey,
-        partnerPublicKey,
-      );
+      const partnerTokens = await ata(tokenMint, partnerPublicKey);
 
       let start;
       if (!startOnApproval) {
@@ -320,9 +317,14 @@ const CreateStream = ({
   const [releaseUnitIdx, setReleaseUnitIdx] = useState<number>(0);
   const [startOnApproval, setStartOnApproval] = useState<boolean>(true);
   // Governance underlying accounts that can be selected as source
-  const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
-    governedAccountPubkey,
-  );
+  // const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
+  //   governedAccountPubkey,
+  // );
+
+  useEffect(() => {
+    setSelectedGovernanceAcc(form.tokenAccount?.governance);
+  }, [form.tokenAccount?.governance.pubkey.toBase58()]);
+
   const setRecipient = (event) => {
     const value = event.target.value;
     handleSetForm({
@@ -372,7 +374,7 @@ const CreateStream = ({
 
   return (
     <>
-      {ownedTokenAccountsInfo && (
+      {/* {ownedTokenAccountsInfo && (
         <TokenAccountSelect
           label="Source Account"
           value={form.tokenAccount?.pubkey.toBase58()}
@@ -385,7 +387,18 @@ const CreateStream = ({
           error={formErrors['tokenAccount']}
           ownedTokenAccountsInfo={ownedTokenAccountsInfo}
         />
-      )}
+      )} */}
+      <AssetAccountSelect
+        label="Token account"
+        assetAccounts={assetAccounts}
+        onChange={(value) => {
+          handleSetForm({ value, propertyName: 'tokenAccount' });
+        }}
+        value={form.tokenAccount}
+        error={formErrors['tokenAccount']}
+        shouldBeGoverned={shouldBeGoverned}
+        governance={governance}
+      />
       <Input
         label="Recipient address"
         value={form.recipient}

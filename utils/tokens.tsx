@@ -26,6 +26,7 @@ import { notify } from './notifications';
 import { NFTWithMint } from './uiTypes/nfts';
 import { BN } from '@project-serum/anchor';
 import { abbreviateAddress } from './formatting';
+import { AssetAccount } from './uiTypes/assets';
 
 export type TokenAccount = AccountInfo;
 export type MintAccount = MintInfo;
@@ -318,6 +319,95 @@ export function getSolAccountLabel(acc?: GovernedTokenAccount) {
     amount = formatMintNaturalAmountAsDecimal(
       acc.mint!.account,
       new BN(acc.solAccount!.lamports),
+    );
+  }
+  return {
+    tokenAccount,
+    tokenName,
+    tokenAccountName,
+    amount,
+    imgUrl,
+  };
+}
+
+export function getAssetTokenAccountLabelInfo(acc: AssetAccount | undefined) {
+  let tokenAccount = '';
+  let tokenName = '';
+  let tokenAccountName = '';
+  let amount = '';
+  let imgUrl = '';
+
+  if (acc?.extensions.token && acc.extensions.mint) {
+    const info = tokenService.getTokenInfo(
+      acc.extensions!.mint!.publicKey.toBase58(),
+    );
+    imgUrl = info?.logoURI ? info.logoURI : '';
+    tokenAccount = acc.extensions.token.publicKey.toBase58();
+    tokenName = info?.name
+      ? info.name
+      : abbreviateAddress(acc.extensions.mint.publicKey);
+    tokenAccountName = getAccountName(acc.extensions.token.publicKey);
+    amount = formatMintNaturalAmountAsDecimal(
+      acc.extensions.mint!.account,
+      acc.extensions.token?.account.amount,
+    );
+  }
+  return {
+    tokenAccount,
+    tokenName,
+    tokenAccountName,
+    amount,
+    imgUrl,
+  };
+}
+
+export function getAssetMintAccountLabelInfo(acc: AssetAccount | undefined) {
+  let account = '';
+  let tokenName = '';
+  let mintAccountName = '';
+  let amount = '';
+  let imgUrl = '';
+  if (acc?.extensions.mint && acc.governance) {
+    const info = tokenService.getTokenInfo(
+      acc.governance.account.governedAccount.toBase58(),
+    );
+    imgUrl = info?.logoURI ? info.logoURI : '';
+    account = acc.governance?.account.governedAccount.toBase58();
+    tokenName = info?.name ? info.name : '';
+    mintAccountName = getAccountName(acc.governance.account.governedAccount);
+    amount = formatMintNaturalAmountAsDecimal(
+      acc.extensions.mint.account,
+      acc?.extensions.mint.account.supply,
+    );
+  }
+  return {
+    account,
+    tokenName,
+    mintAccountName,
+    amount,
+    imgUrl,
+  };
+}
+
+export function getAssetSolAccountLabel(acc: AssetAccount | undefined) {
+  let tokenAccount = '';
+  let tokenName = '';
+  let tokenAccountName = '';
+  let amount = '';
+  let imgUrl = '';
+
+  if (acc?.extensions.mint) {
+    const info = tokenService.getTokenInfo(WSOL_MINT);
+    imgUrl = info?.logoURI ? info.logoURI : '';
+    tokenAccount = acc.extensions.transferAddress!.toBase58();
+    tokenName = 'SOL';
+
+    tokenAccountName = acc.extensions.transferAddress
+      ? getAccountName(acc.extensions.transferAddress)
+      : '';
+    amount = formatMintNaturalAmountAsDecimal(
+      acc.extensions.mint!.account,
+      new BN(acc.extensions.solAccount!.lamports),
     );
   }
   return {

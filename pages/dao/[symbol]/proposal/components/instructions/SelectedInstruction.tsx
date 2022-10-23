@@ -583,7 +583,7 @@ const SelectedInstruction = ({
       return (
         <StreamflowCreateStream
           index={index}
-          governedAccount={governedAccount}
+          governance={governedAccount?.governance}
         />
       );
     default:

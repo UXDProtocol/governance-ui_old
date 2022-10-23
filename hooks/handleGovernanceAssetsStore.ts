@@ -27,7 +27,7 @@ import useRealm from './useRealm';
 export default function handleGovernanceAssetsStore() {
   const route = useRouter();
   const { governances, tokenMints, realmTokenAccounts, realm } = useRealm();
-  const connection = useWalletStore((s) => s.connection.current);
+  const connection = useWalletStore((s) => s.connection);
   const { getGovernancesByAccountTypes } = useGovernanceAssets();
   const tokenGovernances = getGovernancesByAccountTypes([
     GovernanceAccountType.TokenGovernanceV1,
@@ -40,7 +40,7 @@ export default function handleGovernanceAssetsStore() {
   } = useGovernanceAssetsStore();
   useEffect(() => {
     if (realm) {
-      setGovernancesArray(governances);
+      setGovernancesArray(governances, connection, realm);
     }
     if (realm && route.pathname.includes('/params')) {
       setGovernedAccounts(connection, realm);
@@ -76,8 +76,10 @@ export default function handleGovernanceAssetsStore() {
             gov.pubkey,
           );
           transferAddress = solAddress;
-          const resp = await connection.getParsedAccountInfo(solAddress);
-          const mintRentAmount = await connection.getMinimumBalanceForRentExemption(
+          const resp = await connection.current.getParsedAccountInfo(
+            solAddress,
+          );
+          const mintRentAmount = await connection.current.getMinimumBalanceForRentExemption(
             0,
           );
 
@@ -109,7 +111,7 @@ export default function handleGovernanceAssetsStore() {
       if (ukraineGov) {
         const resp = (
           await getProgramAccountsByOwner(
-            connection,
+            connection.current,
             TOKEN_PROGRAM_ID,
             new PublicKey(ukraineDaoTokenAccountsOwnerAddress),
             165,
@@ -124,7 +126,10 @@ export default function handleGovernanceAssetsStore() {
             return { publicKey, account };
           });
         for (const tokenAcc of resp) {
-          const mint = await tryGetMint(connection, tokenAcc.account.mint);
+          const mint = await tryGetMint(
+            connection.current,
+            tokenAcc.account.mint,
+          );
           const obj = {
             governance: ukraineGov,
             token: tokenAcc,

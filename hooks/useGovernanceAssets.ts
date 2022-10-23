@@ -55,6 +55,7 @@ export default function useGovernanceAssets() {
   const governedTokenAccounts = useGovernanceAssetsStore(
     (s) => s.governedTokenAccounts,
   );
+  const assetAccounts = useGovernanceAssetsStore((s) => s.assetAccounts);
   const governancesArray = useGovernanceAssetsStore((s) => s.governancesArray);
 
   const getGovernancesByAccountType = (type: GovernanceAccountType) => {
@@ -734,5 +735,6 @@ export default function useGovernanceAssets() {
     canUseProgramUpgradeInstruction,
     governedTokenAccountsWithoutNfts,
     nftsGovernedTokenAccounts,
+    assetAccounts,
   };
 }

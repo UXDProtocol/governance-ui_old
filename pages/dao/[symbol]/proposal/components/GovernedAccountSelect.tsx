@@ -317,7 +317,7 @@ export default function GovernedAccountSelect<
   value?: T;
   error?: string;
   governedAccounts: T[];
-  shouldBeGoverned?: boolean;
+  shouldBeGoverned?;
   governance?: ProgramAccount<Governance> | null | undefined;
   label?: string;
   noMaxWidth?: boolean;

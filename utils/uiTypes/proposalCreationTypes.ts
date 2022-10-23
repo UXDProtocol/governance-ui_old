@@ -26,7 +26,7 @@ import { PoolNames as LifinityPoolNames } from '@tools/sdk/lifinity/poolList';
 import { PoolName as DeltafiPoolName } from '@components/SelectDeltafiPool';
 import { WhirlpoolName as OrcaWhirlpoolName } from '@tools/sdk/orca/configuration';
 import { WhirlpoolPositionInfo as OrcaWhirlpoolPositionInfo } from '@tools/sdk/orca/configuration';
-import { OwnedTokenAccountInfo } from '@hooks/useGovernanceUnderlyingTokenAccounts';
+import { AssetAccount } from './assets';
 
 export interface FormInstructionData {
   serializedInstruction: string;
@@ -201,7 +201,7 @@ export interface RemoveLiquidityRaydiumForm {
 export interface StreamflowCreateStreamForm {
   governedAccount?: GovernedMultiTypeAccount;
   recipient: string;
-  tokenAccount?: OwnedTokenAccountInfo;
+  tokenAccount?: AssetAccount;
   start: string;
   depositedAmount: number;
   releaseAmount: number;
