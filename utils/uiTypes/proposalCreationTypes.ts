@@ -225,6 +225,13 @@ export interface UXDDepositInsuranceToMangoDepositoryForm {
   insuranceDepositedAmount: number;
 }
 
+export interface UXDMangoReimburseForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  collateralName?: string;
+  insuranceName?: string;
+  token?: string;
+}
+
 export interface UXDWithdrawInsuranceFromMangoDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
@@ -683,6 +690,7 @@ export enum InstructionEnum {
   UXDQuoteRedeemWithMangoDepository,
   UXDSetMangoDepositoryQuoteMintAndRedeemFee,
   UXDSetMangoDepositoryQuoteMintAndRedeemSoftCap,
+  UXDMangoReimburse,
   UXDStakingInitializeStakingCampaign,
   UXDStakingFinalizeStakingCampaign,
   UXDStakingAddStakingOption,
