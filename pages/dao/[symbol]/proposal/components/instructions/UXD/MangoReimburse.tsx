@@ -11,7 +11,17 @@ import SelectOptionList from '../../SelectOptionList';
 import createMangoReimburseInstruction from '@tools/sdk/uxdProtocol/createMangoReimburseInstruction';
 import { PublicKey } from '@solana/web3.js';
 
-type TokenSymbol = 'USDC' | 'WSOL' | 'MNGO' | 'ETH' | 'BTC' | 'SRM';
+type TokenSymbol =
+  | 'USDC'
+  | 'WSOL'
+  | 'MNGO'
+  | 'ETH'
+  | 'BTC'
+  | 'SRM'
+  | 'MSOL'
+  | 'WBNB'
+  | 'USDT'
+  | 'RAY';
 type TokenMap = {
   devnet: {
     [key in TokenSymbol]?: PublicKey;
@@ -35,6 +45,10 @@ const tokenMap: TokenMap = {
     ETH: new PublicKey('2FPyTwcZLUg1MDrwsyoP4D6s1tM7hAkHYRjkNb5w6Pxk'), // Sollet
     BTC: new PublicKey('9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E'), // Sollet
     SRM: new PublicKey('SRMuApVNdxXokk5GT7XD5cUUgXMBCoAz2LHeuAoKWRt'),
+    MSOL: new PublicKey('mSoLzYCxHdYgdzU16g5QSh3i5K3z3KZK7ytfqcJm7So'),
+    WBNB: new PublicKey('9gP2kCy3wA1ctvYWQk75guqXuHfrEomqydHLtcTCqiLa'),
+    USDT: new PublicKey('Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB'),
+    RAY: new PublicKey('4k3Dyjzvzp8eMZWUXbBCjEvwSkkk59S5iCNLY3QrkX6R'),
   },
 };
 
@@ -56,6 +70,7 @@ const schema = yup.object().shape({
   collateralName: yup.string().required('Collateral Name address is required'),
   insuranceName: yup.string().required('Insurance Name address is required'),
   token: yup.string().required('Token mint is required'),
+  authority: yup.string().required('Authority is required'),
 });
 
 const UXDMangoReimburse = ({
@@ -70,6 +85,7 @@ const UXDMangoReimburse = ({
     form,
     formErrors,
     handleSetForm,
+    governedAccountPubkey,
   } = useInstructionFormBuilder<UXDMangoReimburseForm>({
     index,
     initialFormValues: {
@@ -77,7 +93,10 @@ const UXDMangoReimburse = ({
     },
     schema,
     shouldSplitIntoSeparateTxs: true,
-    buildInstruction: async function ({ form, governedAccountPubkey, wallet }) {
+    buildInstruction: async function ({
+      form,
+      /*governedAccountPubkey,*/ wallet,
+    }) {
       return createMangoReimburseInstruction({
         wallet: wallet as any,
         connection,
@@ -86,7 +105,10 @@ const UXDMangoReimburse = ({
         // MANGO REIMBURSE TODO
         // devnet integration test authority
         // authority: new PublicKey('aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC'),
-        authority: governedAccountPubkey,
+        // authority: governedAccountPubkey,
+
+        // Dynamic authority
+        authority: new PublicKey(form.authority!),
 
         depositoryMintName: form.collateralName!,
         insuranceMintName: form.insuranceName!,
@@ -133,6 +155,69 @@ const UXDMangoReimburse = ({
       >
         <SelectOptionList list={Object.keys(tokenMap[connection.cluster])} />
       </Select>
+
+      {governedAccountPubkey ? (
+        <>
+          <Select
+            label="Controller's Authority"
+            value={form.authority}
+            placeholder="Please select..."
+            onChange={(value) =>
+              handleSetForm({ value, propertyName: 'authority' })
+            }
+            error={formErrors['authority']}
+          >
+            <SelectOptionList
+              list={[
+                governedAccountPubkey.toBase58(),
+                'aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC',
+                '8cJ5KH2ExX2rrY6DbzAqrBMDkQxYZfyedB1C4L4osc5N',
+              ]}
+            />
+          </Select>
+          <div>
+            <div>
+              <span className="text-xs text-fgd-3">
+                aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC
+              </span>
+              <span
+                className="text-xs"
+                style={{
+                  marginLeft: '1em',
+                }}
+              >
+                integration test authority
+              </span>
+            </div>
+            <div>
+              <span className="text-xs text-fgd-3">
+                8cJ5KH2ExX2rrY6DbzAqrBMDkQxYZfyedB1C4L4osc5N
+              </span>
+              <span
+                className="text-xs"
+                style={{
+                  marginLeft: '1em',
+                }}
+              >
+                mainnet test program authority
+              </span>
+            </div>
+            <div>
+              <span className="text-xs text-fgd-3">
+                CzZySsi1dRHMitTtNe2P12w3ja2XmfcGgqJBS8ytBhhY
+              </span>
+              <span
+                className="text-xs"
+                style={{
+                  marginLeft: '1em',
+                }}
+              >
+                mainnet UXD program
+              </span>
+            </div>
+          </div>
+        </>
+      ) : null}
     </>
   );
 };

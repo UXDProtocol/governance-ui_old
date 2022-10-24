@@ -480,7 +480,7 @@ export default function useGovernanceAssets() {
     },
     [InstructionEnum.UXDMangoReimburse]: {
       name: 'Mango reimburse',
-      isVisible: canUseUxdInstructions,
+      isVisible: canUseAnyInstruction,
       packageId: PackageEnum.UXD,
       tag: 'beta',
     },

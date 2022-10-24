@@ -230,6 +230,7 @@ export interface UXDMangoReimburseForm {
   collateralName?: string;
   insuranceName?: string;
   token?: string;
+  authority?: string;
 }
 
 export interface UXDWithdrawInsuranceFromMangoDepositoryForm {
