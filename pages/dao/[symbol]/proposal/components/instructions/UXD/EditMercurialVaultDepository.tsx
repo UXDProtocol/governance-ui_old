@@ -65,7 +65,16 @@ const RegisterMercurialVaultDepository = ({
       return createEditMercurialVaultDepositoryInstruction({
         connection,
         uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
+
         authority: governedAccountPubkey,
+
+        // TODO
+        // Temporary authority override for tests with mainnet test program
+        // authority: new PublicKey(
+        //  '8cJ5KH2ExX2rrY6DbzAqrBMDkQxYZfyedB1C4L4osc5N',
+        // ),
+        // ================
+
         depositoryMintName: form.collateralName!,
         mintingFeeInBps: mintingFeesInBpsChange
           ? form.mintingFeeInBps!
