@@ -49,9 +49,8 @@ export type PackageType = Package & {
 };
 
 export default function useGovernanceAssets() {
-  const { ownVoterWeight, realm, symbol, governances } = useRealm();
+  const { ownVoterWeight, realm, governances } = useRealm();
   const connection = useWalletStore((s) => s.connection.current);
-  const cluster = useWalletStore((s) => s.connection.cluster);
   const governedTokenAccounts = useGovernanceAssetsStore(
     (s) => s.governedTokenAccounts,
   );
