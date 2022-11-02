@@ -7,7 +7,7 @@ const ENDPOINTS: EndpointInfo[] = [
     name: 'mainnet',
     url:
       process.env.MAINNET_RPC ||
-      'https://billowing-proud-glitter.solana-mainnet.quiknode.pro/d8d865f9b286d5db05efc5d020dfdcbe0ed4c06f/', // 'https://ssc-dao.genesysgo.net',
+      'https://billowing-proud-glitter.solana-mainnet.quiknode.pro/307dabb422c92b64b9eb75dbe148b3afc651d097', // 'https://ssc-dao.genesysgo.net',
   },
   {
     name: 'devnet',
