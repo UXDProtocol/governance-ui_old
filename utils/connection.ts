@@ -5,14 +5,11 @@ import type { EndpointInfo } from '../@types/types';
 const ENDPOINTS: EndpointInfo[] = [
   {
     name: 'mainnet',
-    url:
-      process.env.MAINNET_RPC ||
-      'https://billowing-proud-glitter.solana-mainnet.quiknode.pro/307dabb422c92b64b9eb75dbe148b3afc651d097', // 'https://ssc-dao.genesysgo.net',
+    url: process.env.MAINNET_RPC || 'https://ssc-dao.genesysgo.net',
   },
   {
     name: 'devnet',
     url: process.env.DEVNET_RPC || 'https://api.devnet.solana.com',
-    //'https://psytrbhymqlkfrhudd.dev.genesysgo.net:8899',
   },
   {
     name: 'localnet',
