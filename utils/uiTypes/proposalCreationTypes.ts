@@ -525,11 +525,28 @@ export interface NativeTransferTokensForm {
   uiAmount?: string;
 }
 
+export interface MapleFinanceLenderUnlockDepositForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  poolName?: MapleFinancePoolName;
+}
+
 export interface MapleFinanceLenderDepositForm {
   governedAccount?: GovernedMultiTypeAccount;
   uiDepositAmount?: number;
   sourceAccount?: string;
   poolName?: MapleFinancePoolName;
+}
+
+export interface MapleFinanceWithdrawalRequestInitializeForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  uiWithdrawSharesAmount?: number;
+  poolName?: MapleFinancePoolName;
+}
+
+export interface MapleFinanceWithdrawalRequestExecuteForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  poolName?: MapleFinancePoolName;
+  destinationAccount?: string;
 }
 
 export interface DeltafiPoolDepositForm {
@@ -736,7 +753,10 @@ export enum InstructionEnum {
   UXDStakingRefillRewardVault,
   UXDStakingMigrateStakingCampaignFromV1ToV2,
   NativeTransferTokensForm,
-  MapleFinanceLenderDepositForm,
+  MapleFinanceLenderDeposit,
+  MapleFinanceWithdrawalRequestInitialize,
+  MapleFinanceLenderUnlockDeposit,
+  MapleFinanceWithdrawalRequestExecute,
   DeltafiPoolDeposit,
   DeltafiCreateLiquidityProvider,
   DeltafiPoolWithdraw,

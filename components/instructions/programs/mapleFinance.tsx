@@ -56,6 +56,75 @@ export const MAPLE_FINANCE_PROGRAM_INSTRUCTIONS = {
           </div>
         );
       },
+
+      [MapleFinance.syrupProgramInstructions.lenderUnlockDeposit]: {
+        name: 'Maple Finance - Lender Unlock Deposit',
+        accounts: [
+          'Lender',
+          'Lender User',
+          'Pool',
+          'Globals',
+          'Locked Shares',
+          'Lender Shares',
+          'Token Program',
+        ],
+        getDataUI: async (
+          _connection: Connection,
+          _data: Uint8Array,
+          _accounts: AccountMetaData[],
+        ) => {
+          return <></>;
+        },
+      },
+
+      [MapleFinance.syrupProgramInstructions.withdrawalRequestInitialize]: {
+        name: 'Maple Finance - Withdrawal Request Initialize',
+        accounts: [
+          'Lender',
+          'Lender Owner',
+          'Pool',
+          'Globals',
+          'Shares Mint',
+          'Lender Share Account',
+          'Withdrawal Request',
+          'Withdrawal Request Locker',
+          'System Program',
+          'Token Program',
+          'Rent',
+        ],
+        getDataUI: async (
+          _connection: Connection,
+          _data: Uint8Array,
+          _accounts: AccountMetaData[],
+        ) => {
+          return <></>;
+        },
+      },
+
+      [MapleFinance.syrupProgramInstructions.withdrawalRequestExecute]: {
+        name: 'Maple Finance - Withdrawal Request Execute',
+        accounts: [
+          'Withdrawal Request',
+          'Lender Owner',
+          'Lender',
+          'Pool',
+          'Globals',
+          'Base Mint',
+          'Pool Locker',
+          'Shares Mint',
+          'Withdrawal Request Locker',
+          'Lender Locker',
+          'System Program',
+          'Token Program',
+        ],
+        getDataUI: async (
+          _connection: Connection,
+          _data: Uint8Array,
+          _accounts: AccountMetaData[],
+        ) => {
+          return <></>;
+        },
+      },
     },
   },
 };

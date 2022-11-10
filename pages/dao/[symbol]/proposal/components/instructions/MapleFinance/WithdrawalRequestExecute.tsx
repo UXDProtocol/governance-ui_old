@@ -1,16 +1,14 @@
 import * as yup from 'yup';
-import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import mapleFinanceConfig, {
   MapleFinance,
 } from '@tools/sdk/mapleFinance/configuration';
-import { lenderDeposit } from '@tools/sdk/mapleFinance/instructions/lenderDeposit';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { MapleFinanceLenderDepositForm } from '@utils/uiTypes/proposalCreationTypes';
-import { uiAmountToNativeBN } from '@tools/sdk/units';
+import { MapleFinanceWithdrawalRequestExecuteForm } from '@utils/uiTypes/proposalCreationTypes';
+import Select from '@components/inputs/Select';
 import TokenAccountSelect from '../../TokenAccountSelect';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
-import Select from '@components/inputs/Select';
+import withdrawalRequestExecute from '@tools/sdk/mapleFinance/instructions/withdrawalRequestExecute';
 import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
@@ -18,15 +16,11 @@ const schema = yup.object().shape({
     .object()
     .nullable()
     .required('Governed account is required'),
-  uiDepositAmount: yup
-    .number()
-    .moreThan(0, 'Deposit amount should be more than 0')
-    .required('Deposit amount is required'),
   poolName: yup.string().required('Pool Name is required'),
-  sourceAccount: yup.string().required('Source account is required'),
+  destinationAccount: yup.string().required('Destination account is required'),
 });
 
-const LenderDeposit = ({
+const WithdrawalRequestExecute = ({
   index,
   governedAccount,
 }: {
@@ -38,7 +32,7 @@ const LenderDeposit = ({
     handleSetForm,
     formErrors,
     governedAccountPubkey,
-  } = useInstructionFormBuilder<MapleFinanceLenderDepositForm>({
+  } = useInstructionFormBuilder<MapleFinanceWithdrawalRequestExecuteForm>({
     index,
     initialFormValues: {
       governedAccount,
@@ -55,15 +49,11 @@ const LenderDeposit = ({
         wallet,
       });
 
-      return lenderDeposit({
+      return withdrawalRequestExecute({
         authority: governedAccountPubkey,
         programs,
-        depositAmount: uiAmountToNativeBN(
-          form.uiDepositAmount!.toString(),
-          MapleFinance.pools[form.poolName!].baseMint.decimals,
-        ),
         poolName: form.poolName!,
-        sourceAccount: new PublicKey(form.sourceAccount!),
+        destinationAccount: new PublicKey(form.destinationAccount!),
       });
     },
   });
@@ -96,12 +86,12 @@ const LenderDeposit = ({
 
       {ownedTokenAccountsInfo && (
         <TokenAccountSelect
-          label="Source Account"
-          value={form.sourceAccount}
+          label="Destination Account"
+          value={form.destinationAccount}
           onChange={(value) =>
-            handleSetForm({ value, propertyName: 'sourceAccount' })
+            handleSetForm({ value, propertyName: 'destinationAccount' })
           }
-          error={formErrors['sourceAccount']}
+          error={formErrors['destinationAccount']}
           ownedTokenAccountsInfo={ownedTokenAccountsInfo}
           filterByMint={
             form.poolName && MapleFinance.pools[form.poolName]
@@ -110,22 +100,8 @@ const LenderDeposit = ({
           }
         />
       )}
-
-      <Input
-        label="Deposit Amount"
-        value={form.uiDepositAmount}
-        type="number"
-        min="0"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiDepositAmount',
-          })
-        }
-        error={formErrors['uiDepositAmount']}
-      />
     </>
   );
 };
 
-export default LenderDeposit;
+export default WithdrawalRequestExecute;

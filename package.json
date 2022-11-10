@@ -32,6 +32,7 @@
     "@friktion-labs/friktion-sdk": "1.1.113",
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.1",
+    "@maplelabs/syrup-sdk": "^2.0.4",
     "@marinade.finance/marinade-ts-sdk": "^2.0.9",
     "@mercurial-finance/dynamic-amm-sdk": "0.0.1-769fc61d.0",
     "@metaplex-foundation/mpl-core": "^0.6.0",

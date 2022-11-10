@@ -70,6 +70,9 @@ import UXDStakingActivateStakingOption from './UXDStaking/ActivateStakingOption'
 import UXDStakingRefillRewardVault from './UXDStaking/RefillRewardVault';
 import TransferTokens from './Native/TransferTokens';
 import MapleFinanceLenderDeposit from './MapleFinance/LenderDeposit';
+import MapleFinanceWithdrawalRequestInitialize from './MapleFinance/WithdrawalRequestInitialize';
+import MapleFinanceLenderUnlockDeposit from './MapleFinance/LenderUnlockDeposit';
+import MapleFinanceWithdrawalRequestExecute from './MapleFinance/WithdrawalRequestExecute';
 import DeltafiPoolDeposit from './Deltafi/Deposit';
 import DeltafiCreateLiquidityProvider from './Deltafi/CreateLiquidityProvider';
 import DeltafiPoolWithdraw from './Deltafi/Withdraw';
@@ -101,9 +104,30 @@ const SelectedInstruction = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   switch (itxType) {
-    case InstructionEnum.MapleFinanceLenderDepositForm:
+    case InstructionEnum.MapleFinanceLenderDeposit:
       return (
         <MapleFinanceLenderDeposit
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.MapleFinanceWithdrawalRequestInitialize:
+      return (
+        <MapleFinanceWithdrawalRequestInitialize
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.MapleFinanceLenderUnlockDeposit:
+      return (
+        <MapleFinanceLenderUnlockDeposit
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.MapleFinanceWithdrawalRequestExecute:
+      return (
+        <MapleFinanceWithdrawalRequestExecute
           index={index}
           governedAccount={governedAccount}
         />

@@ -6,7 +6,7 @@ class UXDProtocolStakingConfiguration {
   public readonly programId: {
     [cluster in EndpointTypes]?: PublicKey;
   } = {
-    devnet: new PublicKey('7LTH42cyxBxC14rdpLtoL2ur8daZzudNk5ozp7uzgy8n'),
+    devnet: new PublicKey('AFZhqjf4KTpxsVGb2J7tHkvcVPEVzLzMk9FhBMTparAk'),
     mainnet: new PublicKey('UXDSkps5NR8Lu1HB5uPLFfuB34hZ6DCk7RhYZZtGzbF'),
   };
 
