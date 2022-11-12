@@ -87,10 +87,14 @@ export default function useGovernanceUnderlyingTokenAccounts(
   const getOwnedTokenAccountsFn = useCallback(async () => {
     if (!connection || !governancePk) return null;
 
+    console.log('>>> getOwnedTokenAccountsFn', governancePk.toBase58());
+
     const accounts = await getOwnedTokenAccounts(
       connection.current,
       governancePk,
     );
+
+    console.log('accounts', accounts);
 
     // Create a map with all token accounts info
     const ownedTokenAccountsInfo = accounts.reduce(
@@ -111,6 +115,8 @@ export default function useGovernanceUnderlyingTokenAccounts(
       },
     );
 
+    console.log('ownedTokenAccountsInfo', ownedTokenAccountsInfo);
+
     const uniqueMintList = [
       ...new Set(Object.values(ownedTokenAccountsInfo).map(({ mint }) => mint)),
     ];
@@ -120,6 +126,8 @@ export default function useGovernanceUnderlyingTokenAccounts(
       uniqueMintList,
       connection.current,
     );
+
+    console.log('mintsInfo', mintsInfo);
 
     // Merge mint info with ownedTokenAccountsInfo
     return Object.entries(ownedTokenAccountsInfo).reduce(
@@ -148,7 +156,7 @@ export default function useGovernanceUnderlyingTokenAccounts(
       },
       {} as OwnedTokenAccountsInfo,
     );
-  }, [connection, governancePk]);
+  }, [connection, governancePk?.toBase58()]);
 
   useEffect(() => {
     getOwnedTokenAccountsFn().then(setOwnedTokenAccountsInfo);

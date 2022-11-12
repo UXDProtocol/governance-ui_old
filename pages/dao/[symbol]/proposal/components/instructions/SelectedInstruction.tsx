@@ -72,6 +72,7 @@ import TransferTokens from './Native/TransferTokens';
 import MapleFinanceLenderDeposit from './MapleFinance/LenderDeposit';
 import MapleFinanceWithdrawalRequestInitialize from './MapleFinance/WithdrawalRequestInitialize';
 import MapleFinanceLenderUnlockDeposit from './MapleFinance/LenderUnlockDeposit';
+import MapleFinanceLenderInitialize from './MapleFinance/LenderInitialize';
 import MapleFinanceWithdrawalRequestExecute from './MapleFinance/WithdrawalRequestExecute';
 import DeltafiPoolDeposit from './Deltafi/Deposit';
 import DeltafiCreateLiquidityProvider from './Deltafi/CreateLiquidityProvider';
@@ -114,6 +115,13 @@ const SelectedInstruction = ({
     case InstructionEnum.MapleFinanceWithdrawalRequestInitialize:
       return (
         <MapleFinanceWithdrawalRequestInitialize
+          index={index}
+          governedAccount={governedAccount}
+        />
+      );
+    case InstructionEnum.MapleFinanceLenderInitialize:
+      return (
+        <MapleFinanceLenderInitialize
           index={index}
           governedAccount={governedAccount}
         />

@@ -33,11 +33,15 @@ const LenderDeposit = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
+  const governedAccountPubkey = new PublicKey(
+    '9uM8UiGnpbVUUo3XMiESD54PDQbdLcwdunqQMebaFu2r',
+  );
+
   const {
     form,
     handleSetForm,
     formErrors,
-    governedAccountPubkey,
+    // governedAccountPubkey,
   } = useInstructionFormBuilder<MapleFinanceLenderDepositForm>({
     index,
     initialFormValues: {
@@ -48,7 +52,7 @@ const LenderDeposit = ({
       form,
       connection,
       wallet,
-      governedAccountPubkey,
+      // governedAccountPubkey,
     }) {
       const programs = mapleFinanceConfig.getMapleFinancePrograms({
         connection,
@@ -68,10 +72,14 @@ const LenderDeposit = ({
     },
   });
 
+  console.log('>>> governedAccountPubkey', governedAccountPubkey.toBase58());
+
   // Governance underlying accounts that can be selected as source
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
     governedAccountPubkey,
   );
+
+  console.log('>>> ownedTokenAccountsInfo', ownedTokenAccountsInfo);
 
   return (
     <>
