@@ -207,18 +207,6 @@ export interface UXDSetRedeemableGlobalSupplyCapForm {
   supplyCap: number;
 }
 
-export interface UXDSetMangoDepositoriesRedeemableSoftCapForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  softCap: number;
-}
-
-export interface UXDRegisterMangoDepositoryForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
-  uiRedeemableDepositorySupplyCap?: number;
-}
-
 export interface UXDRegisterMercurialVaultDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
@@ -235,12 +223,10 @@ export interface UXDEditMercurialVaultDepositoryForm {
   redeemingFeeInBps?: number;
 }
 
-export interface UXDEditMangoDepositoryForm {
+export interface UXDEditIdentityDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
-  quoteMintAndRedeemFee?: number;
   uiRedeemableAmountUnderManagementCap?: number;
+  mintingDisabled: boolean;
 }
 
 export interface UXDEditControllerForm {
@@ -252,20 +238,6 @@ export interface UXDEditControllerForm {
   uiRedeemableGlobalSupplyCap?: number;
 }
 
-export interface UXDDepositInsuranceToMangoDepositoryForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
-  insuranceDepositedAmount: number;
-}
-
-export interface UXDWithdrawInsuranceFromMangoDepositoryForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
-  insuranceWithdrawnAmount: number;
-}
-
 export interface UXDMintWithMercurialVaultDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   uxdProgram?: string;
@@ -273,39 +245,11 @@ export interface UXDMintWithMercurialVaultDepositoryForm {
   uiCollateralAmount?: number;
 }
 
-export interface UXDDisableDepositoryMintingForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
-  disableMinting: boolean;
-}
-
-export interface UXDQuoteMintWithMangoDepositoryForm {
+export interface UXDRedeemFromMercurialVaultDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   uxdProgram?: string;
   collateralName?: string;
-  insuranceName?: string;
-  uiQuoteAmount?: number;
-}
-
-export interface UXDQuoteRedeemWithMangoDepositoryForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  uxdProgram?: string;
-  collateralName?: string;
-  insuranceName?: string;
   uiRedeemableAmount?: number;
-}
-
-export interface UXDSetMangoDepositoryQuoteMintAndRedeemFeeForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
-  uiQuoteMintAndRedeemFee?: number;
-}
-
-export interface UXDSetMangoDepositoryQuoteMintAndRedeemSoftCapForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  softCapUiAmount?: number;
 }
 
 export interface SaberPoolsDepositForm {
@@ -664,6 +608,26 @@ export interface CredixWithdrawForm {
   uiAmount?: number;
 }
 
+export interface UXDInitializeIdentityDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+}
+
+export interface UXDMintWithIdentityDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  uxdProgram?: string;
+  uiCollateralAmount?: number;
+}
+export interface UXDRedeemFromIdentityDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  uxdProgram?: string;
+  uiRedeemableAmount?: number;
+}
+
+export interface UXDReinjectMangoToIdentityDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  collateralName?: string;
+}
+
 export enum InstructionEnum {
   Transfer,
   ProgramUpgrade,
@@ -715,20 +679,16 @@ export enum InstructionEnum {
   TribecaGaugeSetVote,
   UXDInitializeController,
   UXDSetRedeemableGlobalSupplyCap,
-  UXDSetMangoDepositoriesRedeemableSoftCap,
-  UXDRegisterMangoDepository,
-  UXDDepositInsuranceToMangoDepository,
-  UXDWithdrawInsuranceFromMangoDepository,
-  UXDDisableDepositoryMinting,
-  UXDQuoteMintWithMangoDepository,
-  UXDQuoteRedeemWithMangoDepository,
   UXDRegisterMercurialVaultDepository,
   UXDEditMercurialVaultDepository,
   UXDEditController,
-  UXDEditMangoDepository,
   UXDMintWithMercurialVaultDepository,
-  UXDSetMangoDepositoryQuoteMintAndRedeemFee,
-  UXDSetMangoDepositoryQuoteMintAndRedeemSoftCap,
+  UXDInitializeIdentityDepository,
+  UXDMintWithIdentityDepository,
+  UXDRedeemFromIdentityDepository,
+  UXDRedeemFromMercurialVaultDepository,
+  UXDReinjectMangoToIdentityDepository,
+  UXDEditIdentityDepository,
   UXDStakingInitializeStakingCampaign,
   UXDStakingFinalizeStakingCampaign,
   UXDStakingAddStakingOption,
