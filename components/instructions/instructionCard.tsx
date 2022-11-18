@@ -32,6 +32,7 @@ import tokenService from '@utils/services/token';
 import { OrcaConfiguration } from '@tools/sdk/orca/configuration';
 import SecretKeyInput from '@components/SecretKeyInput';
 
+/*
 const aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC = Keypair.fromSecretKey(
   Uint8Array.from([
     197,
@@ -99,7 +100,7 @@ const aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC = Keypair.fromSecretKey(
     146,
     223,
   ]),
-);
+);*/
 
 export default function InstructionCard({
   index,
