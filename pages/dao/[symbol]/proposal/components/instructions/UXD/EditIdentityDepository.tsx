@@ -6,7 +6,7 @@ import Input from '@components/inputs/Input';
 import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditIdentityDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditIdentityDepositoryInstruction';
-import { USDC_DECIMALS } from '@uxd-protocol/uxd-client';
+import { USDC, USDC_DECIMALS } from '@uxd-protocol/uxd-client';
 import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
@@ -61,9 +61,9 @@ const RegisterMercurialVaultDepository = ({
         // ),
         // ================
 
-        collateralMint: new PublicKey(
+        collateralMint: USDC /*new PublicKey(
           '6L9fgyYtbz34JvwvYyL6YzJDAywz9PKGttuZuWyuoqje',
-        ),
+        ),*/,
         collateralMintSymbol: 'USDC',
         collateralMintDecimals: USDC_DECIMALS,
 
