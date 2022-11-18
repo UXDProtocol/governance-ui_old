@@ -5,7 +5,7 @@ import { UXDMintWithIdentityDepositoryForm } from '@utils/uiTypes/proposalCreati
 import Input from '@components/inputs/Input';
 import { PublicKey } from '@solana/web3.js';
 import createMintWithIdentityDepositoryInstruction from '@tools/sdk/uxdProtocol/createMintWithIdentityDepositoryInstruction';
-import { USDC_DECIMALS } from '@uxd-protocol/uxd-client';
+import { USDC, USDC_DECIMALS } from '@uxd-protocol/uxd-client';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -45,9 +45,9 @@ const UXDMintWithIdentityDepository = ({
         user: governedAccountPubkey,
         collateralAmount: form.uiCollateralAmount!,
         payer: wallet.publicKey!,
-        collateralMint: new PublicKey(
+        collateralMint: USDC /*new PublicKey(
           '6L9fgyYtbz34JvwvYyL6YzJDAywz9PKGttuZuWyuoqje',
-        ),
+        ),*/,
         collateralMintSymbol: 'USDC',
         collateralMintDecimals: USDC_DECIMALS,
       });

@@ -7,8 +7,7 @@ import useWalletStore from 'stores/useWalletStore';
 import Select from '@components/inputs/Select';
 import SelectOptionList from '../../SelectOptionList';
 import { getDepositoryMintSymbols } from '@tools/sdk/uxdProtocol/uxdClient';
-import { PublicKey } from '@solana/web3.js';
-import { USDC_DECIMALS } from '@uxd-protocol/uxd-client';
+import { USDC, USDC_DECIMALS } from '@uxd-protocol/uxd-client';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -37,20 +36,17 @@ const ReinjectMangoToIdentityDepository = ({
       governedAccount,
     },
     schema,
-    buildInstruction: async function ({
-      form,
-      wallet /*, governedAccountPubkey*/,
-    }) {
+    buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
       return createReinjectMangoToIdentityDepositoryInstruction({
         connection,
         uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        authority: new PublicKey('aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC'), // governedAccountPubkey,
+        authority: governedAccountPubkey, // new PublicKey('aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC'),
         payer: wallet.publicKey!,
         depositoryMintName: form.collateralName!,
         insuranceMintName: 'USDC',
-        collateralMint: new PublicKey(
+        collateralMint: USDC /*new PublicKey(
           '6L9fgyYtbz34JvwvYyL6YzJDAywz9PKGttuZuWyuoqje',
-        ),
+        ),*/,
         collateralMintSymbol: 'USDC',
         collateralMintDecimals: USDC_DECIMALS,
       });

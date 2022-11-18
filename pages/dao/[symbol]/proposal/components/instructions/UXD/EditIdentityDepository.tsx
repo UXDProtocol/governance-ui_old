@@ -48,11 +48,11 @@ const RegisterMercurialVaultDepository = ({
       mintingDisabled: false,
     },
     schema,
-    buildInstruction: async function ({ form /*, governedAccountPubkey*/ }) {
+    buildInstruction: async function ({ form, governedAccountPubkey }) {
       return createEditIdentityDepositoryInstruction({
         connection,
         uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        authority: new PublicKey('aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC'), // governedAccountPubkey,
+        authority: governedAccountPubkey, // new PublicKey('aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC'),
 
         // TODO
         // Temporary authority override for tests with mainnet test program
