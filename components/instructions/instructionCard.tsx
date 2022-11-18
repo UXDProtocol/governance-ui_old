@@ -111,7 +111,7 @@ export default function InstructionCard({
   proposalInstruction: ProgramAccount<ProposalTransaction>;
 }) {
   const [additionalSigner, setAdditionalSigner] = useState<Keypair | null>(
-    aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC,
+    null, // aca3VWxwBeu8FTZowJ9hfSKGzntjX68EXh1N9xpE1PC,
   );
   const {
     nftsGovernedTokenAccounts,
