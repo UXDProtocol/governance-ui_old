@@ -231,10 +231,6 @@ export interface UXDEditIdentityDepositoryForm {
 
 export interface UXDEditControllerForm {
   governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-  insuranceName?: string;
-  uiQuoteMintAndRedeemSoftCap?: number;
-  uiRedeemableSoftCap?: number;
   uiRedeemableGlobalSupplyCap?: number;
 }
 
