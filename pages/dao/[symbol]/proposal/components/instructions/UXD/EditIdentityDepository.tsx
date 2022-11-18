@@ -7,7 +7,6 @@ import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditIdentityDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditIdentityDepositoryInstruction';
 import { USDC, USDC_DECIMALS } from '@uxd-protocol/uxd-client';
-import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
   governedAccount: yup
