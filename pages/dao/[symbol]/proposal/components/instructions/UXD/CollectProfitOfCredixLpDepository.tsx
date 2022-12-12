@@ -16,10 +16,6 @@ const schema = yup.object().shape({
     .required('Governance account is required'),
   uxdProgram: yup.string().required('UXD Program address is required'),
   collateralName: yup.string().required('Collateral Name address is required'),
-  uiRedeemableAmount: yup
-    .number()
-    .moreThan(0, 'Redeemable amount should be more than 0')
-    .required('Redeemable Amount is required'),
 });
 
 const UXDCollectProfitOfCredixLpDepository = ({
@@ -78,21 +74,6 @@ const UXDCollectProfitOfCredixLpDepository = ({
       >
         <SelectOptionList list={getDepositoryMintSymbols(connection.cluster)} />
       </Select>
-
-      <Input
-        label="Redeemable Amount"
-        value={form.uiRedeemableAmount}
-        type="number"
-        min={0}
-        max={10 ** 12}
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uiRedeemableAmount',
-          })
-        }
-        error={formErrors['uiRedeemableAmount']}
-      />
     </>
   );
 };

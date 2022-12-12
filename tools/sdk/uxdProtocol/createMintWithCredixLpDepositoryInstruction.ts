@@ -2,7 +2,6 @@ import { Provider } from '@project-serum/anchor';
 import { TransactionInstruction, PublicKey } from '@solana/web3.js';
 import {
   Controller,
-  CredixLpDepository,
   UXD_DECIMALS,
 } from '@uxd-protocol/uxd-client';
 import type { ConnectionContext } from 'utils/connection';
