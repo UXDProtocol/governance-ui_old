@@ -312,7 +312,7 @@ const SelectedInstruction = ({
       );
     case InstructionEnum.UXDCollectProfitOfCredixLpDepository:
       return (
-        <UXDRedeemFromCredixLpDepository
+        <UXDCollectProfitOfCredixLpDepository
           index={index}
           governedAccount={governedAccount}
         />
