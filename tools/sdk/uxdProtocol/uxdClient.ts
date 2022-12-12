@@ -2,7 +2,7 @@ import { Cluster } from '@blockworks-foundation/mango-client';
 import { utils } from '@project-serum/anchor';
 import { PublicKey } from '@solana/web3.js';
 import { ConnectionContext } from '@utils/connection';
-import { MangoDepository, UXDClient } from '@uxd-protocol/uxd-client';
+import { UXDClient } from '@uxd-protocol/uxd-client';
 import {
   CredixLpDepository,
 } from '@uxd-protocol/uxd-client';
@@ -130,34 +130,3 @@ export const getCredixLpDepository = (connection: ConnectionContext,  uxdProgram
     credixMarketName: "credix-marketplace",
   });
 }
-
-// We do not need the decimals and names for both depository and insurance
-// in order to register a new mango depository
-// we just set placeholder values
-export const instantiateMangoDepository = ({
-  uxdProgramId,
-  depositoryMint,
-  insuranceMint,
-  depositoryName,
-  depositoryDecimals,
-  insuranceName,
-  insuranceDecimals,
-}: {
-  uxdProgramId: PublicKey;
-  depositoryMint: PublicKey;
-  insuranceMint: PublicKey;
-  depositoryName: string;
-  depositoryDecimals: number;
-  insuranceName: string;
-  insuranceDecimals: number;
-}): MangoDepository => {
-  return new MangoDepository(
-    depositoryMint,
-    depositoryName,
-    depositoryDecimals,
-    insuranceMint,
-    insuranceName,
-    insuranceDecimals,
-    uxdProgramId,
-  );
-};
