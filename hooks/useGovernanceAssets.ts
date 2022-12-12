@@ -499,12 +499,6 @@ export default function useGovernanceAssets() {
       packageId: PackageEnum.UXD,
       tag: 'beta',
     },
-    [InstructionEnum.UXDReinjectMangoToIdentityDepository]: {
-      name: 'Reinject Mango Funds to Identity Depository',
-      isVisible: canUseAnyInstruction,
-      packageId: PackageEnum.UXD,
-      tag: 'beta',
-    },
     [InstructionEnum.UXDEditIdentityDepository]: {
       name: 'Edit Identity Depository',
       isVisible: canUseAnyInstruction,

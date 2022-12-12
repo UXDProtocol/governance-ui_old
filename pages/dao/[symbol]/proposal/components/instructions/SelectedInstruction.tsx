@@ -61,7 +61,6 @@ import UXDRedeemFromIdentityDepository from './UXD/RedeemFromIdentityDepository'
 import UXDRedeemFromMercurialVaultDepository from './UXD/RedeemFromMercurialVaultDepository';
 import UXDRedeemFromCredixLpDepository from './UXD/RedeemFromCredixLpDepository';
 import UXDCollectProfitOfCredixLpDepository from './UXD/CollectProfitOfCredixLpDepository';
-import UXDReinjectMangoToIdentityDepository from './UXD/ReinjectMangoToIdentityDepository';
 import UXDEditIdentityDepository from './UXD/EditIdentityDepository';
 import UXDStakingInitializeStakingCampaign from './UXDStaking/InitializeStakingCampaign';
 import UXDStakingMigrateStakingCampaignFromV1ToV2 from './UXDStaking/MigrateStakingCampaignFromV1ToV2';
@@ -311,9 +310,9 @@ const SelectedInstruction = ({
           governedAccount={governedAccount}
         />
       );
-    case InstructionEnum.UXDReinjectMangoToIdentityDepository:
+    case InstructionEnum.UXDCollectProfitOfCredixLpDepository:
       return (
-        <UXDReinjectMangoToIdentityDepository
+        <UXDRedeemFromCredixLpDepository
           index={index}
           governedAccount={governedAccount}
         />

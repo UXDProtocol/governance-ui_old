@@ -155,27 +155,6 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         );
       },
     },
-    181: {
-      name: 'UXD - Reinject Mango Funds using Identity Depository',
-      accounts: [
-        'Authority',
-        'Payer',
-        'Controller',
-        'Depository',
-        'Collateral Vault',
-        'Mango Depository',
-        'User Collateral',
-        'System Program',
-        'Token Program',
-      ],
-      getDataUI: (
-        _connection: Connection,
-        _data: Uint8Array,
-        _accounts: AccountMetaData[],
-      ) => {
-        return <></>;
-      },
-    },
     228: {
       name: 'UXD - Mint with Mercurial Vault Depository',
       accounts: [

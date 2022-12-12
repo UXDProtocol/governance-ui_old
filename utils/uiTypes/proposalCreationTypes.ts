@@ -655,11 +655,6 @@ export interface UXDRedeemFromIdentityDepositoryForm {
   uiRedeemableAmount?: number;
 }
 
-export interface UXDReinjectMangoToIdentityDepositoryForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  collateralName?: string;
-}
-
 export enum InstructionEnum {
   Transfer,
   ProgramUpgrade,
@@ -724,7 +719,6 @@ export enum InstructionEnum {
   UXDRedeemFromMercurialVaultDepository,
   UXDRedeemFromCredixLpDepository,
   UXDCollectProfitOfCredixLpDepository,
-  UXDReinjectMangoToIdentityDepository,
   UXDEditIdentityDepository,
   UXDStakingInitializeStakingCampaign,
   UXDStakingFinalizeStakingCampaign,
