@@ -6,7 +6,7 @@ import {
   UXD_DECIMALS,
 } from '@uxd-protocol/uxd-client';
 import type { ConnectionContext } from 'utils/connection';
-import { uxdClient, getDepositoryMintInfo } from './uxdClient';
+import { uxdClient, getCredixLpDepository } from './uxdClient';
 
 const createMintWithCredixLpDepositoryInstruction = async ({
   connection,
@@ -23,23 +23,9 @@ const createMintWithCredixLpDepositoryInstruction = async ({
   collateralAmount: number;
   payer: PublicKey;
 }): Promise<TransactionInstruction> => {
-  const {
-    address: collateralMint,
-    decimals: collateralDecimals,
-  } = getDepositoryMintInfo(connection.cluster, depositoryMintName);
-
   const client = uxdClient(uxdProgramId);
 
-  const depository = await CredixLpDepository.initialize({
-    connection: connection.current,
-    collateralMint: {
-      mint: collateralMint,
-      name: depositoryMintName,
-      symbol: depositoryMintName,
-      decimals: collateralDecimals,
-    },
-    uxdProgramId,
-  });
+  const depository = await getCredixLpDepository(connection, uxdProgramId, depositoryMintName);
 
   return client.createMintWithCredixLpDepositoryInstruction(
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),

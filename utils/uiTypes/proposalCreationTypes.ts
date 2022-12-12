@@ -278,6 +278,12 @@ export interface UXDRedeemFromCredixLpDepositoryForm {
   uiRedeemableAmount?: number;
 }
 
+export interface UXDCollectProfitOfCredixLpDepositoryForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  uxdProgram?: string;
+  collateralName?: string;
+}
+
 export interface SaberPoolsDepositForm {
   governedAccount?: GovernedMultiTypeAccount;
   poolName?: SupportedSaberPoolNames;

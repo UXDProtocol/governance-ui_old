@@ -1,7 +1,11 @@
 import { Cluster } from '@blockworks-foundation/mango-client';
 import { utils } from '@project-serum/anchor';
 import { PublicKey } from '@solana/web3.js';
+import { ConnectionContext } from '@utils/connection';
 import { MangoDepository, UXDClient } from '@uxd-protocol/uxd-client';
+import {
+  CredixLpDepository,
+} from '@uxd-protocol/uxd-client';
 
 export const DEPOSITORY_MINTS = {
   devnet: {
@@ -15,6 +19,10 @@ export const DEPOSITORY_MINTS = {
     },
     MERCURIAL_USDC: {
       address: new PublicKey('6L9fgyYtbz34JvwvYyL6YzJDAywz9PKGttuZuWyuoqje'),
+      decimals: 6,
+    },
+    CREDIX_USDC: {
+      address: new PublicKey('Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr'),
       decimals: 6,
     },
   },
@@ -107,6 +115,21 @@ export const getControllerPda = (uxdProgramId: PublicKey): PublicKey => {
     uxdProgramId,
   )[0];
 };
+
+export const getCredixLpDepository = (connection: ConnectionContext,  uxdProgramId: PublicKey, depositoryMintName: string) => {
+  const collateralMintAddress = getDepositoryMintInfo(connection.cluster, depositoryMintName).address;
+  const credixProgramId = connection.cluster == "devnet"
+    ? new PublicKey("CRdXwuY984Au227VnMJ2qvT7gPd83HwARYXcbHfseFKC")
+    : new PublicKey("CRDx2YkdtYtGZXGHZ59wNv1EwKHQndnRc1gT4p8i2vPX");
+  return CredixLpDepository.initialize({
+    connection: connection.current,
+    collateralMint: collateralMintAddress,
+    collateralSymbol: depositoryMintName,
+    uxdProgramId,
+    credixProgramId: credixProgramId,
+    credixMarketName: "credix-marketplace",
+  });
+}
 
 // We do not need the decimals and names for both depository and insurance
 // in order to register a new mango depository
