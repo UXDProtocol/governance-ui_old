@@ -40,7 +40,7 @@ const UXDCollectProfitOfCredixLpDepository = ({
     buildInstruction: async function ({ form, governedAccountPubkey, wallet }) {
       return createCollectProfitOfCredixLpDepositoryInstruction({
         connection,
-        uxdProgramId: new PublicKey(form.uxdProgram!),
+        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
         authority: governedAccountPubkey,
         depositoryMintName: form.collateralName!,
         payer: wallet.publicKey!,
@@ -50,19 +50,6 @@ const UXDCollectProfitOfCredixLpDepository = ({
 
   return (
     <>
-      <Input
-        label="UXD Program"
-        value={form.uxdProgram}
-        type="string"
-        onChange={(evt) =>
-          handleSetForm({
-            value: evt.target.value,
-            propertyName: 'uxdProgram',
-          })
-        }
-        error={formErrors['uxdProgram']}
-      />
-
       <Select
         label="Collateral Name"
         value={form.collateralName}

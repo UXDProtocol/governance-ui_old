@@ -280,7 +280,6 @@ export interface UXDRedeemFromCredixLpDepositoryForm {
 
 export interface UXDCollectProfitOfCredixLpDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
-  uxdProgram?: string;
   collateralName?: string;
 }
 
