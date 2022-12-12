@@ -5,8 +5,6 @@ import { getDepositoryMintSymbols } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { UXDCollectProfitOfCredixLpDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
-import Input from '@components/inputs/Input';
-import { PublicKey } from '@solana/web3.js';
 import createCollectProfitOfCredixLpDepositoryInstruction from '@tools/sdk/uxdProtocol/createCollectProfitOfCredixLpDepositoryInstruction';
 
 const schema = yup.object().shape({
@@ -14,7 +12,6 @@ const schema = yup.object().shape({
     .object()
     .nullable()
     .required('Governance account is required'),
-  uxdProgram: yup.string().required('UXD Program address is required'),
   collateralName: yup.string().required('Collateral Name address is required'),
 });
 
