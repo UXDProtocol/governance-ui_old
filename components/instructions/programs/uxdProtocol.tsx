@@ -202,9 +202,27 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         );
       },
     },
-    216: {
-      name: 'UXD - Set Mango Depository Quote Mint and Redeem Soft Cap',
-      accounts: ['Authority', 'Controller'],
+
+    100000: {
+      name: 'UXD - Register Credix Lp Depository',
+      accounts: [
+        'Authority',
+        'Payer',
+        'Controller',
+        'Depository',
+        'Collateral Mint',
+        'Depository Collateral',
+        'Depository Shares',
+        'Credix Program State',
+        'Credix Global Market State',
+        'Credix Signing Authority',
+        'Credix Liquidity Collateral',
+        'Credix Shares Mint',
+        'System Program',
+        'Token Program',
+        'Associated Token Program',
+        'Rent',
+      ],
       getDataUI: (
         _connection: Connection,
         data: Uint8Array,
@@ -213,20 +231,171 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         const dataLayout = struct([
           u8('instruction'),
           ...ANCHOR_DISCRIMINATOR_LAYOUT,
-          nu64('quoteMintAndRedeemSoftCap'),
+          u8('mintingFeeInBps'),
+          u8('redeemingFeeInBps'),
+          u128('redeemableAmountUnderManagementCap'),
         ]);
-
-        const { quoteMintAndRedeemSoftCap } = dataLayout.decode(
-          Buffer.from(data),
-        ) as any;
-
+        const {
+          mintingFeeInBps,
+          redeemingFeeInBps,
+          redeemableAmountUnderManagementCap,
+        } = dataLayout.decode(Buffer.from(data)) as any;
         return (
           <>
-            <p>{`native quote mint and redeem soft cap: ${quoteMintAndRedeemSoftCap.toLocaleString()}`}</p>
+            <p>{`Minting fee in bps: ${mintingFeeInBps.toString()}`}</p>
+            <p>{`Redeeming fee in bps: ${redeemingFeeInBps.toString()}`}</p>
+            <p>{`Native redeemable amount under management cap: ${redeemableAmountUnderManagementCap.toString()}`}</p>
           </>
         );
       },
     },
+
+    1000001: {
+      name: 'UXD - Mint with Credix Lp Depository',
+      accounts: [
+        'User',
+        'Payer',
+        'Controller',
+        'Depository',
+        'Redeemable Mint',
+        'Collateral Mint',
+        'User Redeemable',
+        'User Collateral',
+        'Depository Collateral',
+        'Depository Shares',
+        'Credix Global Market State',
+        'Credix Signing Authority',
+        'Credix Liquidity Collateral',
+        'Credix Shares Mint',
+        'Credix Pass',
+        'System Program',
+        'Token Program',
+        'Associated Token Program',
+        'Credix Program',
+        'Rent',
+      ],
+      getDataUI: (
+        _connection: Connection,
+        data: Uint8Array,
+        accounts: AccountMetaData[],
+      ) => {
+        const dataLayout = struct([
+          u8('instruction'),
+          ...ANCHOR_DISCRIMINATOR_LAYOUT,
+          nu64('collateralAmount'),
+        ]);
+        const { collateralAmount } = dataLayout.decode(
+          Buffer.from(data),
+        ) as any;
+        const collateralMintName = getSplTokenNameByMint(accounts[5].pubkey);
+        return (
+          <>
+            <p>{`Collateral amount: ${nativeToUi(
+              collateralAmount,
+              6,
+            ).toLocaleString()}`}</p>
+            <p>Collateral mint: {collateralMintName}</p>
+          </>
+        );
+      },
+    },
+
+    1000002: {
+      name: 'UXD - Redeem from Credix Lp Depository',
+      accounts: [
+        'User',
+        'Payer',
+        'Controller',
+        'Depository',
+        'Redeemable Mint',
+        'Collateral Mint',
+        'User Redeemable',
+        'User Collateral',
+        'Depository Collateral',
+        'Depository Shares',
+        'Credix Program State',
+        'Credix Global Market State',
+        'Credix Signing Authority',
+        'Credix Liquidity Collateral',
+        'Credix Shares Mint',
+        'Credix Pass',
+        'Credix Treasury Collateral',
+        'Credix Multisig Key',
+        'Credix Multisig Collateral',
+        'System Program',
+        'Token Program',
+        'Associated Token Program',
+        'Credix Program',
+        'Rent',
+      ],
+      getDataUI: (
+        _connection: Connection,
+        data: Uint8Array,
+        accounts: AccountMetaData[],
+      ) => {
+        const dataLayout = struct([
+          u8('instruction'),
+          ...ANCHOR_DISCRIMINATOR_LAYOUT,
+          nu64('redeemableAmount'),
+        ]);
+        const { redeemableAmount } = dataLayout.decode(
+          Buffer.from(data),
+        ) as any;
+        const redeemableMintName = getSplTokenNameByMint(accounts[4].pubkey);
+        return (
+          <>
+            <p>{`Redeemable amount: ${nativeToUi(
+              redeemableAmount,
+              6,
+            ).toLocaleString()}`}</p>
+            <p>Redeemable mint: {redeemableMintName}</p>
+          </>
+        );
+      },
+    },
+
+    1000003: {
+      name: 'UXD - Collect Profit of Credix Lp Depository',
+      accounts: [
+        'Authority',
+        'Payer',
+        'Controller',
+        'Depository',
+        'Collateral Mint',
+        'Depository Collateral',
+        'Depository Shares',
+        'Credix Program State',
+        'Credix Global Market State',
+        'Credix Signing Authority',
+        'Credix Liquidity Collateral',
+        'Credix Shares Mint',
+        'Credix Pass',
+        'Credix Treasury Collateral',
+        'Credix Multisig Key',
+        'Credix Multisig Collateral',
+        'Authority Collateral',
+        'System Program',
+        'Token Program',
+        'Associated Token Program',
+        'Credix Program',
+        'Rent',
+      ],
+      getDataUI: (
+        _connection: Connection,
+        data: Uint8Array,
+        accounts: AccountMetaData[],
+      ) => {
+        const dataLayout = struct([
+          u8('instruction'),
+          ...ANCHOR_DISCRIMINATOR_LAYOUT,
+        ]);
+        return (
+          <>
+          </>
+        );
+      },
+    },
+
     136: {
       name: 'UXD - Disable Depository Regular Minting',
       accounts: ['Authority', 'Controller', 'Depository'],
@@ -246,29 +415,6 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         return (
           <>
             <p>{`disable: ${disable}`}</p>
-          </>
-        );
-      },
-    },
-    174: {
-      name: 'UXD - Set Mango Depository Quote Mint and Redeem Fee',
-      accounts: ['Authority', 'Controller', 'Depository'],
-      getDataUI: (
-        _connection: Connection,
-        data: Uint8Array,
-        _accounts: AccountMetaData[],
-      ) => {
-        const dataLayout = struct([
-          u8('instruction'),
-          ...ANCHOR_DISCRIMINATOR_LAYOUT,
-          u8('quoteFee'),
-        ]);
-
-        const { quoteFee } = dataLayout.decode(Buffer.from(data)) as any;
-
-        return (
-          <>
-            <p>{`quote Fee: ${quoteFee} bps`}</p>
           </>
         );
       },
@@ -327,64 +473,6 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
             new BN(args.redeemableGlobalSupplyCap.toString()),
             UXD_DECIMALS,
           )}`}</p>
-        );
-      },
-    },
-    213: {
-      name: 'UXD - Set Mango Depositories Redeemable Supply Soft Cap',
-      accounts: ['Authority', 'Controller'],
-      getDataUI: (
-        _connection: Connection,
-        data: Uint8Array,
-        _accounts: AccountMetaData[],
-      ) => {
-        const dataLayout = struct([
-          u8('instruction'),
-          ...ANCHOR_DISCRIMINATOR_LAYOUT,
-          u128('softCap'),
-        ]);
-        const args = dataLayout.decode(Buffer.from(data)) as any;
-
-        return (
-          <p>{`Redeemable Supply Soft Cap: ${nativeAmountToFormattedUiAmount(
-            new BN(args.softCap.toString()),
-            UXD_DECIMALS,
-          )}`}</p>
-        );
-      },
-    },
-    133: {
-      name: 'UXD - Register Mango Depository',
-      accounts: [
-        'Authority',
-        'Payer',
-        'Controller',
-        'Depository',
-        'Collateral Mint', // BTC/ WSOL.....
-        'Quote Mint', // USDC
-        'Mango Account',
-        'Mango Group',
-        'System Program',
-        'Token Program',
-        'Mango Program',
-        'Rent',
-      ],
-      getDataUI: (
-        _connection: Connection,
-        data: Uint8Array,
-        _accounts: AccountMetaData[],
-      ) => {
-        const dataLayout = struct([
-          u8('instruction'),
-          ...ANCHOR_DISCRIMINATOR_LAYOUT,
-          u128('redeemableDepositorySupplyCap'),
-        ]);
-        const { redeemableDepositorySupplyCap } = dataLayout.decode(
-          Buffer.from(data),
-        ) as any;
-
-        return (
-          <p>{`Native redeemable depository supply cap: ${redeemableDepositorySupplyCap.toString()}`}</p>
         );
       },
     },
@@ -508,64 +596,6 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         );
       },
     },
-    7: {
-      name: 'UXD - Edit Mango Depository',
-      accounts: ['Authority', 'Controller', 'Depository'],
-      getDataUI: (
-        _connection: Connection,
-        data: Uint8Array,
-        _accounts: AccountMetaData[],
-      ) => {
-        let quoteMintAndRedeemFeeOption = false;
-        let redeemableDepositorySupplyCapOption = false;
-
-        // Check if options are used or not
-        if (data[8] == 1) {
-          quoteMintAndRedeemFeeOption = true;
-        }
-
-        if (data[9 + (quoteMintAndRedeemFeeOption ? 1 : 0)] == 1) {
-          redeemableDepositorySupplyCapOption = true;
-        }
-
-        const layout: Layout<any>[] = [
-          u8('instruction'),
-          ...ANCHOR_DISCRIMINATOR_LAYOUT,
-        ];
-
-        layout.push(u8('quoteMintAndRedeemFeeOption'));
-        if (quoteMintAndRedeemFeeOption) {
-          layout.push(u8('quoteMintAndRedeemFee'));
-        }
-
-        layout.push(u8('redeemableDepositorySupplyCapOption'));
-        if (redeemableDepositorySupplyCapOption) {
-          layout.push(u128('redeemableDepositorySupplyCap'));
-        }
-
-        const dataLayout = struct(layout);
-
-        const {
-          quoteMintAndRedeemFee,
-          redeemableDepositorySupplyCap,
-        } = dataLayout.decode(Buffer.from(data)) as any;
-
-        return (
-          <>
-            <p>{`Quote mint and redeem fee: ${
-              quoteMintAndRedeemFeeOption
-                ? quoteMintAndRedeemFee.toString()
-                : 'Not used'
-            }`}</p>
-            <p>{`native redeemable depository supply cap: ${
-              redeemableDepositorySupplyCapOption
-                ? redeemableDepositorySupplyCap.toString()
-                : 'Not used'
-            }`}</p>
-          </>
-        );
-      },
-    },
     132: {
       name: 'UXD - Edit Controller',
       accounts: ['Authority', 'Controller'],
@@ -640,110 +670,6 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
                 ? redeemableGlobalSupplyCap.toString()
                 : 'Not used'
             }`}</p>
-          </>
-        );
-      },
-    },
-    198: {
-      name: 'UXD - Deposit Insurance To Mango Depository',
-      accounts: [
-        'Authority',
-        'Controller',
-        'Depository',
-        'Insurance Mint',
-        'Authority Insurance',
-        'Depository Insurance Passthrough Account',
-        'Depository Mango Account',
-        // mango accounts for CPI
-        'Mango Group',
-        'Mango Cache',
-        'Mango Root Bank',
-        'Mango Node Bank',
-        'Mango Vault',
-        //
-        'Token Program',
-        'Mango Program',
-      ],
-      getDataUI: async (
-        _connection: Connection,
-        data: Uint8Array,
-        _accounts: AccountMetaData[],
-      ) => {
-        const dataLayout = struct([
-          u8('instruction'),
-          ...ANCHOR_DISCRIMINATOR_LAYOUT,
-          u64('insuranceAmount'),
-        ]);
-
-        const args = dataLayout.decode(Buffer.from(data)) as any;
-
-        return (
-          <>
-            <p>{`Insurance Amount to deposit: ${nativeAmountToFormattedUiAmount(
-              new BN(args.insuranceAmount.toString()),
-              INSURANCE_MINTS.mainnet.USDC.decimals,
-            )}`}</p>
-          </>
-        );
-      },
-    },
-    227: {
-      name: 'UXD - Withdraw Insurance From Mango Depository',
-      accounts: [
-        'Authority',
-        'Controller',
-        'Depository',
-        'Collateral Mint',
-        'Quote Mint',
-        'Authority Quote',
-        'Depository Mango Account',
-        'Mango Group',
-        'Mango Cache',
-        'Mango Signer',
-        'Mango Root Bank',
-        'Mango Node Bank',
-        'Mango Vault',
-        'System Program',
-        'Token Program',
-        'Mango Program',
-      ],
-      getDataUI: async (
-        connection: Connection,
-        data: Uint8Array,
-        accounts: AccountMetaData[],
-      ) => {
-        const dataLayout = struct([
-          u8('instruction'),
-          ...ANCHOR_DISCRIMINATOR_LAYOUT,
-          nu64('insuranceAmount'),
-        ]);
-
-        const collateralMint = accounts[3].pubkey;
-
-        const args = dataLayout.decode(Buffer.from(data)) as any;
-
-        const mintInfo = await tryGetTokenMint(connection, collateralMint);
-
-        if (!mintInfo) {
-          return (
-            <>
-              <span>Native amount</span>
-              <span className="ml-2">
-                {Number(args.insuranceAmount).toLocaleString()}
-              </span>
-            </>
-          );
-        }
-
-        const uiInsuranceAmount = nativeAmountToFormattedUiAmount(
-          new BN(args.insuranceAmount.toString()),
-          mintInfo.account.decimals,
-        );
-
-        return (
-          <>
-            <span>UI amount</span>
-            <span className="ml-2">{uiInsuranceAmount}</span>
           </>
         );
       },
