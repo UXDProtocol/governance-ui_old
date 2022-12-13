@@ -50,21 +50,6 @@ export const DEPOSITORY_MINTS = {
   },
 };
 
-export const INSURANCE_MINTS = {
-  devnet: {
-    USDC: {
-      address: new PublicKey('8FRFC6MoGGkMFQwngccyu69VnYbzykGeez7ignHVAFSN'),
-      decimals: 6,
-    },
-  },
-  mainnet: {
-    USDC: {
-      address: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'),
-      decimals: 6,
-    },
-  },
-};
-
 export const GOVERNANCE_MINTS = {
   mainnet: {
     USDC: {
@@ -96,14 +81,6 @@ export const getDepositoryMintKey = (
 
 export const getDepositoryToken = (cluster: Cluster, symbol: string) =>
   DEPOSITORY_MINTS[cluster][symbol];
-
-export const getInsuranceMintInfo = (
-  cluster: Cluster,
-  symbol: string,
-): {
-  address: PublicKey;
-  decimals: number;
-} => INSURANCE_MINTS[cluster][symbol];
 
 export const uxdClient = (programId: PublicKey): UXDClient => {
   return new UXDClient(programId);

@@ -2,11 +2,9 @@ import { Connection } from '@solana/web3.js';
 import { struct, u8, nu64, Layout } from 'buffer-layout';
 import { AccountMetaData } from '@solana/spl-governance';
 import { bool, u128, u64 } from '@project-serum/borsh';
-import { INSURANCE_MINTS } from '@tools/sdk/uxdProtocol/uxdClient';
 import { nativeToUi, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
 import { nativeAmountToFormattedUiAmount } from '@tools/sdk/units';
 import { BN } from '@project-serum/anchor';
-import { tryGetTokenMint } from '@utils/tokens';
 import { ANCHOR_DISCRIMINATOR_LAYOUT } from '@utils/helpers';
 import { getSplTokenNameByMint } from '@utils/splTokens';
 
@@ -659,15 +657,12 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
       ],
       getDataUI: (
         _connection: Connection,
-        data: Uint8Array,
+        _data: Uint8Array,
         accounts: AccountMetaData[],
       ) => {
-        const dataLayout = struct([
-          u8('instruction'),
-          ...ANCHOR_DISCRIMINATOR_LAYOUT,
-        ]);
         return (
           <>
+            <p>Profit collected into token account: {accounts[16].pubkey}</p>
           </>
         );
       },
