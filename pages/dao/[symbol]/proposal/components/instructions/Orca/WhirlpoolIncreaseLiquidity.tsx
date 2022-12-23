@@ -58,6 +58,7 @@ const OrcaWhirlpoolIncreaseLiquidity = ({
     governedAccountPubkey,
   } = useInstructionFormBuilder<OrcaWhirlpoolIncreaseLiquidityForm>({
     index,
+    shouldSplitIntoSeparateTxs: true,
     initialFormValues: {
       governedAccount,
     },
@@ -66,6 +67,7 @@ const OrcaWhirlpoolIncreaseLiquidity = ({
       cluster,
       wallet,
       governedAccountPubkey,
+      prerequisiteInstructions,
     }) {
       if (cluster !== 'mainnet') {
         throw new Error('Other cluster than mainnet are not supported yet.');
@@ -83,13 +85,23 @@ const OrcaWhirlpoolIncreaseLiquidity = ({
         throw new Error('No connected wallet');
       }
 
-      return whirlpoolIncreaseLiquidity({
+      const {
+        tickInitializationIxs,
+        increaseLiquidityIx,
+      } = await whirlpoolIncreaseLiquidity({
+        payer: wallet.publicKey,
         whirlpool: selectedWhirlpool,
         position: form.positionInfo!.publicKey,
         uiSlippage: form.uiSlippage!,
         uiAmountTokenA: form.uiAmountTokenA!,
         authority: governedAccountPubkey,
       });
+
+      if (tickInitializationIxs) {
+        tickInitializationIxs.forEach((x) => prerequisiteInstructions.push(x));
+      }
+
+      return increaseLiquidityIx;
     },
   });
 

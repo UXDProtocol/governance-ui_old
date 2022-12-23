@@ -40,12 +40,14 @@ function useInstructionFormBuilder<
     cluster,
     wallet,
     governedAccountPubkey,
+    prerequisiteInstructions,
   }: {
     form: T;
     connection: Connection;
     cluster: EndpointTypes;
     wallet: SignerWalletAdapter;
     governedAccountPubkey: PublicKey;
+    prerequisiteInstructions: TransactionInstruction[];
   }) => Promise<TransactionInstruction | SerializedInstruction>;
   getCustomHoldUpTime?: () => Promise<number>;
   shouldSplitIntoSeparateTxs?: boolean;
@@ -97,6 +99,7 @@ function useInstructionFormBuilder<
             cluster: connection.cluster,
             wallet,
             governedAccountPubkey,
+            prerequisiteInstructions,
           })
         : '';
 

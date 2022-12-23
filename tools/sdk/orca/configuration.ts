@@ -12,7 +12,8 @@ export type WhirlpoolName =
   | 'stSOL_USDC'
   | 'SOL_stSOL'
   | 'mSOL_USDC'
-  | 'SOL_mSOL';
+  | 'SOL_mSOL'
+  | 'UXP_USDC';
 
 export type Whirlpool = {
   displayName: string;
@@ -97,8 +98,12 @@ export class OrcaConfiguration {
       publicKey: new PublicKey('AiMZS5U3JMvpdvsr1KeaMiS354Z1DeSg5XjA4yYRxtFf'),
     },
     SOL_mSOL: {
-      displayName: 'SOL_mSOL',
+      displayName: 'SOL-mSOL',
       publicKey: new PublicKey('HQcY5n2zP6rW74fyFEhWeBd3LnJpBcZechkvJpmdb8cx'),
+    },
+    UXP_USDC: {
+      displayName: 'UXP-USDC',
+      publicKey: new PublicKey('9r5v3ZTSZaRkRANZ5PSxh32ry4udrvtYmxypQG3XJbqN'),
     },
   };
 
@@ -207,7 +212,7 @@ export class OrcaConfiguration {
     // Get all the positions. If a position doesn't exist, return null.
     const positions = await Promise.all(
       potentialPositionsPda.map((potentialPositionPda) =>
-        whirlpool.fetcher.getPosition(potentialPositionPda.publicKey),
+        whirlpool.ctx.fetcher.getPosition(potentialPositionPda.publicKey),
       ),
     );
 

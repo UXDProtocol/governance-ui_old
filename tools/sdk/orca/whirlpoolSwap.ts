@@ -62,7 +62,7 @@ export async function whirlpoolSwap({
         new u64(amountOfInputTokenToSwap),
         Percentage.fromFraction(new u64(uiSlippage), new u64(100)),
         whirlpool.ctx.program.programId,
-        whirlpool.fetcher,
+        whirlpool.ctx.fetcher,
         true,
       );
     }
@@ -88,7 +88,7 @@ export async function whirlpoolSwap({
         new u64(amountOfOutputTokenToReceive),
         Percentage.fromFraction(new u64(uiSlippage), new u64(100)),
         whirlpool.ctx.program.programId,
-        whirlpool.fetcher,
+        whirlpool.ctx.fetcher,
         true,
       );
     }

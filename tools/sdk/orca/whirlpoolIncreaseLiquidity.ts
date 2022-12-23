@@ -1,6 +1,7 @@
 import {
   increaseLiquidityQuoteByInputToken,
   PDAUtil,
+  PositionData,
 } from '@orca-so/whirlpools-sdk';
 import { PublicKey, TransactionInstruction } from '@solana/web3.js';
 
@@ -12,19 +13,48 @@ import Decimal from 'decimal.js';
 import { Percentage } from '@orca-so/sdk';
 import { u64 } from '@solana/spl-token';
 
+async function getTickInitializationIx({
+  payer,
+  whirlpool,
+  positionData,
+}: {
+  payer: PublicKey;
+  whirlpool: WhirlpoolImpl;
+  positionData: PositionData;
+}): Promise<TransactionInstruction[] | null> {
+  const transactionBuilder = await whirlpool.initTickArrayForTicks(
+    [positionData.tickLowerIndex, positionData.tickUpperIndex],
+    payer,
+    true,
+  );
+
+  if (!transactionBuilder) {
+    return null;
+  }
+
+  const transactionPayload = transactionBuilder?.build();
+
+  return [...(await transactionPayload).transaction.instructions];
+}
+
 export async function whirlpoolIncreaseLiquidity({
+  payer,
   whirlpool,
   authority,
   uiAmountTokenA,
   uiSlippage,
   position,
 }: {
+  payer: PublicKey;
   whirlpool: WhirlpoolImpl;
   authority: PublicKey;
   uiAmountTokenA: number;
   uiSlippage: number;
   position: PublicKey;
-}): Promise<TransactionInstruction> {
+}): Promise<{
+  tickInitializationIxs: null | TransactionInstruction[];
+  increaseLiquidityIx: TransactionInstruction;
+}> {
   if (uiSlippage < 0 || uiSlippage > 100) {
     throw new Error('Slippage must be between 0 and 100 included');
   }
@@ -37,7 +67,7 @@ export async function whirlpoolIncreaseLiquidity({
     tokenVaultB,
   } = whirlpool.getData();
 
-  const positionData = await whirlpool.fetcher.getPosition(position, false);
+  const positionData = await whirlpool.ctx.fetcher.getPosition(position, false);
 
   if (!positionData) {
     throw new Error(
@@ -58,6 +88,12 @@ export async function whirlpoolIncreaseLiquidity({
     whirlpool.address,
     whirlpool.ctx.program.programId,
   );
+
+  const tickInitializationIxs = await getTickInitializationIx({
+    payer,
+    whirlpool,
+    positionData,
+  });
 
   const {
     liquidityAmount,
@@ -81,6 +117,12 @@ export async function whirlpoolIncreaseLiquidity({
     tokenMintA,
     tokenMintB,
   ]);
+
+  console.log('Authority', authority.toBase58());
+  console.log('tokenMintA', tokenMintA.toBase58());
+  console.log('tokenOwnerAccountA', tokenOwnerAccountA.toBase58());
+  console.log('tokenMintB', tokenMintB.toBase58());
+  console.log('tokenOwnerAccountB', tokenOwnerAccountB.toBase58());
 
   const increaseLiquidityInstruction = increaseLiquidityIx(
     whirlpool.ctx.program,
@@ -109,5 +151,8 @@ export async function whirlpoolIncreaseLiquidity({
   // because we know the Instruction only contains one instruction, we extract it manually
   const [ix] = increaseLiquidityInstruction.instructions;
 
-  return ix;
+  return {
+    tickInitializationIxs,
+    increaseLiquidityIx: ix,
+  };
 }

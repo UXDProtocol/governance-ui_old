@@ -14,7 +14,7 @@ export async function whirlpoolCollectFees({
   position: PublicKey;
   authority: PublicKey;
 }): Promise<TransactionInstruction> {
-  const positionData = await whirlpool.fetcher.getPosition(position, false);
+  const positionData = await whirlpool.ctx.fetcher.getPosition(position, false);
 
   if (!positionData) {
     throw new Error(
