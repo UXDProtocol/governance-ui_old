@@ -5,8 +5,8 @@ import { getDepositoryMintSymbols } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { UXDRegisterMercurialVaultDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
-import Input from '@components/inputs/Input';
 import createRegisterMercurialVaultDepositoryInstruction from '@tools/sdk/uxdProtocol/createRegisterMercurialVaultDepositoryInstruction';
+import InputNumber from '@components/inputs/InputNumber';
 
 const schema = yup.object().shape({
   governedAccount: yup

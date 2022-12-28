@@ -2,7 +2,6 @@ import * as yup from 'yup';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
 import { UXDEditControllerForm } from '@utils/uiTypes/proposalCreationTypes';
-import Input from '@components/inputs/Input';
 import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditControllerInstruction from '@tools/sdk/uxdProtocol/createEditControllerInstruction';

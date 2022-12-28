@@ -1,5 +1,4 @@
 import * as yup from 'yup';
-import Input from '@components/inputs/Input';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import createInitializeControllerInstruction from '@tools/sdk/uxdProtocol/createInitializeControllerInstruction';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
