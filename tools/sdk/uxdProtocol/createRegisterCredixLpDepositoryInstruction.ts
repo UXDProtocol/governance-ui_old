@@ -28,6 +28,11 @@ const createRegisterCredixLpDepositoryInstruction = async ({
 }): Promise<TransactionInstruction> => {
   const client = uxdClient(uxdProgramId);
 
+  console.log("createRegisterCredixLpDepositoryInstruction.depositoryMintName", depositoryMintName);
+  console.log("createRegisterCredixLpDepositoryInstruction.mintingFeeInBps", mintingFeeInBps);
+  console.log("createRegisterCredixLpDepositoryInstruction.redeemingFeeInBps", redeemingFeeInBps);
+  console.log("createRegisterCredixLpDepositoryInstruction.redeemableDepositorySupplyCap", redeemableDepositorySupplyCap);
+
   const depository = await getCredixLpDepository(connection, uxdProgramId, depositoryMintName);
 
   return client.createRegisterCredixLpDepositoryInstruction(
