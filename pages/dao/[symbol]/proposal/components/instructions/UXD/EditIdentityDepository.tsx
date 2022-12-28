@@ -7,6 +7,7 @@ import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditIdentityDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditIdentityDepositoryInstruction';
 import { USDC, USDC_DECIMALS } from '@uxd-protocol/uxd-client';
+import InputNumber from '@components/inputs/InputNumber';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -117,14 +118,13 @@ const EditIdentityDepository = ({
         }}
       />
       {uiRedeemableAmountUnderManagementCapChange ? (
-        <Input
+        <InputNumber
           value={form.uiRedeemableAmountUnderManagementCap}
-          type="number"
           min={0}
           max={10 ** 12}
-          onChange={(evt) =>
+          onChange={(value) =>
             handleSetForm({
-              value: evt.target.value,
+              value,
               propertyName: 'uiRedeemableAmountUnderManagementCap',
             })
           }

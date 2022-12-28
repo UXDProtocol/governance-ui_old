@@ -8,6 +8,7 @@ import SelectOptionList from '../../SelectOptionList';
 import Input from '@components/inputs/Input';
 import { PublicKey } from '@solana/web3.js';
 import createRedeemFromMercurialVaultDepositoryInstruction from '@tools/sdk/uxdProtocol/createRedeemFromMercurialVaultDepositoryInstruction';
+import InputNumber from '@components/inputs/InputNumber';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -80,15 +81,14 @@ const UXDRedeemFromMercurialVaultDepository = ({
         <SelectOptionList list={getDepositoryMintSymbols(connection.cluster)} />
       </Select>
 
-      <Input
+      <InputNumber
         label="Redeemable Amount"
         value={form.uiRedeemableAmount}
-        type="number"
         min={0}
         max={10 ** 12}
-        onChange={(evt) =>
+        onChange={(value) =>
           handleSetForm({
-            value: evt.target.value,
+            value,
             propertyName: 'uiRedeemableAmount',
           })
         }

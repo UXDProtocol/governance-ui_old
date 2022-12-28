@@ -8,6 +8,7 @@ import SelectOptionList from '../../SelectOptionList';
 import Input from '@components/inputs/Input';
 import { PublicKey } from '@solana/web3.js';
 import createRedeemFromCredixLpDepositoryInstruction from '@tools/sdk/uxdProtocol/createRedeemFromCredixLpDepositoryInstruction';
+import InputNumber from '@components/inputs/InputNumber';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -80,15 +81,14 @@ const UXDRedeemFromCredixLpDepository = ({
         <SelectOptionList list={getDepositoryMintSymbols(connection.cluster)} />
       </Select>
 
-      <Input
+      <InputNumber
         label="Redeemable Amount"
         value={form.uiRedeemableAmount}
-        type="number"
         min={0}
         max={10 ** 12}
-        onChange={(evt) =>
+        onChange={(value) =>
           handleSetForm({
-            value: evt.target.value,
+            value,
             propertyName: 'uiRedeemableAmount',
           })
         }

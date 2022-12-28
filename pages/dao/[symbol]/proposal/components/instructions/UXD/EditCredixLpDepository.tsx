@@ -9,6 +9,7 @@ import Input from '@components/inputs/Input';
 import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditCredixLpDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditCredixLpDepositoryInstruction';
+import InputNumber from '@components/inputs/InputNumber';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -113,14 +114,13 @@ const EditCredixLpDepository = ({
       />
 
       {mintingFeesInBpsChange ? (
-        <Input
+        <InputNumber
           value={form.mintingFeeInBps}
-          type="number"
           min={0}
           max={255}
-          onChange={(evt) =>
+          onChange={(value) =>
             handleSetForm({
-              value: evt.target.value,
+              value,
               propertyName: 'mintingFeeInBps',
             })
           }
@@ -136,14 +136,13 @@ const EditCredixLpDepository = ({
       />
 
       {redeemingFeesInBpsChange ? (
-        <Input
+        <InputNumber
           value={form.redeemingFeeInBps}
-          type="number"
           min={0}
           max={255}
-          onChange={(evt) =>
+          onChange={(value) =>
             handleSetForm({
-              value: evt.target.value,
+              value,
               propertyName: 'redeemingFeeInBps',
             })
           }
@@ -161,14 +160,13 @@ const EditCredixLpDepository = ({
       />
 
       {uiRedeemableAmountUnderManagementCapChange ? (
-        <Input
+        <InputNumber
           value={form.uiRedeemableAmountUnderManagementCap}
-          type="number"
           min={0}
           max={10 ** 12}
-          onChange={(evt) =>
+          onChange={(value) =>
             handleSetForm({
-              value: evt.target.value,
+              value,
               propertyName: 'uiRedeemableAmountUnderManagementCap',
             })
           }

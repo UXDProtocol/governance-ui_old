@@ -84,45 +84,42 @@ const RegisterMercurialVaultDepository = ({
         <SelectOptionList list={getDepositoryMintSymbols(connection.cluster)} />
       </Select>
 
-      <Input
+      <InputNumber
         label="Minting Fees in BPS"
         value={form.mintingFeeInBps}
-        type="number"
         min={0}
         max={255}
-        onChange={(evt) =>
+        onChange={(value) =>
           handleSetForm({
-            value: evt.target.value,
+            value,
             propertyName: 'mintingFeeInBps',
           })
         }
         error={formErrors['mintingFeeInBps']}
       />
 
-      <Input
+      <InputNumber
         label="Redeeming Fees in BPS"
         value={form.redeemingFeeInBps}
-        type="number"
         min={0}
         max={255}
-        onChange={(evt) =>
+        onChange={(value) =>
           handleSetForm({
-            value: evt.target.value,
+            value,
             propertyName: 'redeemingFeeInBps',
           })
         }
         error={formErrors['redeemingFeeInBps']}
       />
 
-      <Input
+      <InputNumber
         label="Redeemable Depository Supply Cap"
         value={form.uiRedeemableDepositorySupplyCap}
-        type="number"
         min={0}
         max={10 ** 12}
-        onChange={(evt) =>
+        onChange={(value) =>
           handleSetForm({
-            value: evt.target.value,
+            value,
             propertyName: 'uiRedeemableDepositorySupplyCap',
           })
         }
