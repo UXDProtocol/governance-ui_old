@@ -104,6 +104,5 @@ export const getCredixLpDepository = (connection: ConnectionContext,  uxdProgram
     collateralSymbol: depositoryMintName,
     uxdProgramId,
     credixProgramId: credixProgramId,
-    credixMarketName: "credix-marketplace",
   });
 }
