@@ -61,6 +61,7 @@ const EditCredixLpDepository = ({
       governedAccount,
     },
     schema,
+    shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({ form, governedAccountPubkey }) {
       return createEditCredixLpDepositoryInstruction({
         connection,

@@ -48,6 +48,7 @@ const RegisterCredixLpDepository = ({
       governedAccount,
     },
     schema,
+    shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({ form, wallet, governedAccountPubkey }) {
       return createRegisterCredixLpDepositoryInstruction({
         connection,
