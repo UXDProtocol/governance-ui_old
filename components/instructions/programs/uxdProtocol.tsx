@@ -479,7 +479,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
       },
     },
 
-    100000: {
+    179: {
       name: 'UXD - Register Credix Lp Depository',
       accounts: [
         'Authority',
@@ -526,7 +526,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
       },
     },
 
-    1000001: {
+    153: {
       name: 'UXD - Mint with Credix Lp Depository',
       accounts: [
         'User',
