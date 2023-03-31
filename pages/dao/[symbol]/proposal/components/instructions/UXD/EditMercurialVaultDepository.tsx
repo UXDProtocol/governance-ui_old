@@ -213,14 +213,14 @@ const EditMercurialVaultDepository = ({
         />
       ) : null}
 
+      <h5>Profits Beneficiary Collateral</h5>
+
       <Switch
         checked={profitsBeneficiaryCollateralChange}
         onChange={(checked) =>
           setProfitsBeneficiaryCollateralChange(checked)
         }
       />
-
-      <h5>Profits Beneficiary Collateral</h5>
 
       {profitsBeneficiaryCollateralChange ? (
         <Input
