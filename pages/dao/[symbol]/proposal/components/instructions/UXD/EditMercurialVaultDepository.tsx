@@ -9,6 +9,7 @@ import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditMercurialVaultDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditMercurialVaultDepositoryInstruction';
 import InputNumber from '@components/inputs/InputNumber';
+import Input from '@components/inputs/Input';
 import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
