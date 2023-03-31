@@ -228,7 +228,7 @@ const EditCredixLpDepository = ({
           type="text"
           onChange={(value) =>
             handleSetForm({
-              new PublicKey(value),
+              value: new PublicKey(value),
               propertyName: 'profitsBeneficiaryCollateral',
             })
           }

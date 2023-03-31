@@ -9,6 +9,7 @@ import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditMercurialVaultDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditMercurialVaultDepositoryInstruction';
 import InputNumber from '@components/inputs/InputNumber';
+import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -226,7 +227,7 @@ const EditMercurialVaultDepository = ({
           type="text"
           onChange={(value) =>
             handleSetForm({
-              new PublicKey(value),
+              value: new PublicKey(value),
               propertyName: 'profitsBeneficiaryCollateral',
             })
           }
