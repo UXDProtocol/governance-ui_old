@@ -3,7 +3,6 @@ import { TransactionInstruction, PublicKey } from '@solana/web3.js';
 import { ConnectionContext } from '@utils/connection';
 import { Controller, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
 import { getCredixLpDepository, uxdClient } from './uxdClient';
-import { PublicKey } from '@solana/web3.js';
 
 const createEditCredixLpDepositoryInstruction = async ({
   connection,

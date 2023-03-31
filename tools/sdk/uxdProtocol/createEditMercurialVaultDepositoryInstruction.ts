@@ -7,7 +7,6 @@ import {
   UXD_DECIMALS,
 } from '@uxd-protocol/uxd-client';
 import { getDepositoryMintInfo, uxdClient } from './uxdClient';
-import { PublicKey } from '@solana/web3.js';
 
 const createEditMercurialVaultDepositoryInstruction = async ({
   connection,
