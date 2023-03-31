@@ -97,7 +97,7 @@ const EditMercurialVaultDepository = ({
         redeemingFeeInBps: redeemingFeesInBpsChange
           ? form.redeemingFeeInBps!
           : undefined,
-          mintingDisabled: mintingDisabledChange
+        mintingDisabled: mintingDisabledChange
           ? form.mintingDisabled!
           : undefined,
         profitsBeneficiaryCollateral: profitsBeneficiaryCollateralChange
@@ -190,49 +190,49 @@ const EditMercurialVaultDepository = ({
       ) : null}
 
 
-<h5>Minting Disabled</h5>
+      <h5>Minting Disabled</h5>
 
-<Switch
-  checked={mintingDisabledChange}
-  onChange={(checked) =>
-    setMintingDisabledChange(checked)
-  }
-/>
+      <Switch
+        checked={mintingDisabledChange}
+        onChange={(checked) =>
+          setMintingDisabledChange(checked)
+        }
+      />
 
-{mintingDisabledChange ? (
-  <Switch
-    checked={form.mintingDisabled}
-    onChange={(value) =>
-      handleSetForm({
-        value,
-        propertyName: 'mintingDisabled',
-      })
-    }
-    error={formErrors['mintingDisabled']}
-  />
-) : null}
+      {mintingDisabledChange ? (
+        <Switch
+          checked={form.mintingDisabled ?? false}
+          onChange={(value) =>
+            handleSetForm({
+              value,
+              propertyName: 'mintingDisabled',
+            })
+          }
+          error={formErrors['mintingDisabled']}
+        />
+      ) : null}
 
-<Switch
-  checked={profitsBeneficiaryCollateralChange}
-  onChange={(checked) =>
-    setProfitsBeneficiaryCollateralChange(checked)
-  }
-/>
+      <Switch
+        checked={profitsBeneficiaryCollateralChange}
+        onChange={(checked) =>
+          setProfitsBeneficiaryCollateralChange(checked)
+        }
+      />
 
-<h5>Profits Beneficiary Collateral</h5>
+      <h5>Profits Beneficiary Collateral</h5>
 
-{profitsBeneficiaryCollateralChange ? (
-  <Input
-    value={form.profitsBeneficiaryCollateral}
-    onChange={(value) =>
-      handleSetForm({
-        new PublicKey(value),
-        propertyName: 'profitsBeneficiaryCollateral',
-      })
-    }
-    error={formErrors['profitsBeneficiaryCollateral']}
-  />
-) : null}
+      {profitsBeneficiaryCollateralChange ? (
+        <Input
+          value={form.profitsBeneficiaryCollateral}
+          onChange={(value) =>
+            handleSetForm({
+              new PublicKey(value),
+              propertyName: 'profitsBeneficiaryCollateral',
+            })
+          }
+          error={formErrors['profitsBeneficiaryCollateral']}
+        />
+      ) : null}
 
     </>
   );

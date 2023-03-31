@@ -203,7 +203,7 @@ const EditCredixLpDepository = ({
 
       {mintingDisabledChange ? (
         <Switch
-          checked={form.mintingDisabled}
+          checked={form.mintingDisabled ?? false}
           onChange={(value) =>
             handleSetForm({
               value,
