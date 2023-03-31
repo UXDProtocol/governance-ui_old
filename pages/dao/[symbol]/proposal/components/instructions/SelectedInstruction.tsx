@@ -309,13 +309,6 @@ const SelectedInstruction = ({
           governedAccount={governedAccount}
         />
       );
-    case InstructionEnum.UXDCollectProfitsOfCredixLpDepository:
-      return (
-        <UXDCollectProfitsOfCredixLpDepository
-          index={index}
-          governedAccount={governedAccount}
-        />
-      );
     case InstructionEnum.UXDEditIdentityDepository:
       return (
         <UXDEditIdentityDepository
