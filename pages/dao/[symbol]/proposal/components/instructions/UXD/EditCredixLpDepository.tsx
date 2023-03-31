@@ -210,7 +210,6 @@ const EditCredixLpDepository = ({
               propertyName: 'mintingDisabled',
             })
           }
-          error={formErrors['mintingDisabled']}
         />
       ) : null}
 

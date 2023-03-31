@@ -208,7 +208,6 @@ const EditMercurialVaultDepository = ({
               propertyName: 'mintingDisabled',
             })
           }
-          error={formErrors['mintingDisabled']}
         />
       ) : null}
 
