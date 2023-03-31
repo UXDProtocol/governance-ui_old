@@ -7,7 +7,7 @@ import {
 import type { ConnectionContext } from 'utils/connection';
 import { uxdClient, getCredixLpDepository } from './uxdClient';
 
-const createCollectProfitOfCredixLpDepositoryInstruction = async ({
+const createCollectProfitsOfCredixLpDepositoryInstruction = async ({
   connection,
   uxdProgramId,
   authority,
@@ -24,7 +24,7 @@ const createCollectProfitOfCredixLpDepositoryInstruction = async ({
 
   const depository = await getCredixLpDepository(connection, uxdProgramId, depositoryMintName);
 
-  return client.createCollectProfitOfCredixLpDepositoryInstruction(
+  return client.createCollectProfitsOfCredixLpDepositoryInstruction(
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     depository,
     authority,
@@ -33,4 +33,4 @@ const createCollectProfitOfCredixLpDepositoryInstruction = async ({
   );
 };
 
-export default createCollectProfitOfCredixLpDepositoryInstruction;
+export default createCollectProfitsOfCredixLpDepositoryInstruction;

@@ -3,9 +3,9 @@ import Select from '@components/inputs/Select';
 import useInstructionFormBuilder from '@hooks/useInstructionFormBuilder';
 import { getDepositoryMintSymbols } from '@tools/sdk/uxdProtocol/uxdClient';
 import { GovernedMultiTypeAccount } from '@utils/tokens';
-import { UXDCollectProfitOfCredixLpDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
+import { UXDCollectProfitsOfCredixLpDepositoryForm } from '@utils/uiTypes/proposalCreationTypes';
 import SelectOptionList from '../../SelectOptionList';
-import createCollectProfitOfCredixLpDepositoryInstruction from '@tools/sdk/uxdProtocol/createCollectProfitOfCredixLpDepositoryInstruction';
+import createCollectProfitsOfCredixLpDepositoryInstruction from '@tools/sdk/uxdProtocol/createCollectProfitsOfCredixLpDepositoryInstruction';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -15,7 +15,7 @@ const schema = yup.object().shape({
   collateralName: yup.string().required('Collateral Name address is required'),
 });
 
-const UXDCollectProfitOfCredixLpDepository = ({
+const UXDCollectProfitsOfCredixLpDepository = ({
   index,
   governedAccount,
 }: {
@@ -27,7 +27,7 @@ const UXDCollectProfitOfCredixLpDepository = ({
     form,
     formErrors,
     handleSetForm,
-  } = useInstructionFormBuilder<UXDCollectProfitOfCredixLpDepositoryForm>({
+  } = useInstructionFormBuilder<UXDCollectProfitsOfCredixLpDepositoryForm>({
     index,
     initialFormValues: {
       governedAccount,
@@ -35,7 +35,7 @@ const UXDCollectProfitOfCredixLpDepository = ({
     schema,
     shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({ form, governedAccountPubkey, wallet }) {
-      return createCollectProfitOfCredixLpDepositoryInstruction({
+      return createCollectProfitsOfCredixLpDepositoryInstruction({
         connection,
         uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
         authority: governedAccountPubkey,
@@ -62,4 +62,4 @@ const UXDCollectProfitOfCredixLpDepository = ({
   );
 };
 
-export default UXDCollectProfitOfCredixLpDepository;
+export default UXDCollectProfitsOfCredixLpDepository;

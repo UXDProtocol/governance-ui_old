@@ -282,7 +282,7 @@ export interface UXDRedeemFromCredixLpDepositoryForm {
   uiRedeemableAmount?: number;
 }
 
-export interface UXDCollectProfitOfCredixLpDepositoryForm {
+export interface UXDCollectProfitsOfCredixLpDepositoryForm {
   governedAccount?: GovernedMultiTypeAccount;
   collateralName?: string;
 }
@@ -721,7 +721,7 @@ export enum InstructionEnum {
   UXDRedeemFromIdentityDepository,
   UXDRedeemFromMercurialVaultDepository,
   UXDRedeemFromCredixLpDepository,
-  UXDCollectProfitOfCredixLpDepository,
+  UXDCollectProfitsOfCredixLpDepository,
   UXDEditIdentityDepository,
   UXDStakingInitializeStakingCampaign,
   UXDStakingFinalizeStakingCampaign,
