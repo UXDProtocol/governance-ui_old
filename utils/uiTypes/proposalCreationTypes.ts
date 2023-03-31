@@ -230,7 +230,7 @@ export interface UXDEditMercurialVaultDepositoryForm {
   mintingFeeInBps?: number;
   redeemingFeeInBps?: number;
   mintingDisabled?: boolean;
-  profitsBeneficiaryCollateral?: PublicKey;
+  profitsBeneficiaryCollateral?: string;
 }
 
 export interface UXDEditCredixLpDepositoryForm {
@@ -240,7 +240,7 @@ export interface UXDEditCredixLpDepositoryForm {
   mintingFeeInBps?: number;
   redeemingFeeInBps?: number;
   mintingDisabled?: boolean;
-  profitsBeneficiaryCollateral?: PublicKey;
+  profitsBeneficiaryCollateral?: string;
 }
 
 export interface UXDEditIdentityDepositoryForm {

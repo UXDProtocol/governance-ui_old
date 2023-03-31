@@ -7,6 +7,7 @@ import {
   UXD_DECIMALS,
 } from '@uxd-protocol/uxd-client';
 import { getDepositoryMintInfo, uxdClient } from './uxdClient';
+import { PublicKey } from '@solana/web3.js';
 
 const createEditMercurialVaultDepositoryInstruction = async ({
   connection,
@@ -27,7 +28,7 @@ const createEditMercurialVaultDepositoryInstruction = async ({
   mintingFeeInBps?: number;
   redeemingFeeInBps?: number;
   mintingDisabled?: boolean;
-  profitsBeneficiaryCollateral?: PublicKey;
+  profitsBeneficiaryCollateral?: string;
 }): Promise<TransactionInstruction> => {
   const {
     address: collateralMint,
@@ -56,7 +57,7 @@ const createEditMercurialVaultDepositoryInstruction = async ({
       mintingFeeInBps,
       redeemingFeeInBps,
       mintingDisabled,
-      profitsBeneficiaryCollateral,
+      profitsBeneficiaryCollateral: new PublicKey(profitsBeneficiaryCollateral),
     },
     Provider.defaultOptions(),
   );

@@ -3,6 +3,7 @@ import { TransactionInstruction, PublicKey } from '@solana/web3.js';
 import { ConnectionContext } from '@utils/connection';
 import { Controller, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
 import { getCredixLpDepository, uxdClient } from './uxdClient';
+import { PublicKey } from '@solana/web3.js';
 
 const createEditCredixLpDepositoryInstruction = async ({
   connection,
@@ -23,7 +24,7 @@ const createEditCredixLpDepositoryInstruction = async ({
   mintingFeeInBps?: number;
   redeemingFeeInBps?: number;
   mintingDisabled?: boolean;
-  profitsBeneficiaryCollateral?: PublicKey;
+  profitsBeneficiaryCollateral?: string;
 }): Promise<TransactionInstruction> => {
   const client = uxdClient(uxdProgramId);
 
@@ -42,7 +43,7 @@ const createEditCredixLpDepositoryInstruction = async ({
       mintingFeeInBps,
       redeemingFeeInBps,
       mintingDisabled,
-      profitsBeneficiaryCollateral,
+      profitsBeneficiaryCollateral: new PublicKey(profitsBeneficiaryCollateral),
     },
     Provider.defaultOptions(),
   );

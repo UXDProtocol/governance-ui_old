@@ -10,7 +10,6 @@ import { useState } from 'react';
 import createEditCredixLpDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditCredixLpDepositoryInstruction';
 import InputNumber from '@components/inputs/InputNumber';
 import Input from '@components/inputs/Input';
-import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -228,7 +227,7 @@ const EditCredixLpDepository = ({
           type="text"
           onChange={(value) =>
             handleSetForm({
-              value: new PublicKey(value),
+              value,
               propertyName: 'profitsBeneficiaryCollateral',
             })
           }
