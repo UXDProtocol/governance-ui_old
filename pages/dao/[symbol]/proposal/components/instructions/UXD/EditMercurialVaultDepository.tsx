@@ -223,6 +223,7 @@ const EditMercurialVaultDepository = ({
       {profitsBeneficiaryCollateralChange ? (
         <Input
           value={form.profitsBeneficiaryCollateral}
+          type="text"
           onChange={(value) =>
             handleSetForm({
               new PublicKey(value),
