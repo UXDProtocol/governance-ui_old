@@ -56,7 +56,7 @@ const createEditMercurialVaultDepositoryInstruction = async ({
       mintingFeeInBps,
       redeemingFeeInBps,
       mintingDisabled,
-      profitsBeneficiaryCollateral: new PublicKey(profitsBeneficiaryCollateral),
+      profitsBeneficiaryCollateral: new PublicKey(profitsBeneficiaryCollateral ?? ""),
     },
     Provider.defaultOptions(),
   );
