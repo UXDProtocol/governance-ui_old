@@ -9,7 +9,6 @@ import Switch from '@components/Switch';
 import { useState } from 'react';
 import createEditCredixLpDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditCredixLpDepositoryInstruction';
 import InputNumber from '@components/inputs/InputNumber';
-import Input from '@components/inputs/Input';
 import InputText from '@components/inputs/InputText';
 
 const schema = yup.object().shape({
