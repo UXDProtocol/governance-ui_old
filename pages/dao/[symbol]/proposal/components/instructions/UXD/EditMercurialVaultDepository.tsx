@@ -10,6 +10,7 @@ import { useState } from 'react';
 import createEditMercurialVaultDepositoryInstruction from '@tools/sdk/uxdProtocol/createEditMercurialVaultDepositoryInstruction';
 import InputNumber from '@components/inputs/InputNumber';
 import Input from '@components/inputs/Input';
+import InputText from '@components/inputs/InputText';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -222,9 +223,8 @@ const EditMercurialVaultDepository = ({
       />
 
       {profitsBeneficiaryCollateralChange ? (
-        <Input
+        <InputText
           value={form.profitsBeneficiaryCollateral}
-          type="text"
           onChange={(value) =>
             handleSetForm({
               value,
