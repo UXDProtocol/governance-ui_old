@@ -1,7 +1,7 @@
 import { Connection } from '@solana/web3.js';
 import { struct, u8, nu64, Layout } from 'buffer-layout';
 import { AccountMetaData } from '@solana/spl-governance';
-import { bool, u128, u64 } from '@project-serum/borsh';
+import { bool, u128, u64, publicKey } from '@project-serum/borsh';
 import { nativeToUi, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
 import { nativeAmountToFormattedUiAmount } from '@tools/sdk/units';
 import { BN } from '@project-serum/anchor';
@@ -333,6 +333,8 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         let redeemableAmountUnderManagementCapOption = false;
         let mintingFeeInBpsOption = false;
         let redeemingFeeInBpsOption = false;
+        let mintingDisabledOption = false;
+        let profitsBeneficiaryCollateralOption = false;
 
         // Check if options are used or not
         if (data[8] == 1) {
@@ -351,6 +353,29 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           ] == 1
         ) {
           redeemingFeeInBpsOption = true;
+        }
+
+        if (
+          data[
+            11 +
+              (redeemableAmountUnderManagementCapOption ? 16 : 0) +
+              (mintingFeeInBpsOption ? 1 : 0) + 
+              (redeemingFeeInBpsOption ? 1 : 0)
+          ] == 1
+        ) {
+          mintingDisabledOption = true;
+        }
+
+        if (
+          data[
+            11 +
+              (redeemableAmountUnderManagementCapOption ? 16 : 0) +
+              (mintingFeeInBpsOption ? 1 : 0) + 
+              (redeemingFeeInBpsOption ? 1 : 0) +
+              (mintingDisabledOption ? 1 : 0)
+          ] == 1
+        ) {
+          profitsBeneficiaryCollateralOption = true;
         }
 
         const layout: Layout<any>[] = [
@@ -373,12 +398,24 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           layout.push(u8('redeemingFeeInBps'));
         }
 
+        layout.push(bool('mintingDisabledOption'));
+        if (mintingDisabledOption) {
+          layout.push(bool('mintingDisabled'));
+        }
+
+        layout.push(publicKey('profitsBeneficiaryCollateralOption'));
+        if (profitsBeneficiaryCollateralOption) {
+          layout.push(publicKey('profitsBeneficiaryCollateral'));
+        }
+
         const dataLayout = struct(layout);
 
         const {
           redeemableAmountUnderManagementCap,
           mintingFeeInBps,
           redeemingFeeInBps,
+          mintingDisabled,
+          profitsBeneficiaryCollateral,
         } = dataLayout.decode(Buffer.from(data)) as any;
 
         return (
@@ -394,6 +431,16 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
             <p>{`Redeeming fee in bps: ${
               redeemingFeeInBpsOption
                 ? redeemingFeeInBps.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Minting disabled: ${
+              mintingDisabledOption
+                ? mintingDisabled.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Profits beneficiary collateral: ${
+              profitsBeneficiaryCollateralOption
+                ? profitsBeneficiaryCollateral.toString()
                 : 'Not used'
             }`}</p>
           </>
@@ -587,6 +634,8 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         let redeemableAmountUnderManagementCapOption = false;
         let mintingFeeInBpsOption = false;
         let redeemingFeeInBpsOption = false;
+        let mintingDisabledOption = false;
+        let profitsBeneficiaryCollateralOption = false;
 
         // Check if options are used or not
         if (data[8] == 1) {
@@ -607,6 +656,29 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           redeemingFeeInBpsOption = true;
         }
 
+        if (
+          data[
+            11 +
+              (redeemableAmountUnderManagementCapOption ? 16 : 0) +
+              (mintingFeeInBpsOption ? 1 : 0) + 
+              (redeemingFeeInBpsOption ? 1 : 0)
+          ] == 1
+        ) {
+          mintingDisabledOption = true;
+        }
+
+        if (
+          data[
+            11 +
+              (redeemableAmountUnderManagementCapOption ? 16 : 0) +
+              (mintingFeeInBpsOption ? 1 : 0) + 
+              (redeemingFeeInBpsOption ? 1 : 0) +
+              (mintingDisabledOption ? 1 : 0)
+          ] == 1
+        ) {
+          profitsBeneficiaryCollateralOption = true;
+        }
+
         const layout: Layout<any>[] = [
           u8('instruction'),
           ...ANCHOR_DISCRIMINATOR_LAYOUT,
@@ -620,11 +692,21 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         layout.push(u8('mintingFeeInBpsOption'));
         if (mintingFeeInBpsOption) {
           layout.push(u8('mintingFeeInBps'));
-        }
+        }c
 
         layout.push(u8('redeemingFeeInBpsOption'));
         if (redeemingFeeInBpsOption) {
           layout.push(u8('redeemingFeeInBps'));
+        }
+
+        layout.push(bool('mintingDisabledOption'));
+        if (mintingDisabledOption) {
+          layout.push(bool('mintingDisabled'));
+        }
+
+        layout.push(publicKey('profitsBeneficiaryCollateralOption'));
+        if (profitsBeneficiaryCollateralOption) {
+          layout.push(publicKey('profitsBeneficiaryCollateral'));
         }
 
         const dataLayout = struct(layout);
@@ -633,6 +715,8 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           redeemableAmountUnderManagementCap,
           mintingFeeInBps,
           redeemingFeeInBps,
+          mintingDisabled,
+          profitsBeneficiaryCollateral,
         } = dataLayout.decode(Buffer.from(data)) as any;
 
         return (
@@ -648,6 +732,16 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
             <p>{`Redeeming fee in bps: ${
               redeemingFeeInBpsOption
                 ? redeemingFeeInBps.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Minting disabled: ${
+              mintingDisabledOption
+                ? mintingDisabled.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Profits beneficiary collateral: ${
+              profitsBeneficiaryCollateralOption
+                ? profitsBeneficiaryCollateral.toString()
                 : 'Not used'
             }`}</p>
           </>
