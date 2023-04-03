@@ -368,7 +368,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
 
         if (
           data[
-            11 +
+            12 +
               (redeemableAmountUnderManagementCapOption ? 16 : 0) +
               (mintingFeeInBpsOption ? 1 : 0) + 
               (redeemingFeeInBpsOption ? 1 : 0) +
@@ -669,7 +669,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
 
         if (
           data[
-            11 +
+            12 +
               (redeemableAmountUnderManagementCapOption ? 16 : 0) +
               (mintingFeeInBpsOption ? 1 : 0) + 
               (redeemingFeeInBpsOption ? 1 : 0) +
