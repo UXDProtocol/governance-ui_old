@@ -692,7 +692,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         layout.push(u8('mintingFeeInBpsOption'));
         if (mintingFeeInBpsOption) {
           layout.push(u8('mintingFeeInBps'));
-        }c
+        }
 
         layout.push(u8('redeemingFeeInBpsOption'));
         if (redeemingFeeInBpsOption) {
