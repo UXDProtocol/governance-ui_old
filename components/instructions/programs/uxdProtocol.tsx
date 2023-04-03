@@ -398,12 +398,12 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           layout.push(u8('redeemingFeeInBps'));
         }
 
-        layout.push(bool('mintingDisabledOption'));
+        layout.push(u8('mintingDisabledOption'));
         if (mintingDisabledOption) {
           layout.push(bool('mintingDisabled'));
         }
 
-        layout.push(publicKey('profitsBeneficiaryCollateralOption'));
+        layout.push(u8('profitsBeneficiaryCollateralOption'));
         if (profitsBeneficiaryCollateralOption) {
           layout.push(publicKey('profitsBeneficiaryCollateral'));
         }
@@ -699,12 +699,12 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           layout.push(u8('redeemingFeeInBps'));
         }
 
-        layout.push(bool('mintingDisabledOption'));
+        layout.push(u8('mintingDisabledOption'));
         if (mintingDisabledOption) {
           layout.push(bool('mintingDisabled'));
         }
 
-        layout.push(publicKey('profitsBeneficiaryCollateralOption'));
+        layout.push(u8('profitsBeneficiaryCollateralOption'));
         if (profitsBeneficiaryCollateralOption) {
           layout.push(publicKey('profitsBeneficiaryCollateral'));
         }
