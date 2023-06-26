@@ -1,5 +1,5 @@
 import { Connection } from '@solana/web3.js';
-import { struct, u8, nu64, Layout } from 'buffer-layout';
+import { struct, u8, nu64, Layout, u16 } from 'buffer-layout';
 import { AccountMetaData } from '@solana/spl-governance';
 import { bool, u128, u64, publicKey } from '@project-serum/borsh';
 import { nativeToUi, UXD_DECIMALS } from '@uxd-protocol/uxd-client';
@@ -455,27 +455,27 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
         data: Uint8Array,
         _accounts: AccountMetaData[],
       ) => {
-        let quoteMintAndRedeemSoftCapOption = false;
-        let redeemableSoftCapOption = false;
         let redeemableGlobalSupplyCapOption = false;
+        let depositoriesRoutingWeightBpsOption = false;
+        let routerDepositoriesOption = false;
 
         // Check if options are used or not
         if (data[8] == 1) {
-          quoteMintAndRedeemSoftCapOption = true;
+          redeemableGlobalSupplyCapOption = true;
         }
 
-        if (data[9 + (quoteMintAndRedeemSoftCapOption ? 8 : 0)] == 1) {
-          redeemableSoftCapOption = true;
+        if (data[9 + (redeemableGlobalSupplyCapOption ? 8 : 0)] == 1) {
+          depositoriesRoutingWeightBpsOption = true;
         }
 
         if (
           data[
             10 +
-              (quoteMintAndRedeemSoftCapOption ? 8 : 0) +
-              (redeemableSoftCapOption ? 8 : 0)
+              (redeemableGlobalSupplyCapOption ? 8 : 0) +
+              (depositoriesRoutingWeightBpsOption ? 2 * 3 : 0)
           ] == 1
         ) {
-          redeemableGlobalSupplyCapOption = true;
+          routerDepositoriesOption = true;
         }
 
         const layout: Layout<any>[] = [
@@ -483,42 +483,72 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           ...ANCHOR_DISCRIMINATOR_LAYOUT,
         ];
 
-        layout.push(u8('quoteMintAndRedeemSoftCapOption'));
-        if (quoteMintAndRedeemSoftCapOption) {
-          layout.push(u64('quoteMintAndRedeemSoftCap'));
-        }
-
-        layout.push(u8('redeemableSoftCapOption'));
-        if (redeemableSoftCapOption) {
-          layout.push(u64('redeemableSoftCap'));
-        }
-
         layout.push(u8('redeemableGlobalSupplyCapOption'));
         if (redeemableGlobalSupplyCapOption) {
-          layout.push(u128('redeemableGlobalSupplyCap'));
+          layout.push(u64('redeemableGlobalSupplyCap'));
+        }
+
+        layout.push(u8('depositoriesRoutingWeightBpsOption'));
+        if (depositoriesRoutingWeightBpsOption) {
+          layout.push(u16('identityDepositoryWeightBps'));
+          layout.push(u16('mercurialVaultDepositoryWeightBps'));
+          layout.push(u16('credixLpDepositoryWeightBps'));
+        }
+
+        layout.push(u8('routerDepositoriesOption'));
+        if (routerDepositoriesOption) {
+          layout.push(publicKey('identityDepository'));
+          layout.push(publicKey('mercurialVaultDepository'));
+          layout.push(publicKey('credixLpDepository'));
         }
 
         const dataLayout = struct(layout);
 
         const {
-          quoteMintAndRedeemSoftCap,
-          redeemableSoftCap,
           redeemableGlobalSupplyCap,
+          identityDepositoryWeightBps,
+          mercurialVaultDepositoryWeightBps,
+          credixLpDepositoryWeightBps,
+          identityDepository,
+          mercurialVaultDepository,
+          credixLpDepository,
         } = dataLayout.decode(Buffer.from(data)) as any;
 
         return (
           <>
-            <p>{`Native quote mint and redeem soft cap: ${
-              quoteMintAndRedeemSoftCap
-                ? quoteMintAndRedeemSoftCap.toString()
-                : 'Not used'
-            }`}</p>
-            <p>{`Native redeemable soft cap: ${
-              redeemableSoftCap ? redeemableSoftCap.toString() : 'Not used'
-            }`}</p>
-            <p>{`Native redeemable global supply cap: ${
+            <p>{`Redeemable global supply cap: ${
               redeemableGlobalSupplyCap
                 ? redeemableGlobalSupplyCap.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Identity depository weight (bps): ${
+              identityDepositoryWeightBps
+                ? identityDepositoryWeightBps.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Mercurial vault depository weight (bps): ${
+              mercurialVaultDepositoryWeightBps
+                ? mercurialVaultDepositoryWeightBps.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Credix lp depository weight (bps): ${
+              credixLpDepositoryWeightBps
+                ? credixLpDepositoryWeightBps.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Identity depository: ${
+              identityDepository
+                ? identityDepository.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Mercurial vault depository: ${
+              mercurialVaultDepository
+                ? mercurialVaultDepository.toString()
+                : 'Not used'
+            }`}</p>
+            <p>{`Credix Lp depository: ${
+              credixLpDepository
+                ? credixLpDepository.toString()
                 : 'Not used'
             }`}</p>
           </>
