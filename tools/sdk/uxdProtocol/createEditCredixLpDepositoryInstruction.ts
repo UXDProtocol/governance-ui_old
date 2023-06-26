@@ -23,7 +23,7 @@ const createEditCredixLpDepositoryInstruction = async ({
   mintingFeeInBps?: number;
   redeemingFeeInBps?: number;
   mintingDisabled?: boolean;
-  profitsBeneficiaryCollateral?: string;
+  profitsBeneficiaryCollateral?: PublicKey;
 }): Promise<TransactionInstruction> => {
   const client = uxdClient(uxdProgramId);
 
