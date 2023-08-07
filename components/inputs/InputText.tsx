@@ -19,10 +19,10 @@ const InputText = ({
     <div className="flex flex-col">
       <Input
         label={label}
-        value={value ?? ""}
+        value={value ?? ''}
         className={className}
         disabled={disabled}
-        onChange={(event) => onChange(event.target.value?.toString() ?? "")}
+        onChange={(event) => onChange(event.target.value?.toString() ?? '')}
         error={error}
         type="text"
       />

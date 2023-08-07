@@ -341,7 +341,9 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           redeemableAmountUnderManagementCapOption = true;
         }
 
-        if (data[9 + (redeemableAmountUnderManagementCapOption ? 16 : 0)] == 1) {
+        if (
+          data[9 + (redeemableAmountUnderManagementCapOption ? 16 : 0)] == 1
+        ) {
           mintingFeeInBpsOption = true;
         }
 
@@ -359,7 +361,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           data[
             11 +
               (redeemableAmountUnderManagementCapOption ? 16 : 0) +
-              (mintingFeeInBpsOption ? 1 : 0) + 
+              (mintingFeeInBpsOption ? 1 : 0) +
               (redeemingFeeInBpsOption ? 1 : 0)
           ] == 1
         ) {
@@ -370,7 +372,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           data[
             12 +
               (redeemableAmountUnderManagementCapOption ? 16 : 0) +
-              (mintingFeeInBpsOption ? 1 : 0) + 
+              (mintingFeeInBpsOption ? 1 : 0) +
               (redeemingFeeInBpsOption ? 1 : 0) +
               (mintingDisabledOption ? 1 : 0)
           ] == 1
@@ -434,9 +436,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
                 : 'Not used'
             }`}</p>
             <p>{`Minting disabled: ${
-              mintingDisabledOption
-                ? mintingDisabled.toString()
-                : 'Not used'
+              mintingDisabledOption ? mintingDisabled.toString() : 'Not used'
             }`}</p>
             <p>{`Profits beneficiary collateral: ${
               profitsBeneficiaryCollateralOption
@@ -537,9 +537,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
                 : 'Not used'
             }`}</p>
             <p>{`Identity depository: ${
-              identityDepository
-                ? identityDepository.toString()
-                : 'Not used'
+              identityDepository ? identityDepository.toString() : 'Not used'
             }`}</p>
             <p>{`Mercurial vault depository: ${
               mercurialVaultDepository
@@ -547,9 +545,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
                 : 'Not used'
             }`}</p>
             <p>{`Credix Lp depository: ${
-              credixLpDepository
-                ? credixLpDepository.toString()
-                : 'Not used'
+              credixLpDepository ? credixLpDepository.toString() : 'Not used'
             }`}</p>
           </>
         );
@@ -672,7 +668,9 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           redeemableAmountUnderManagementCapOption = true;
         }
 
-        if (data[9 + (redeemableAmountUnderManagementCapOption ? 16 : 0)] == 1) {
+        if (
+          data[9 + (redeemableAmountUnderManagementCapOption ? 16 : 0)] == 1
+        ) {
           mintingFeeInBpsOption = true;
         }
 
@@ -690,7 +688,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           data[
             11 +
               (redeemableAmountUnderManagementCapOption ? 16 : 0) +
-              (mintingFeeInBpsOption ? 1 : 0) + 
+              (mintingFeeInBpsOption ? 1 : 0) +
               (redeemingFeeInBpsOption ? 1 : 0)
           ] == 1
         ) {
@@ -701,7 +699,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
           data[
             12 +
               (redeemableAmountUnderManagementCapOption ? 16 : 0) +
-              (mintingFeeInBpsOption ? 1 : 0) + 
+              (mintingFeeInBpsOption ? 1 : 0) +
               (redeemingFeeInBpsOption ? 1 : 0) +
               (mintingDisabledOption ? 1 : 0)
           ] == 1
@@ -765,9 +763,7 @@ export const UXD_PROGRAM_INSTRUCTIONS = {
                 : 'Not used'
             }`}</p>
             <p>{`Minting disabled: ${
-              mintingDisabledOption
-                ? mintingDisabled.toString()
-                : 'Not used'
+              mintingDisabledOption ? mintingDisabled.toString() : 'Not used'
             }`}</p>
             <p>{`Profits beneficiary collateral: ${
               profitsBeneficiaryCollateralOption

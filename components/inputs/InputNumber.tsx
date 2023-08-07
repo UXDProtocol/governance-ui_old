@@ -23,7 +23,7 @@ const InputNumber = ({
     <div className="flex flex-col">
       <Input
         label={label}
-        value={value ?? ""}
+        value={value ?? ''}
         className={className}
         disabled={disabled}
         onChange={(event) => onChange(Number(event.target.value))}

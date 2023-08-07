@@ -242,10 +242,31 @@ export const TRIBECA_PROGRAM_INSTRUCTIONS = {
       ],
       getDataUI: (
         _connection: Connection,
-        _data: Uint8Array,
+        data: Uint8Array,
         _accounts: AccountMetaData[],
       ) => {
-        return null;
+        const dataLayout = struct([
+          u8('instruction'),
+          ...ANCHOR_DISCRIMINATOR_LAYOUT,
+          u8('side'),
+        ]);
+
+        const { side } = dataLayout.decode(Buffer.from(data)) as any;
+
+        const voteSide = {
+          1: 'no',
+          2: 'yes',
+          3: 'abstain',
+        }[side];
+
+        return (
+          <div className="flex flex-col">
+            <div>
+              <span>Side:</span>
+              <span>{voteSide}</span>
+            </div>
+          </div>
+        );
       },
     },
   },

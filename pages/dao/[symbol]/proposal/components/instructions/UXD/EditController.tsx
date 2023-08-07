@@ -64,18 +64,23 @@ const EditControllerDepository = ({
         redeemableGlobalSupplyCap: redeemableGlobalSupplyCapChange
           ? form.uiRedeemableGlobalSupplyCap!
           : undefined,
-        
-        depositoriesRoutingWeightBps: depositoriesRoutingWeightBpsChange ? {
-          identityDepositoryWeightBps: form.identityDepositoryWeightBps!,
-          mercurialVaultDepositoryWeightBps: form.mercurialVaultDepositoryWeightBps!,
-          credixLpDepositoryWeightBps: form.credixLpDepositoryWeightBps!,
-        } : undefined,
-        routerDepositories: routerDepositoriesChange ? {
-          identityDepository: new PublicKey(form.identityDepository!),
-          mercurialVaultDepository: new PublicKey(form.mercurialVaultDepository!),
-          credixLpDepository: new PublicKey(form.credixLpDepository!),
-        } : undefined,
-    
+
+        depositoriesRoutingWeightBps: depositoriesRoutingWeightBpsChange
+          ? {
+              identityDepositoryWeightBps: form.identityDepositoryWeightBps!,
+              mercurialVaultDepositoryWeightBps: form.mercurialVaultDepositoryWeightBps!,
+              credixLpDepositoryWeightBps: form.credixLpDepositoryWeightBps!,
+            }
+          : undefined,
+        routerDepositories: routerDepositoriesChange
+          ? {
+              identityDepository: new PublicKey(form.identityDepository!),
+              mercurialVaultDepository: new PublicKey(
+                form.mercurialVaultDepository!,
+              ),
+              credixLpDepository: new PublicKey(form.credixLpDepository!),
+            }
+          : undefined,
       });
     },
   });
@@ -190,8 +195,8 @@ const EditControllerDepository = ({
             }
             error={formErrors['credixLpDepository']}
           />
-          </>
-        ) : null}
+        </>
+      ) : null}
     </>
   );
 };
