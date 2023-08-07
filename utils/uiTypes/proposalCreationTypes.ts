@@ -258,6 +258,9 @@ export interface UXDEditControllerForm {
   identityDepository?: string;
   mercurialVaultDepository?: string;
   credixLpDepository?: string;
+  uiOutflowLimitPerEpochAmount?: number;
+  outflowLimitPerEpochBps?: number;
+  slotsPerEpoch?: number;
 }
 
 export interface UXDMintWithMercurialVaultDepositoryForm {

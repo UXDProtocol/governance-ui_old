@@ -69,20 +69,20 @@ const EditControllerDepository = ({
 
           depositoriesRoutingWeightBps: depositoriesRoutingWeightBpsChange
             ? {
-                identityDepositoryWeightBps: form.identityDepositoryWeightBps!,
-                mercurialVaultDepositoryWeightBps:
-                  form.mercurialVaultDepositoryWeightBps!,
-                credixLpDepositoryWeightBps: form.credixLpDepositoryWeightBps!,
-              }
+              identityDepositoryWeightBps: form.identityDepositoryWeightBps!,
+              mercurialVaultDepositoryWeightBps:
+                form.mercurialVaultDepositoryWeightBps!,
+              credixLpDepositoryWeightBps: form.credixLpDepositoryWeightBps!,
+            }
             : undefined,
           routerDepositories: routerDepositoriesChange
             ? {
-                identityDepository: new PublicKey(form.identityDepository!),
-                mercurialVaultDepository: new PublicKey(
-                  form.mercurialVaultDepository!,
-                ),
-                credixLpDepository: new PublicKey(form.credixLpDepository!),
-              }
+              identityDepository: new PublicKey(form.identityDepository!),
+              mercurialVaultDepository: new PublicKey(
+                form.mercurialVaultDepository!,
+              ),
+              credixLpDepository: new PublicKey(form.credixLpDepository!),
+            }
             : undefined,
 
           outflowLimitPerEpochAmount: outflowLimitPerEpochAmountChange
