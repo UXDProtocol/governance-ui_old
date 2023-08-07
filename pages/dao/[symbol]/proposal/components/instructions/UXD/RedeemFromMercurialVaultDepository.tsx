@@ -47,6 +47,7 @@ const UXDRedeemFromMercurialVaultDepository = ({
         connection,
         uxdProgramId: new PublicKey(form.uxdProgram!),
         authority: governedAccountPubkey,
+        user: governedAccountPubkey,
         depositoryMintName: form.collateralName!,
         redeemableAmount: form.uiRedeemableAmount!,
         payer: wallet.publicKey!,

@@ -43,6 +43,7 @@ const UXDMintWithIdentityDepository = ({
 
       return createMintWithIdentityDepositoryInstruction({
         uxdProgramId: new PublicKey(form.uxdProgram!),
+        authority: governedAccountPubkey,
         user: governedAccountPubkey,
         collateralAmount: form.uiCollateralAmount!,
         payer: wallet.publicKey!,

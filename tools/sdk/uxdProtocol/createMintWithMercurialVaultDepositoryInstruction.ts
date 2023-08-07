@@ -12,6 +12,7 @@ const createMintWithMercurialVaultDepositoryInstruction = async ({
   connection,
   uxdProgramId,
   authority,
+  user,
   depositoryMintName,
   collateralAmount,
   payer,
@@ -19,6 +20,7 @@ const createMintWithMercurialVaultDepositoryInstruction = async ({
   connection: ConnectionContext;
   uxdProgramId: PublicKey;
   authority: PublicKey;
+  user: PublicKey;
   depositoryMintName: string;
   collateralAmount: number;
   payer: PublicKey;
@@ -45,6 +47,7 @@ const createMintWithMercurialVaultDepositoryInstruction = async ({
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     depository,
     authority,
+    user,
     collateralAmount,
     Provider.defaultOptions(),
     payer,

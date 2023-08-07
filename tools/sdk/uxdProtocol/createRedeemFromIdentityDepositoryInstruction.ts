@@ -9,6 +9,7 @@ import { uxdClient } from './uxdClient';
 
 const createRedeemFromIdentityDepositoryInstruction = async ({
   uxdProgramId,
+  authority,
   user,
   redeemableAmount,
   payer,
@@ -17,6 +18,7 @@ const createRedeemFromIdentityDepositoryInstruction = async ({
   collateralMintDecimals,
 }: {
   uxdProgramId: PublicKey;
+  authority: PublicKey;
   user: PublicKey;
   redeemableAmount: number;
   payer: PublicKey;
@@ -36,6 +38,7 @@ const createRedeemFromIdentityDepositoryInstruction = async ({
   return client.createRedeemFromIdentityDepositoryInstruction(
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     identityDepository,
+    authority,
     user,
     redeemableAmount,
     Provider.defaultOptions(),

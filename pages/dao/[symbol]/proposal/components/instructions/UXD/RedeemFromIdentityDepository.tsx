@@ -41,6 +41,7 @@ const UXDRedeemFromIdentityDepository = ({
     buildInstruction: async function ({ form, governedAccountPubkey, wallet }) {
       return createRedeemFromIdentityDepositoryInstruction({
         uxdProgramId: new PublicKey(form.uxdProgram!),
+        authority: governedAccountPubkey,
         user: governedAccountPubkey,
         redeemableAmount: form.uiRedeemableAmount!,
         payer: wallet.publicKey!,
