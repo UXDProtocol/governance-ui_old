@@ -9,6 +9,9 @@ const createEditControllerInstruction = ({
   redeemableGlobalSupplyCap,
   depositoriesRoutingWeightBps,
   routerDepositories,
+  outflowLimitPerEpochAmount,
+  outflowLimitPerEpochBps,
+  slotsPerEpoch,
 }: {
   uxdProgramId: PublicKey;
   authority: PublicKey;
@@ -23,6 +26,9 @@ const createEditControllerInstruction = ({
     mercurialVaultDepository: PublicKey;
     credixLpDepository: PublicKey;
   };
+  outflowLimitPerEpochAmount?: number;
+  outflowLimitPerEpochBps?: number;
+  slotsPerEpoch?: number;
 }): TransactionInstruction => {
   const client = uxdClient(uxdProgramId);
 
@@ -33,6 +39,9 @@ const createEditControllerInstruction = ({
       redeemableGlobalSupplyCap,
       depositoriesRoutingWeightBps,
       routerDepositories,
+      outflowLimitPerEpochAmount,
+      outflowLimitPerEpochBps,
+      slotsPerEpoch,
     },
     Provider.defaultOptions(),
   );
