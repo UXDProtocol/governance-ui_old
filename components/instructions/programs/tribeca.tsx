@@ -5,6 +5,20 @@ import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration';
 import { ANCHOR_DISCRIMINATOR_LAYOUT } from '@utils/helpers';
 
 export const TRIBECA_PROGRAM_INSTRUCTIONS = {
+  [ATribecaConfiguration.governProgramId.toBase58()]: {
+    [ATribecaConfiguration.governInstructions.newVote]: {
+      name: 'Tribeca - New Vote',
+      accounts: ['Proposal', 'Vote', 'Payer', 'System Program'],
+      getDataUI: (
+        _connection: Connection,
+        _data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        return null;
+      },
+    },
+  },
+
   [ATribecaConfiguration.gaugeProgramId.toBase58()]: {
     [ATribecaConfiguration.gaugeInstructions.createGaugeVoter]: {
       name: 'Tribeca - Create Gauge Voter',
@@ -212,6 +226,26 @@ export const TRIBECA_PROGRAM_INSTRUCTIONS = {
             </div>
           </div>
         );
+      },
+    },
+
+    [ATribecaConfiguration.lockedVoterInstructions.castVote]: {
+      name: 'Tribeca - Cast Vote',
+      accounts: [
+        'Locker',
+        'Escrow',
+        'Vote Delegate',
+        'Proposal',
+        'Vote',
+        'Governor',
+        'Govern Program',
+      ],
+      getDataUI: (
+        _connection: Connection,
+        _data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        return null;
       },
     },
   },

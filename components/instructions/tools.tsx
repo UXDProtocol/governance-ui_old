@@ -26,7 +26,6 @@ import { UXD_PROTOCOL_STAKING_INSTRUCTIONS } from './programs/uxdProtocolStaking
 import { LIFINITY_PROGRAM_INSTRUCTIONS } from './programs/lifinity';
 import { TRIBECA_PROGRAM_INSTRUCTIONS } from './programs/tribeca';
 import { MAPLE_FINANCE_PROGRAM_INSTRUCTIONS } from './programs/mapleFinance';
-import { FRIKTION_PROGRAM_INSTRUCTIONS } from './programs/friktion';
 import { DELTAFI_PROGRAM_INSTRUCTIONS } from './programs/deltafi';
 import { ORCA_PROGRAM_INSTRUCTIONS } from './programs/orca';
 import { COMPUTE_BUDGET_INSTRUCTIONS } from './programs/computeBudgetProgram';
@@ -133,7 +132,6 @@ export const INSTRUCTION_DESCRIPTORS = {
   ...LIFINITY_PROGRAM_INSTRUCTIONS,
   ...TRIBECA_PROGRAM_INSTRUCTIONS,
   ...MAPLE_FINANCE_PROGRAM_INSTRUCTIONS,
-  ...FRIKTION_PROGRAM_INSTRUCTIONS,
   ...DELTAFI_PROGRAM_INSTRUCTIONS,
   ...ORCA_PROGRAM_INSTRUCTIONS,
   ...COMPUTE_BUDGET_INSTRUCTIONS,

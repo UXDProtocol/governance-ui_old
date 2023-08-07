@@ -181,10 +181,6 @@ export default function useGovernanceAssets() {
       name: 'UXD Staking',
       image: '/img/uxd-staking.png',
     },
-    [PackageEnum.Friktion]: {
-      name: 'Friktion',
-      image: '/img/friktion.png',
-    },
     [PackageEnum.Lifinity]: {
       name: 'Lifinity',
       image: '/img/lifinity.png',
@@ -279,6 +275,16 @@ export default function useGovernanceAssets() {
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Tribeca,
     },
+    [InstructionEnum.TribecaNewVote]: {
+      name: 'New Vote',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Tribeca,
+    },
+    [InstructionEnum.TribecaCastVote]: {
+      name: 'Cast Vote',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.Tribeca,
+    },
     [InstructionEnum.TribecaCreateGaugeVote]: {
       name: 'Create Gauge Vote',
       isVisible: canUseAnyInstruction,
@@ -356,11 +362,6 @@ export default function useGovernanceAssets() {
     },
     [InstructionEnum.SolendCreateObligationAccount]: {
       name: 'Solend: Create Obligation Account',
-      isVisible: canUseAnyInstruction,
-      packageId: PackageEnum.Solend,
-    },
-    [InstructionEnum.SolendCreateObligationAccount]: {
-      name: 'Create Obligation Account',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Solend,
     },
@@ -508,23 +509,6 @@ export default function useGovernanceAssets() {
       name: 'Remove From Liquidity Pool',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.Raydium,
-    },
-    [InstructionEnum.FriktionDepositIntoVolt]: {
-      name: 'Deposit into Volt',
-      isVisible: canUseAnyInstruction,
-      packageId: PackageEnum.Friktion,
-    },
-    [InstructionEnum.FriktionWithdrawFromVolt]: {
-      name: 'Withdraw from Volt',
-      isVisible: canUseAnyInstruction,
-      packageId: PackageEnum.Friktion,
-      tag: 'beta',
-    },
-    [InstructionEnum.FriktionClaimWithdrawal]: {
-      name: 'Claim Pending Withdrawal',
-      isVisible: canUseAnyInstruction,
-      packageId: PackageEnum.Friktion,
-      tag: 'beta',
     },
     [InstructionEnum.Transfer]: {
       name: 'Transfer Tokens From Treasuries',

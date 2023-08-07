@@ -55,6 +55,10 @@ export default abstract class ATribecaConfiguration {
     'QMNeHCGYnLVDn1icRAfQZpjPLBNkfGbSKRB83G5d8KB',
   );
 
+  public static readonly governor = new PublicKey(
+    '9tnpMysuibKx6SatcH3CWR9ZsSRMBNeBf1mhfL6gAXR4',
+  );
+
   // ---------------- Abstract ----------------
   public abstract readonly name: string;
 
@@ -81,6 +85,11 @@ export default abstract class ATribecaConfiguration {
   public static readonly lockedVoterInstructions = {
     newEscrow: 216,
     lock: 21,
+    castVote: 20,
+  };
+
+  public static readonly governInstructions = {
+    newVote: 163,
   };
 
   public async findEscrowAddress(
@@ -94,6 +103,21 @@ export default abstract class ATribecaConfiguration {
       ],
 
       ATribecaConfiguration.lockedVoterProgramId,
+    );
+  }
+
+  public async findVoteAddress(
+    proposal: PublicKey,
+    voter: PublicKey,
+  ): Promise<[PublicKey, number]> {
+    return PublicKey.findProgramAddress(
+      [
+        utils.bytes.utf8.encode('TribecaVote'),
+        proposal.toBuffer(),
+        voter.toBuffer(),
+      ],
+
+      ATribecaConfiguration.governProgramId,
     );
   }
 
