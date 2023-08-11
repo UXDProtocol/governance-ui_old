@@ -3,9 +3,7 @@ import { utils } from '@project-serum/anchor';
 import { PublicKey } from '@solana/web3.js';
 import { ConnectionContext } from '@utils/connection';
 import { UXDClient } from '@uxd-protocol/uxd-client';
-import {
-  CredixLpDepository,
-} from '@uxd-protocol/uxd-client';
+import { CredixLpDepository } from '@uxd-protocol/uxd-client';
 
 export const DEPOSITORY_MINTS = {
   devnet: {
@@ -93,11 +91,19 @@ export const getControllerPda = (uxdProgramId: PublicKey): PublicKey => {
   )[0];
 };
 
-export const getCredixLpDepository = (connection: ConnectionContext,  uxdProgramId: PublicKey, depositoryMintName: string) => {
-  const collateralMintAddress = getDepositoryMintInfo(connection.cluster, depositoryMintName).address;
-  const credixProgramId = connection.cluster == "devnet"
-    ? new PublicKey("CRdXwuY984Au227VnMJ2qvT7gPd83HwARYXcbHfseFKC")
-    : new PublicKey("CRDx2YkdtYtGZXGHZ59wNv1EwKHQndnRc1gT4p8i2vPX");
+export const getCredixLpDepository = (
+  connection: ConnectionContext,
+  uxdProgramId: PublicKey,
+  depositoryMintName: string,
+) => {
+  const collateralMintAddress = getDepositoryMintInfo(
+    connection.cluster,
+    depositoryMintName,
+  ).address;
+  const credixProgramId =
+    connection.cluster == 'devnet'
+      ? new PublicKey('CRdXwuY984Au227VnMJ2qvT7gPd83HwARYXcbHfseFKC')
+      : new PublicKey('CRDx2YkdtYtGZXGHZ59wNv1EwKHQndnRc1gT4p8i2vPX');
   return CredixLpDepository.initialize({
     connection: connection.current,
     collateralMint: collateralMintAddress,
@@ -105,4 +111,4 @@ export const getCredixLpDepository = (connection: ConnectionContext,  uxdProgram
     uxdProgramId,
     credixProgramId: credixProgramId,
   });
-}
+};

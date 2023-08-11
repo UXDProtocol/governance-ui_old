@@ -5,6 +5,20 @@ import ATribecaConfiguration from '@tools/sdk/tribeca/ATribecaConfiguration';
 import { ANCHOR_DISCRIMINATOR_LAYOUT } from '@utils/helpers';
 
 export const TRIBECA_PROGRAM_INSTRUCTIONS = {
+  [ATribecaConfiguration.governProgramId.toBase58()]: {
+    [ATribecaConfiguration.governInstructions.newVote]: {
+      name: 'Tribeca - New Vote',
+      accounts: ['Proposal', 'Vote', 'Payer', 'System Program'],
+      getDataUI: (
+        _connection: Connection,
+        _data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        return null;
+      },
+    },
+  },
+
   [ATribecaConfiguration.gaugeProgramId.toBase58()]: {
     [ATribecaConfiguration.gaugeInstructions.createGaugeVoter]: {
       name: 'Tribeca - Create Gauge Voter',
@@ -209,6 +223,47 @@ export const TRIBECA_PROGRAM_INSTRUCTIONS = {
             <div>
               <span>Duration (seconds):</span>
               <span>{Number(duration).toLocaleString()}</span>
+            </div>
+          </div>
+        );
+      },
+    },
+
+    [ATribecaConfiguration.lockedVoterInstructions.castVote]: {
+      name: 'Tribeca - Cast Vote',
+      accounts: [
+        'Locker',
+        'Escrow',
+        'Vote Delegate',
+        'Proposal',
+        'Vote',
+        'Governor',
+        'Govern Program',
+      ],
+      getDataUI: (
+        _connection: Connection,
+        data: Uint8Array,
+        _accounts: AccountMetaData[],
+      ) => {
+        const dataLayout = struct([
+          u8('instruction'),
+          ...ANCHOR_DISCRIMINATOR_LAYOUT,
+          u8('side'),
+        ]);
+
+        const { side } = dataLayout.decode(Buffer.from(data)) as any;
+
+        const voteSide = {
+          1: 'no',
+          2: 'yes',
+          3: 'abstain',
+        }[side];
+
+        return (
+          <div className="flex flex-col">
+            <div>
+              <span>Side:</span>
+              <span>{voteSide}</span>
             </div>
           </div>
         );

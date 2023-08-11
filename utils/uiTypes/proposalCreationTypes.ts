@@ -46,26 +46,6 @@ export interface SplTokenTransferForm {
   mintInfo?: MintInfo;
 }
 
-export interface FriktionDepositForm {
-  uiAmount: number;
-  governedAccount?: GovernedMultiTypeAccount;
-  volt?: string;
-  sourceAccount?: string;
-}
-
-export interface FriktionWithdrawForm {
-  uiAmount: number;
-  governedAccount?: GovernedMultiTypeAccount;
-  volt?: string;
-  receiverAccount?: string;
-}
-
-export interface FriktionClaimWithdrawalForm {
-  governedAccount?: GovernedMultiTypeAccount;
-  volt?: string;
-  receiverAccount?: string;
-}
-
 export interface GrantForm {
   destinationAccount: string;
   amount: number | undefined;
@@ -373,6 +353,19 @@ export interface SoceanVestForm {
   uiAmount?: number;
 }
 
+export interface TribecaNewVoteForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  tribecaConfiguration: ATribecaConfiguration | null;
+  proposal: string;
+}
+
+export interface TribecaCastVoteForm {
+  governedAccount?: GovernedMultiTypeAccount;
+  tribecaConfiguration: ATribecaConfiguration | null;
+  proposal: string;
+  side: 'yes' | 'no' | 'abstain';
+}
+
 export interface TribecaCreateEpochGaugeForm {
   governedAccount?: GovernedMultiTypeAccount;
   gaugeName?: string;
@@ -672,9 +665,6 @@ export enum InstructionEnum {
   // Grant,
   // Clawback,
   CreateAssociatedTokenAccount,
-  FriktionDepositIntoVolt,
-  FriktionWithdrawFromVolt,
-  FriktionClaimWithdrawal,
   LifinityDepositToPool,
   LifinityWithdrawFromPool,
   QuarryClaimRewards,
@@ -708,6 +698,8 @@ export enum InstructionEnum {
   TribecaGaugeRevertVote,
   TribecaLock,
   TribecaNewEscrow,
+  TribecaNewVote,
+  TribecaCastVote,
   TribecaPrepareEpochGaugeVoter,
   TribecaResetEpochGaugeVoter,
   TribecaGaugeSetVote,
@@ -763,7 +755,6 @@ export enum PackageEnum {
   Raydium,
   UXD,
   UXDStaking,
-  Friktion,
   Tribeca,
   Socean,
   Saber,

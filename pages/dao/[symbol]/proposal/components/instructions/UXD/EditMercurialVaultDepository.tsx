@@ -38,7 +38,6 @@ const EditMercurialVaultDepository = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-
   const [
     uiRedeemableAmountUnderManagementCapChange,
     setUiRedeemableAmountUnderManagementCapChange,
@@ -53,10 +52,9 @@ const EditMercurialVaultDepository = ({
     setRedeemingFeesInBpsChange,
   ] = useState<boolean>(false);
 
-  const [
-    mintingDisabledChange,
-    setMintingDisabledChange,
-  ] = useState<boolean>(false);
+  const [mintingDisabledChange, setMintingDisabledChange] = useState<boolean>(
+    false,
+  );
 
   const [
     profitsBeneficiaryCollateralChange,
@@ -191,14 +189,11 @@ const EditMercurialVaultDepository = ({
         />
       ) : null}
 
-
       <h5>Minting Disabled</h5>
 
       <Switch
         checked={mintingDisabledChange}
-        onChange={(checked) =>
-          setMintingDisabledChange(checked)
-        }
+        onChange={(checked) => setMintingDisabledChange(checked)}
       />
 
       {mintingDisabledChange ? (
@@ -217,9 +212,7 @@ const EditMercurialVaultDepository = ({
 
       <Switch
         checked={profitsBeneficiaryCollateralChange}
-        onChange={(checked) =>
-          setProfitsBeneficiaryCollateralChange(checked)
-        }
+        onChange={(checked) => setProfitsBeneficiaryCollateralChange(checked)}
       />
 
       {profitsBeneficiaryCollateralChange ? (
@@ -234,7 +227,6 @@ const EditMercurialVaultDepository = ({
           error={formErrors['profitsBeneficiaryCollateral']}
         />
       ) : null}
-
     </>
   );
 };

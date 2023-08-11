@@ -52,10 +52,9 @@ const EditCredixLpDepository = ({
     setRedeemingFeesInBpsChange,
   ] = useState<boolean>(false);
 
-  const [
-    mintingDisabledChange,
-    setMintingDisabledChange,
-  ] = useState<boolean>(false);
+  const [mintingDisabledChange, setMintingDisabledChange] = useState<boolean>(
+    false,
+  );
 
   const [
     profitsBeneficiaryCollateralChange,
@@ -89,7 +88,6 @@ const EditCredixLpDepository = ({
         // ================
 
         depositoryMintName: form.collateralName!,
-
 
         redeemableAmountUnderManagementCap: uiRedeemableAmountUnderManagementCapChange
           ? form.uiRedeemableAmountUnderManagementCap!
@@ -196,9 +194,7 @@ const EditCredixLpDepository = ({
 
       <Switch
         checked={mintingDisabledChange}
-        onChange={(checked) =>
-          setMintingDisabledChange(checked)
-        }
+        onChange={(checked) => setMintingDisabledChange(checked)}
       />
 
       {mintingDisabledChange ? (
@@ -217,9 +213,7 @@ const EditCredixLpDepository = ({
 
       <Switch
         checked={profitsBeneficiaryCollateralChange}
-        onChange={(checked) =>
-          setProfitsBeneficiaryCollateralChange(checked)
-        }
+        onChange={(checked) => setProfitsBeneficiaryCollateralChange(checked)}
       />
 
       {profitsBeneficiaryCollateralChange ? (
@@ -234,7 +228,6 @@ const EditCredixLpDepository = ({
           error={formErrors['profitsBeneficiaryCollateral']}
         />
       ) : null}
-
     </>
   );
 };
