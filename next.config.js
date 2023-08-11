@@ -23,7 +23,7 @@ module.exports = withBundleAnalyzer(
     },
     env: {
       REALM: process.env.REALM,
-      MAINNET_RPC: process.env.MAINNET_RPC,
+      MAINNET_RPC: "https://api.mainnet-beta.solana.com",
       DEVNET_RPC: process.env.DEVNET_RPC,
       DEFAULT_GOVERNANCE_PROGRAM_ID: process.env.DEFAULT_GOVERNANCE_PROGRAM_ID,
     },
