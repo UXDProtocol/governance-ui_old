@@ -7,7 +7,7 @@ const ENDPOINTS: EndpointInfo[] = [
     name: 'mainnet',
     url:
       process.env.MAINNET_RPC ||
-      'https://billowing-proud-glitter.solana-mainnet.quiknode.pro/df7334b3307d1f45ac525f6328051804bd8455ac/',
+      'https://rpc.helius.xyz/?api-key=4b483911-5163-4078-aeeb-02bcba97f85a',
   },
   {
     name: 'devnet',
