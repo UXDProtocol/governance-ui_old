@@ -61,7 +61,7 @@
     "@solana/web3.js-1.41.0": "npm:@solana/web3.js@1.41.0",
     "@solendprotocol/solend-sdk": "^0.4.9",
     "@tippyjs/react": "^4.2.5",
-    "@uxd-protocol/uxd-client": "7.3.1-rc1",
+    "@uxd-protocol/uxd-client": "8.1.4-rc1",
     "@uxdprotocol/uxd-staking-client": "3.1.0",
     "axios": "^0.21.1",
     "bignumber.js": "^9.0.1",

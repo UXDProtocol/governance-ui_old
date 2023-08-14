@@ -12,6 +12,7 @@ const createRedeemFromMercurialVaultDepositoryInstruction = async ({
   connection,
   uxdProgramId,
   authority,
+  user,
   depositoryMintName,
   redeemableAmount,
   payer,
@@ -19,6 +20,7 @@ const createRedeemFromMercurialVaultDepositoryInstruction = async ({
   connection: ConnectionContext;
   uxdProgramId: PublicKey;
   authority: PublicKey;
+  user: PublicKey;
   depositoryMintName: string;
   redeemableAmount: number;
   payer: PublicKey;
@@ -45,6 +47,7 @@ const createRedeemFromMercurialVaultDepositoryInstruction = async ({
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     depository,
     authority,
+    user,
     redeemableAmount,
     Provider.defaultOptions(),
     payer,

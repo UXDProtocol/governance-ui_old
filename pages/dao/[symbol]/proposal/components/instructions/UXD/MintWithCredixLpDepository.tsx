@@ -47,6 +47,7 @@ const UXDMintWithCredixLpDepository = ({
         connection,
         uxdProgramId: new PublicKey(form.uxdProgram!),
         authority: governedAccountPubkey,
+        user: governedAccountPubkey,
         depositoryMintName: form.collateralName!,
         collateralAmount: form.uiCollateralAmount!,
         payer: wallet.publicKey!,

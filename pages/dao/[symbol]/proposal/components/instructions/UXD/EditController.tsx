@@ -26,64 +26,75 @@ const EditControllerDepository = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
-  const [
-    redeemableGlobalSupplyCapChange,
-    setRedeemableGlobalSupplyCapChange,
-  ] = useState<boolean>(false);
+  const [redeemableGlobalSupplyCapChange, setRedeemableGlobalSupplyCapChange] =
+    useState<boolean>(false);
   const [
     depositoriesRoutingWeightBpsChange,
     setDepositoriesRoutingWeightBpsChange,
   ] = useState<boolean>(false);
+  const [routerDepositoriesChange, setRouterDepositoriesChange] =
+    useState<boolean>(false);
   const [
-    routerDepositoriesChange,
-    setRouterDepositoriesChange,
+    outflowLimitPerEpochAmountChange,
+    setOutflowLimitPerEpochAmountChange,
   ] = useState<boolean>(false);
+  const [outflowLimitPerEpochBpsChange, setOutflowLimitPerEpochBpsChange] =
+    useState<boolean>(false);
+  const [slotsPerEpochChange, setSlotsPerEpochChange] =
+    useState<boolean>(false);
 
-  const {
-    form,
-    formErrors,
-    handleSetForm,
-  } = useInstructionFormBuilder<UXDEditControllerForm>({
-    index,
-    initialFormValues: {
-      governedAccount,
-    },
-    schema,
-    buildInstruction: async function ({ form, governedAccountPubkey }) {
-      return createEditControllerInstruction({
-        uxdProgramId: form.governedAccount!.governance!.account.governedAccount,
-        authority: governedAccountPubkey,
+  const { form, formErrors, handleSetForm } =
+    useInstructionFormBuilder<UXDEditControllerForm>({
+      index,
+      initialFormValues: {
+        governedAccount,
+      },
+      schema,
+      buildInstruction: async function ({ form, governedAccountPubkey }) {
+        return createEditControllerInstruction({
+          uxdProgramId:
+            form.governedAccount!.governance!.account.governedAccount,
+          authority: governedAccountPubkey,
 
-        // TODO
-        // Temporary authority override for tests with mainnet test program
-        //authority: new PublicKey(
-        //  '8cJ5KH2ExX2rrY6DbzAqrBMDkQxYZfyedB1C4L4osc5N',
-        // ),
-        // ================
+          // TODO
+          // Temporary authority override for tests with mainnet test program
+          //authority: new PublicKey(
+          //  '8cJ5KH2ExX2rrY6DbzAqrBMDkQxYZfyedB1C4L4osc5N',
+          // ),
+          // ================
 
-        redeemableGlobalSupplyCap: redeemableGlobalSupplyCapChange
-          ? form.uiRedeemableGlobalSupplyCap!
-          : undefined,
+          redeemableGlobalSupplyCap: redeemableGlobalSupplyCapChange
+            ? form.uiRedeemableGlobalSupplyCap!
+            : undefined,
 
-        depositoriesRoutingWeightBps: depositoriesRoutingWeightBpsChange
-          ? {
+          depositoriesRoutingWeightBps: depositoriesRoutingWeightBpsChange
+            ? {
               identityDepositoryWeightBps: form.identityDepositoryWeightBps!,
-              mercurialVaultDepositoryWeightBps: form.mercurialVaultDepositoryWeightBps!,
+              mercurialVaultDepositoryWeightBps:
+                form.mercurialVaultDepositoryWeightBps!,
               credixLpDepositoryWeightBps: form.credixLpDepositoryWeightBps!,
             }
-          : undefined,
-        routerDepositories: routerDepositoriesChange
-          ? {
+            : undefined,
+          routerDepositories: routerDepositoriesChange
+            ? {
               identityDepository: new PublicKey(form.identityDepository!),
               mercurialVaultDepository: new PublicKey(
                 form.mercurialVaultDepository!,
               ),
               credixLpDepository: new PublicKey(form.credixLpDepository!),
             }
-          : undefined,
-      });
-    },
-  });
+            : undefined,
+
+          outflowLimitPerEpochAmount: outflowLimitPerEpochAmountChange
+            ? form.uiOutflowLimitPerEpochAmount!
+            : undefined,
+          outflowLimitPerEpochBps: outflowLimitPerEpochBpsChange
+            ? form.outflowLimitPerEpochBps!
+            : undefined,
+          slotsPerEpoch: slotsPerEpochChange ? form.slotsPerEpoch! : undefined,
+        });
+      },
+    });
 
   return (
     <>
@@ -196,6 +207,66 @@ const EditControllerDepository = ({
             error={formErrors['credixLpDepository']}
           />
         </>
+      ) : null}
+      <h5>Outflow limit per epoch (Amount)</h5>
+      <Switch
+        checked={outflowLimitPerEpochAmountChange}
+        onChange={(checked) => setOutflowLimitPerEpochAmountChange(checked)}
+      />
+      {outflowLimitPerEpochAmountChange ? (
+        <InputNumber
+          label="Outflow limit per epoch (Amount)"
+          value={form.uiOutflowLimitPerEpochAmount}
+          min={0}
+          max={10 ** 12}
+          onChange={(value) =>
+            handleSetForm({
+              value,
+              propertyName: 'uiOutflowLimitPerEpochAmount',
+            })
+          }
+          error={formErrors['uiOutflowLimitPerEpochAmount']}
+        />
+      ) : null}
+      <h5>Outflow limit per epoch (Bps)</h5>
+      <Switch
+        checked={outflowLimitPerEpochBpsChange}
+        onChange={(checked) => setOutflowLimitPerEpochBpsChange(checked)}
+      />
+      {outflowLimitPerEpochBpsChange ? (
+        <InputNumber
+          label="Outflow limit per epoch (Bps)"
+          value={form.outflowLimitPerEpochBps}
+          min={0}
+          max={10 ** 12}
+          onChange={(value) =>
+            handleSetForm({
+              value,
+              propertyName: 'outflowLimitPerEpochBps',
+            })
+          }
+          error={formErrors['outflowLimitPerEpochBps']}
+        />
+      ) : null}
+      <h5>Slots per epoch</h5>
+      <Switch
+        checked={slotsPerEpochChange}
+        onChange={(checked) => setSlotsPerEpochChange(checked)}
+      />
+      {slotsPerEpochChange ? (
+        <InputNumber
+          label="Slots per epoch"
+          value={form.slotsPerEpoch}
+          min={0}
+          max={10 ** 12}
+          onChange={(value) =>
+            handleSetForm({
+              value,
+              propertyName: 'slotsPerEpoch',
+            })
+          }
+          error={formErrors['slotsPerEpoch']}
+        />
       ) : null}
     </>
   );

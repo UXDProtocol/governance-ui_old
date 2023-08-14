@@ -23,7 +23,7 @@ module.exports = withBundleAnalyzer(
     },
     env: {
       REALM: process.env.REALM,
-      MAINNET_RPC: process.env.MAINNET_RPC,
+      MAINNET_RPC: "https://rpc.helius.xyz/?api-key=4b483911-5163-4078-aeeb-02bcba97f85a",
       DEVNET_RPC: process.env.DEVNET_RPC,
       DEFAULT_GOVERNANCE_PROGRAM_ID: process.env.DEFAULT_GOVERNANCE_PROGRAM_ID,
     },

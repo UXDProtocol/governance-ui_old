@@ -8,6 +8,7 @@ const createMintWithCredixLpDepositoryInstruction = async ({
   connection,
   uxdProgramId,
   authority,
+  user,
   depositoryMintName,
   collateralAmount,
   payer,
@@ -15,6 +16,7 @@ const createMintWithCredixLpDepositoryInstruction = async ({
   connection: ConnectionContext;
   uxdProgramId: PublicKey;
   authority: PublicKey;
+  user: PublicKey;
   depositoryMintName: string;
   collateralAmount: number;
   payer: PublicKey;
@@ -31,6 +33,7 @@ const createMintWithCredixLpDepositoryInstruction = async ({
     new Controller('UXD', UXD_DECIMALS, uxdProgramId),
     depository,
     authority,
+    user,
     collateralAmount,
     Provider.defaultOptions(),
     payer,
