@@ -48,6 +48,7 @@ const OrcaWhirlpoolUpdateFeesAndRewards = ({
       governedAccount,
     },
     schema,
+    shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({ cluster, wallet }) {
       if (cluster !== 'mainnet') {
         throw new Error('Other cluster than mainnet are not supported yet.');

@@ -55,7 +55,7 @@ const ApproveAllBtn = () => {
 
     const {
       blockhash: recentBlockhash,
-    } = await connection.getRecentBlockhash();
+    } = await connection.getLatestBlockhash();
 
     const transactions = await Promise.all(
       votingProposals.map(async (proposal) => {

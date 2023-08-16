@@ -49,6 +49,10 @@ export async function sendTransaction({
     connection,
   });
 
+  transaction.recentBlockhash = (
+    await connection.getLatestBlockhash()
+  ).blockhash;
+
   return await sendSignedTransaction({
     signedTransaction,
     connection,
@@ -70,7 +74,7 @@ export async function signTransaction({
   connection: Connection;
 }) {
   transaction.recentBlockhash = (
-    await connection.getRecentBlockhash('max')
+    await connection.getLatestBlockhash('max')
   ).blockhash;
   transaction.setSigners(wallet.publicKey, ...signers.map((s) => s.publicKey));
   if (signers.length > 0) {
@@ -91,7 +95,7 @@ export async function signTransactions({
   wallet: Wallet;
   connection: Connection;
 }) {
-  const blockhash = (await connection.getRecentBlockhash('max')).blockhash;
+  const blockhash = (await connection.getLatestBlockhash()).blockhash;
   transactionsAndSigners.forEach(({ transaction, signers = [] }) => {
     transaction.recentBlockhash = blockhash;
     transaction.setSigners(
@@ -165,11 +169,14 @@ export async function sendSignedTransaction({
 
     console.info('signed transaction', signedTransaction);
 
+    signedTransaction.recentBlockhash = (
+      await connection.getLatestBlockhash()
+    ).blockhash;
+
     try {
       console.info('start simulate');
-      simulateResult = (
-        await simulateTransaction(connection, signedTransaction, 'single')
-      ).value;
+      simulateResult = (await connection.simulateTransaction(signedTransaction))
+        .value;
     } catch (error) {
       console.error('Error simulating: ', error);
     }
@@ -292,17 +299,16 @@ export async function awaitTransactionSignatureConfirmation(
   return result;
 }
 
+// DEPRECATED, use native connection.simulateTransaction instead
 /** Copy of Connection.simulateTransaction that takes a commitment parameter. */
 export async function simulateTransaction(
   connection: Connection,
   transaction: Transaction,
   commitment: Commitment,
 ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>> {
-  // @ts-ignore
-  transaction.recentBlockhash = await connection._recentBlockhash(
-    // @ts-ignore
-    connection._disableBlockhashCaching,
-  );
+  transaction.recentBlockhash = (
+    await connection.getLatestBlockhash()
+  ).blockhash;
 
   console.info('simulating transaction', transaction);
 

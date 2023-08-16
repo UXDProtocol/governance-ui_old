@@ -42,6 +42,10 @@ export const executeInstructions = async (
     signers: [],
   });
 
+  transaction.recentBlockhash = (
+    await connection.getLatestBlockhash()
+  ).blockhash;
+
   await sendSignedTransaction({
     signedTransaction,
     connection,

@@ -94,7 +94,7 @@ const MyProposalsBn = () => {
     try {
       const {
         blockhash: recentBlockhash,
-      } = await connection.getRecentBlockhash();
+      } = await connection.getLatestBlockhash();
 
       const transactions = await Promise.all(
         proposalsArray.map(async (proposal) => {

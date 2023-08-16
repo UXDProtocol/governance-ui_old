@@ -138,11 +138,9 @@ export async function simulateTransaction(
   transaction: Transaction,
   commitment: Commitment,
 ): Promise<RpcResponseAndContext<SimulatedTransactionResponse>> {
-  // @ts-ignore
-  transaction.recentBlockhash = await connection._recentBlockhash(
-    // @ts-ignore
-    connection._disableBlockhashCaching,
-  );
+  transaction.recentBlockhash = (
+    await connection.getLatestBlockhash()
+  ).blockhash;
 
   const signData = transaction.serializeMessage();
   // @ts-ignore
@@ -199,6 +197,7 @@ export async function sendSignedTransaction({
     }
   })();
   try {
+    console.log('Try & confirm: ', txid);
     const confirmation = await awaitTransactionSignatureConfirmation(
       txid,
       timeout,
@@ -217,28 +216,36 @@ export async function sendSignedTransaction({
     if (err.timeout) {
       throw new Error('Timed out awaiting confirmation on transaction');
     }
-    let simulateResult: SimulatedTransactionResponse | null = null;
-    try {
-      simulateResult = (
-        await simulateTransaction(connection, signedTransaction, 'single')
-      ).value;
-    } catch (e) {
-      //
-    }
-    if (simulateResult && simulateResult.err) {
-      if (simulateResult.logs) {
-        for (let i = simulateResult.logs.length - 1; i >= 0; --i) {
-          const line = simulateResult.logs[i];
-          if (line.startsWith('Program log: ')) {
-            throw new Error(
-              'Transaction failed: ' + line.slice('Program log: '.length),
-            );
-          }
-        }
-      }
-      throw new Error(JSON.stringify(simulateResult.err));
-    }
-    // throw new Error('Transaction failed');
+    // let simulateResult: SimulatedTransactionResponse | null = null;
+
+    // try {
+    //   simulateResult = (await connection.simulateTransaction(signedTransaction))
+    //     .value;
+    // } catch (e) {
+    //   console.log('Error simulating: ', e);
+    // }
+
+    // // Parse and throw error if simulation fails
+    // if (simulateResult && simulateResult.err) {
+    //   if (simulateResult.logs) {
+    //     console.log('simulate resultlogs', simulateResult.logs);
+
+    //     for (let i = simulateResult.logs.length - 1; i >= 0; --i) {
+    //       const line = simulateResult.logs[i];
+
+    //       if (line.startsWith('Program log: ')) {
+    //         throw new Error(
+    //           'Transaction failed: ' +
+    //             line.slice('Program log: '.length) +
+    //             ': ' +
+    //             txid,
+    //         );
+    //       }
+    //     }
+    //   }
+    //   throw new Error(JSON.stringify(simulateResult.err) + ': ' + txid);
+    // }
+    throw new Error('Transaction failed');
   } finally {
     done = true;
   }

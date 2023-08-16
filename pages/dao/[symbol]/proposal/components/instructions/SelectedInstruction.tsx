@@ -99,7 +99,7 @@ const SelectedInstruction = ({
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
   switch (itxType) {
-    case InstructionEnum.MapleFinanceLenderDepositForm:
+    case InstructionEnum.MapleFinanceLenderDeposit:
       return (
         <MapleFinanceLenderDeposit
           index={index}

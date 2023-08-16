@@ -224,11 +224,30 @@ export default function useGovernanceAssets() {
   };
 
   const instructions: Instructions = {
-    [InstructionEnum.MapleFinanceLenderDepositForm]: {
+    [InstructionEnum.MapleFinanceLenderDeposit]: {
       name: 'Lender Deposit',
       isVisible: canUseAnyInstruction,
       packageId: PackageEnum.MapleFinance,
-      tag: 'beta',
+    },
+    [InstructionEnum.MapleFinanceWithdrawalRequestInitialize]: {
+      name: 'Withdrawal Request Initialize',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.MapleFinance,
+    },
+    [InstructionEnum.MapleFinanceLenderUnlockDeposit]: {
+      name: 'Lender Unlock Deposit',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.MapleFinance,
+    },
+    [InstructionEnum.MapleFinanceLenderInitialize]: {
+      name: 'Lender Initialize',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.MapleFinance,
+    },
+    [InstructionEnum.MapleFinanceWithdrawalRequestExecute]: {
+      name: 'Withdrawal Request Execute',
+      isVisible: canUseAnyInstruction,
+      packageId: PackageEnum.MapleFinance,
     },
     [InstructionEnum.LifinityDepositToPool]: {
       name: 'Deposit To Pool',

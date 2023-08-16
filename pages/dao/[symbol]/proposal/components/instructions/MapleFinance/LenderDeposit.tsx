@@ -12,6 +12,7 @@ import TokenAccountSelect from '../../TokenAccountSelect';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
 import Select from '@components/inputs/Select';
 import { PublicKey } from '@solana/web3.js';
+import { useEffect } from 'react';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -37,6 +38,8 @@ const LenderDeposit = ({
     handleSetForm,
     formErrors,
     governedAccountPubkey,
+    connection,
+    wallet,
   } = useInstructionFormBuilder<MapleFinanceLenderDepositForm>({
     index,
     initialFormValues: {
@@ -71,6 +74,34 @@ const LenderDeposit = ({
   const { ownedTokenAccountsInfo } = useGovernanceUnderlyingTokenAccounts(
     governedAccountPubkey,
   );
+
+  useEffect(() => {
+    if (!connection || !wallet) {
+      console.log('NO CONNECTION OR WALLET');
+      return;
+    }
+
+    (async () => {
+      console.log('LOADING POOLS');
+      const programs = mapleFinanceConfig.getMapleFinancePrograms({
+        connection: connection.current,
+        wallet,
+      });
+
+      const pools = await programs.Syrup.account.pool.all();
+
+      console.log(
+        'POOLS',
+        pools.map((p) => ({
+          pubkey: p.publicKey.toBase58(),
+          totalValue: p.account.totalValue.toNumber(),
+          openToPublic: p.account.config.openToPublic,
+          cooldownPeriod: p.account.config.cooldownPeriod.toNumber(),
+          sharesMint: p.account.sharesMint.toBase58(),
+        })),
+      );
+    })();
+  }, [connection, wallet]);
 
   return (
     <>

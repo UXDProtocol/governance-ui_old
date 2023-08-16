@@ -2,10 +2,7 @@ import Button, { LinkButton, SecondaryButton } from '@components/Button';
 import { getExplorerInspectorUrl } from '@components/explorer/tools';
 import Loading from '@components/Loading';
 import Modal from '@components/Modal';
-import {
-  getInstructionDataFromBase64,
-  simulateTransaction,
-} from '@solana/spl-governance';
+import { getInstructionDataFromBase64 } from '@solana/spl-governance';
 import { WalletAdapter } from '@solana/wallet-adapter-base';
 import {
   Connection,
@@ -42,7 +39,17 @@ async function dryRunInstructions(
     });
   });
 
-  const result = await simulateTransaction(connection, transaction, 'single');
+  transaction.recentBlockhash = (
+    await connection.getLatestBlockhash()
+  ).blockhash;
+
+  const result = await connection.simulateTransaction(
+    transaction,
+    undefined,
+    true,
+  );
+
+  // const result = await simulateTransaction(connection, transaction, 'single');
 
   return { response: result.value, transaction };
 }

@@ -48,6 +48,7 @@ const OrcaWhirlpoolCollectFees = ({
       governedAccount,
     },
     schema,
+    shouldSplitIntoSeparateTxs: true,
     buildInstruction: async function ({
       cluster,
       wallet,

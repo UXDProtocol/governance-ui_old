@@ -7,6 +7,7 @@ import { SyrupProgram } from './programs/syrup';
 import { SignerWalletAdapter } from '@solana/wallet-adapter-base';
 import { augmentedProvider } from '../augmentedProvider';
 import { SplTokenInformation, SPL_TOKENS } from '@utils/splTokens';
+import { Nonce } from '@maplelabs/syrup-sdk';
 
 export type MapleFinancePrograms = {
   Syrup: SyrupProgram;
@@ -110,8 +111,34 @@ export class MapleFinance {
     )[0];
   }
 
+  public static async findWithdrawalRequestAddress(
+    lender: PublicKey,
+    nonce: Nonce,
+  ): Promise<PublicKey> {
+    return (
+      await PublicKey.findProgramAddress(
+        [Buffer.from('withdrawal_request'), lender.toBytes(), nonce.value],
+        MapleFinance.SyrupProgramId,
+      )
+    )[0];
+  }
+
+  public static async findWithdrawalRequestLocker(
+    withdrawalRequest: PublicKey,
+  ): Promise<PublicKey> {
+    return (
+      await PublicKey.findProgramAddress(
+        [Buffer.from('withdrawal_request_locker'), withdrawalRequest.toBytes()],
+        MapleFinance.SyrupProgramId,
+      )
+    )[0];
+  }
+
   public static readonly syrupProgramInstructions = {
     lenderDeposit: 151,
+    lenderUnlockDeposit: 17,
+    withdrawalRequestInitialize: 121,
+    withdrawalRequestExecute: 90,
   };
 }
 
