@@ -29,9 +29,13 @@ export default function useProposalVotes(proposal?: Proposal) {
       noVotesRequired: 0,
     };
 
-  const voteThresholdPct =
-    (proposal.isVoteFinalized() && proposal.voteThresholdPercentage?.value) ||
-    governance.config.voteThresholdPercentage.value;
+  const isCommunityVote =
+    proposal?.governingTokenMint.toBase58() ===
+    realm?.account.communityMint.toBase58();
+
+  const voteThresholdPct = isCommunityVote
+    ? governance.config.communityVoteThreshold.value || 0
+    : governance.config.communityVoteThreshold.value || 0;
 
   const maxVoteWeight = getProposalMaxVoteWeight(
     realm.account,

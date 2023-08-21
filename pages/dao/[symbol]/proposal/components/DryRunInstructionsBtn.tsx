@@ -68,15 +68,16 @@ const DryRunInstructionsBtn = ({
   } | null>(null);
   const [isOpen, setIsOpen] = useState(false);
 
-  const onInspect = () => {
+  const onInspect = async () => {
     if (!result) {
       notify({ type: 'error', message: 'no results to inspect' });
       return;
     }
 
-    const inspectUrl = getExplorerInspectorUrl(
+    const inspectUrl = await getExplorerInspectorUrl(
       connection.endpoint,
       result.transaction,
+      connection.current,
     );
 
     window.open(inspectUrl, '_blank');

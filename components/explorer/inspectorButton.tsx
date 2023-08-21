@@ -30,9 +30,10 @@ export default function InspectorButton({
         instructionData,
       );
 
-      inspectUrl = getExplorerInspectorUrl(
+      inspectUrl = await getExplorerInspectorUrl(
         connection.endpoint,
         result.transaction,
+        connection.current,
       );
     } else {
       try {
