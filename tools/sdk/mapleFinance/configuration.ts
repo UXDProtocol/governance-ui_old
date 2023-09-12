@@ -13,7 +13,7 @@ export type MapleFinancePrograms = {
   Syrup: SyrupProgram;
 };
 
-export type PoolName = 'Credora_USDC';
+export type PoolName = 'CashManagement';
 
 export type PoolInfo = {
   // lender: PublicKey;
@@ -37,11 +37,11 @@ export class MapleFinance {
   );
 
   public static readonly pools: Pools = {
-    Credora_USDC: {
-      pool: new PublicKey('TamdAwg85s9aZ6mwSeAHoczzAV53rFokL5FVKzaF1Tb'),
+    CashManagement: {
+      pool: new PublicKey('7Vqn5fdwckZadYVoH312aErP8PqNGNUx8WDrvKAHYfMd'),
       globals: new PublicKey('DtnAPKSHwJaYbFdjYibNcjxihVd6pK1agpT86N5tMVPX'),
-      poolLocker: new PublicKey('92oAd9cm4rV4K4Xx9HPRMoFn7GwMaKsjNSPe7QVxywcy'),
-      sharesMint: new PublicKey('CesxqgX4BvYudTNU45PArqTgefrRFhE1CwR7ECTDshfY'),
+      poolLocker: new PublicKey('EWiQLJY2CYKKL58KR284MxLvEtctQJbnzKEqWXyQ1z3S'),
+      sharesMint: new PublicKey('AxuK8gNvN4Q8HtgHxFbePP6b84SpmcNTPdFA1E164Hgs'),
       baseMint: SPL_TOKENS.USDC,
     },
   };

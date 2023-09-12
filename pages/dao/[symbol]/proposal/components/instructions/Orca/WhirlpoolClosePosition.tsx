@@ -83,6 +83,14 @@ const OrcaWhirlpoolClosePosition = ({
     whirlpool: selectedWhirlpool ?? undefined,
   });
 
+  /*
+  const userPositions = useOrcaWhirlpoolPositions({
+    authority: new PublicKey('2bhkQ6uVn32ddiG4Fe3DVbLsrExdb3ubaY6i1G4szEmq'),
+    whirlpool: selectedWhirlpool ?? undefined,
+  });
+
+  console.log('userPositions', userPositions);*/
+
   useEffect(() => {
     let quit = false;
 

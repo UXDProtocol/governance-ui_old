@@ -7,6 +7,7 @@ import {
   ProgramAccount,
   Proposal,
   ProposalState,
+  VoteTypeKind,
 } from '@solana/spl-governance';
 import NewProposalBtn from './proposal/components/NewProposalBtn';
 import { PublicKey } from '@solana/web3.js';
@@ -223,13 +224,24 @@ const REALM = () => {
               <div className="space-y-3">
                 {filteredProposals.length > 0 ? (
                   <>
-                    {paginatedProposals.map(([k, v]) => (
-                      <ProposalCard
-                        key={k}
-                        proposalPk={new PublicKey(k)}
-                        proposal={v.account}
-                      />
-                    ))}
+                    {paginatedProposals
+                      .map(([k, v]) => {
+                        // FIX: DO NOT LOAD MULTI CHOICE PROPOSALS
+                        if (
+                          v.account.voteType.type === VoteTypeKind.MultiChoice
+                        ) {
+                          return null;
+                        }
+
+                        return (
+                          <ProposalCard
+                            key={k}
+                            proposalPk={new PublicKey(k)}
+                            proposal={v.account}
+                          />
+                        );
+                      })
+                      .filter((x) => !!x)}
                     <PaginationComponent
                       totalPages={Math.ceil(
                         filteredProposals.length / proposalsPerPage,

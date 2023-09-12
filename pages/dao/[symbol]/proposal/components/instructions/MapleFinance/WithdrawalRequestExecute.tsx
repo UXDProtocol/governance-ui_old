@@ -27,11 +27,15 @@ const WithdrawalRequestExecute = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
+  const governedAccountPubkey = new PublicKey(
+    '9uM8UiGnpbVUUo3XMiESD54PDQbdLcwdunqQMebaFu2r',
+  );
+
   const {
     form,
     handleSetForm,
     formErrors,
-    governedAccountPubkey,
+    // governedAccountPubkey,
   } = useInstructionFormBuilder<MapleFinanceWithdrawalRequestExecuteForm>({
     index,
     initialFormValues: {

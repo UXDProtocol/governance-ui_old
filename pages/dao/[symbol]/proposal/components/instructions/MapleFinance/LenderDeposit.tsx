@@ -12,7 +12,6 @@ import TokenAccountSelect from '../../TokenAccountSelect';
 import useGovernanceUnderlyingTokenAccounts from '@hooks/useGovernanceUnderlyingTokenAccounts';
 import Select from '@components/inputs/Select';
 import { PublicKey } from '@solana/web3.js';
-import { useEffect } from 'react';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -33,13 +32,15 @@ const LenderDeposit = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
+  const governedAccountPubkey = new PublicKey(
+    '9uM8UiGnpbVUUo3XMiESD54PDQbdLcwdunqQMebaFu2r',
+  );
+
   const {
     form,
     handleSetForm,
     formErrors,
-    governedAccountPubkey,
-    connection,
-    wallet,
+    // governedAccountPubkey,
   } = useInstructionFormBuilder<MapleFinanceLenderDepositForm>({
     index,
     initialFormValues: {
@@ -50,7 +51,7 @@ const LenderDeposit = ({
       form,
       connection,
       wallet,
-      governedAccountPubkey,
+      // governedAccountPubkey,
     }) {
       const programs = mapleFinanceConfig.getMapleFinancePrograms({
         connection,
@@ -75,6 +76,7 @@ const LenderDeposit = ({
     governedAccountPubkey,
   );
 
+  /*
   useEffect(() => {
     if (!connection || !wallet) {
       console.log('NO CONNECTION OR WALLET');
@@ -98,10 +100,12 @@ const LenderDeposit = ({
           openToPublic: p.account.config.openToPublic,
           cooldownPeriod: p.account.config.cooldownPeriod.toNumber(),
           sharesMint: p.account.sharesMint.toBase58(),
+          all: JSON.stringify(p.account, null, 2),
         })),
       );
     })();
   }, [connection, wallet]);
+  */
 
   return (
     <>

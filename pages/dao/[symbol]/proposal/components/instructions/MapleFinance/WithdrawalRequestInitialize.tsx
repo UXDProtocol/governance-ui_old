@@ -9,6 +9,7 @@ import { MapleFinanceWithdrawalRequestInitializeForm } from '@utils/uiTypes/prop
 import { uiAmountToNativeBN } from '@tools/sdk/units';
 import Select from '@components/inputs/Select';
 import withdrawalRequestInitialize from '@tools/sdk/mapleFinance/instructions/withdrawalRequestInitialize';
+import { PublicKey } from '@solana/web3.js';
 
 const schema = yup.object().shape({
   governedAccount: yup
@@ -29,6 +30,10 @@ const WithdrawalRequestInitialize = ({
   index: number;
   governedAccount?: GovernedMultiTypeAccount;
 }) => {
+  const governedAccountPubkey = new PublicKey(
+    '9uM8UiGnpbVUUo3XMiESD54PDQbdLcwdunqQMebaFu2r',
+  );
+
   const {
     form,
     handleSetForm,
@@ -43,7 +48,7 @@ const WithdrawalRequestInitialize = ({
       form,
       connection,
       wallet,
-      governedAccountPubkey,
+      // governedAccountPubkey,
     }) {
       const programs = mapleFinanceConfig.getMapleFinancePrograms({
         connection,
