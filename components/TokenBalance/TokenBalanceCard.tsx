@@ -34,6 +34,7 @@ import { useEffect, useState } from 'react'
 import useVotePluginsClientStore from 'stores/useVotePluginsClientStore'
 import { VSR_PLUGIN_PKS } from '@constants/plugins'
 import DelegateTokenBalanceCard from '@components/TokenBalance/DelegateTokenBalanceCard'
+import RelinquishVoteCount from '@components/TokenBalance/RelinquishVoteCount'
 import SerumGovernanceTokenWrapper from './SerumGovernanceTokenWrapper'
 import getNumTokens from '@components/ProposalVotingPower/getNumTokens'
 import VotingPowerPct from '@components/ProposalVotingPower/VotingPowerPct'
@@ -129,6 +130,7 @@ const TokenBalanceCard = ({
             />
           )}
           <DelegateTokenBalanceCard />
+          <RelinquishVoteCount />
         </div>
       ) : (
         <>
