@@ -10,7 +10,8 @@ import { useSelectedDelegatorStore } from 'stores/useSelectedDelegatorStore'
 import { PublicKey } from '@solana/web3.js'
 import useLegacyConnectionContext from '@hooks/useLegacyConnectionContext'
 import { useRealmQuery } from '@hooks/queries/realm'
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { UXD_STAKING_PROGRAM } from '@tools/constants'
 
 const DelegateBalanceCard = () => {
   const wallet = useWalletOnePointOh()
@@ -19,6 +20,12 @@ const DelegateBalanceCard = () => {
   const ownTokenRecord = useUserCommunityTokenOwnerRecord().data?.result
   const ownCouncilTokenRecord = useUserCouncilTokenOwnerRecord().data?.result
   const realm = useRealmQuery().data?.result
+  const [
+    communityTorsDelegatedAccOwnerAliases,
+    setCommunityTorsDelegatedAccOwnerAliases,
+  ] = useState<{
+    [key: string]: string
+  }>({})
 
   const delegatesArray = useTokenOwnerRecordsDelegatedToUser()
 
@@ -66,6 +73,44 @@ const DelegateBalanceCard = () => {
   const hasDelegators =
     (communityTorsDelegatedToUser?.length ?? 0) > 0 ||
     (councilTorsDelegatedToUser?.length ?? 0) > 0
+
+  // Load up aliases for delegates accounts
+  useEffect(() => {
+    if (!communityTorsDelegatedToUser) {
+      setCommunityTorsDelegatedAccOwnerAliases({})
+      return
+    }
+
+    ;(async () => {
+      const owners = communityTorsDelegatedToUser.map(
+        (acc) => acc.account.governingTokenOwner
+      )
+
+      const accountsInfo = await connection.current.getMultipleAccountsInfo(
+        owners
+      )
+
+      setCommunityTorsDelegatedAccOwnerAliases(
+        accountsInfo.reduce((acc, accountInfo, index) => {
+          if (!accountInfo) {
+            return acc
+          }
+
+          const govTokenOwner = communityTorsDelegatedToUser[
+            index
+          ].account.governingTokenOwner.toBase58()
+
+          return {
+            ...acc,
+            [govTokenOwner]: `UXP Staking account ${govTokenOwner.slice(
+              0,
+              3
+            )}...${govTokenOwner.slice(-2)}`,
+          }
+        }, {})
+      )
+    })()
+  }, [communityTorsDelegatedToUser])
 
   if (!walletId || !hasDelegators) {
     return null
@@ -166,13 +211,21 @@ const DelegateBalanceCard = () => {
                 componentLabel={
                   ownTokenRecord ? (
                     <div className="relative">
-                      <DisplayAddress
-                        connection={connection.current}
-                        address={ownTokenRecord.account.governingTokenOwner}
-                        height="12px"
-                        width="100px"
-                        dark={true}
-                      />
+                      {communityTorsDelegatedAccOwnerAliases[
+                        ownTokenRecord.account.governingTokenOwner.toBase58()
+                      ] ? (
+                        communityTorsDelegatedAccOwnerAliases[
+                          ownTokenRecord.account.governingTokenOwner.toBase58()
+                        ]
+                      ) : (
+                        <DisplayAddress
+                          connection={connection.current}
+                          address={ownTokenRecord.account.governingTokenOwner}
+                          height="12px"
+                          width="100px"
+                          dark={true}
+                        />
+                      )}
                       <div className="absolute bg-bkg-1 bottom-0 left-0 w-full h-full opacity-0	" />
                     </div>
                   ) : (
@@ -189,13 +242,27 @@ const DelegateBalanceCard = () => {
                     value={communityDelegate.account.governingTokenOwner.toBase58()}
                   >
                     <div className="relative">
-                      <DisplayAddress
-                        connection={connection.current}
-                        address={communityDelegate.account.governingTokenOwner}
-                        height="12px"
-                        width="100px"
-                        dark={true}
-                      />
+                      {communityTorsDelegatedAccOwnerAliases[
+                        communityDelegate.account.governingTokenOwner.toBase58()
+                      ] ? (
+                        <>
+                          {
+                            communityTorsDelegatedAccOwnerAliases[
+                              communityDelegate.account.governingTokenOwner.toBase58()
+                            ]
+                          }
+                        </>
+                      ) : (
+                        <DisplayAddress
+                          connection={connection.current}
+                          address={
+                            communityDelegate.account.governingTokenOwner
+                          }
+                          height="12px"
+                          width="100px"
+                          dark={true}
+                        />
+                      )}
                       <div className="absolute bg-bkg-1 bottom-0 left-0 w-full h-full opacity-0	" />
                     </div>
                   </Select.Option>
